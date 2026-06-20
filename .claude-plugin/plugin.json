@@ -1,0 +1,14 @@
+{
+  "name": "osv-schema",
+  "displayName": "OSV Schema Skills",
+  "description": "Go library + CLI + Claude Code Skills for parsing, validating, filtering, and querying OSV (Open Source Vulnerability) schema data — 6 specialized skills for vulnerability analysis",
+  "version": "0.1.0",
+  "author": {
+    "name": "scagogogo",
+    "url": "https://github.com/scagogogo"
+  },
+  "homepage": "https://github.com/scagogogo/osv-schema-skills",
+  "repository": "https://github.com/scagogogo/osv-schema-skills",
+  "license": "MIT",
+  "keywords": ["osv", "vulnerability", "cve", "cvss", "security", "go", "cli", "skills"]
+}
