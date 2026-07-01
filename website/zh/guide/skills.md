@@ -14,6 +14,39 @@
 | `osv-affected` | 受影响包与版本分析 | 你需要影响分析或版本范围检查 |
 | `osv-installation` | 安装与设置指南 | 你是第一次使用这些技能 |
 
+## 什么措辞落到哪个技能
+
+你从不点名技能——你只描述意图，智能体拿你的话去匹配每个技能的 `description`。以下是路由到各技能的典型措辞：
+
+```mermaid
+mindmap
+  root((你的话))
+    osv-parse
+      "读一下这条公告"
+      "这个文件里有什么"
+      "把 CVE 提出来"
+    osv-validate
+      "这是合规的 OSV 吗"
+      "检查 schema"
+      "校验这些文件"
+    osv-filter
+      "只看 npm 的"
+      "PyPI 包"
+      "只要 FIX 链接"
+    osv-query
+      "CVSS 分数"
+      "Maven groupId"
+      "版本范围"
+    osv-severity
+      "有多严重"
+      "风险等级"
+      "算不算严重"
+    osv-affected
+      "哪些版本"
+      "我受影响吗"
+      "受影响的包"
+```
+
 ## 技能如何接线
 
 每个技能是 `.claude/skills/<name>/` 下的一个 `SKILL.md` 文件：

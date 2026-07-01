@@ -14,6 +14,39 @@ This repository is designed as a **Skills repository**. When Claude Code opens i
 | `osv-affected` | Affected package & version analysis | You need impact analysis or version range inspection |
 | `osv-installation` | Setup & installation guide | It's your first time using the skills |
 
+## What phrasing lands on which skill
+
+You never name a skill — you describe intent, and the agent matches your words against each skill's `description`. These are the phrases that route to each:
+
+```mermaid
+mindmap
+  root((your words))
+    osv-parse
+      "read this advisory"
+      "what's in this file"
+      "extract the CVE"
+    osv-validate
+      "is this valid OSV"
+      "check schema"
+      "verify these files"
+    osv-filter
+      "only npm entries"
+      "PyPI packages"
+      "just the FIX links"
+    osv-query
+      "the CVSS score"
+      "Maven groupId"
+      "version ranges"
+    osv-severity
+      "how severe"
+      "risk level"
+      "is it critical"
+    osv-affected
+      "which versions"
+      "am I impacted"
+      "affected packages"
+```
+
 ## How a skill is wired
 
 Each skill is a `SKILL.md` file in `.claude/skills/<name>/`:
