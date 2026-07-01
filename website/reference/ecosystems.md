@@ -105,6 +105,24 @@ for _, a := range v.Affected {
 }
 ```
 
+Two entry points consume an `Ecosystem` constant — one asks a yes/no question, the other returns a narrowed slice. Both walk the same `AffectedSlice`:
+
+```mermaid
+flowchart TD
+  A["v.Affected: AffectedSlice"] --> H["HasEcosystem(eco)"]
+  A --> F["FilterByEcosystem(eco)"]
+  H --> W["walk entries,<br/>match entry.Package.Ecosystem == eco"]
+  F --> W
+  W -->|"any match"| BOOL["HasEcosystem → true"]
+  W -->|"no match"| BOOL2["HasEcosystem → false"]
+  W --> KEEP["keep matching entries"]
+  KEEP --> SUB["FilterByEcosystem → AffectedSlice (subset)"]
+```
+
+::: tip `Ecosystem` is a typed string, not a free string
+Pass a constant like `osv.EcosystemPyPI`, not the literal `"PyPI"`. The constant carries the exact casing the OSV spec requires, so the comparison is case-sensitive and typo-proof.
+:::
+
 ## Maven name decomposition
 
 ```mermaid

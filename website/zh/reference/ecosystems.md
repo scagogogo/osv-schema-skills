@@ -105,6 +105,24 @@ for _, a := range v.Affected {
 }
 ```
 
+消费 `Ecosystem` 常量的入口有两个——一个问是/否，另一个返回缩小后的切片。两者都遍历同一个 `AffectedSlice`：
+
+```mermaid
+flowchart TD
+  A["v.Affected: AffectedSlice"] --> H["HasEcosystem(eco)"]
+  A --> F["FilterByEcosystem(eco)"]
+  H --> W["遍历条目，<br/>匹配 entry.Package.Ecosystem == eco"]
+  F --> W
+  W -->|"有任一匹配"| BOOL["HasEcosystem → true"]
+  W -->|"无匹配"| BOOL2["HasEcosystem → false"]
+  W --> KEEP["保留匹配条目"]
+  KEEP --> SUB["FilterByEcosystem → AffectedSlice（子集）"]
+```
+
+::: tip `Ecosystem` 是带类型字符串，不是自由字符串
+传常量如 `osv.EcosystemPyPI`，而非字面量 `"PyPI"`。常量带有 OSV 规范要求的精确大小写，于是比较区分大小写且杜绝拼写错误。
+:::
+
 ## Maven name 的拆分
 
 ```mermaid
