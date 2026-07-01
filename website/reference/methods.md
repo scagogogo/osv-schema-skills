@@ -111,6 +111,21 @@ Because `GetScore()` drops the error, a vector-string score is indistinguishable
 | `IsLastAffected` | `() bool` | Event marks last affected version |
 | `IsLimit` | `() bool` | Event marks a range limit |
 
+An `Event` struct carries four optional string fields (`Introduced`, `Fixed`, `LastAffected`, `Limit`); exactly **one** is populated per event. Each `Is*` predicate just checks whether its field is non-empty — so the four are mutually exclusive and exactly one returns `true`:
+
+```mermaid
+flowchart TD
+  E["Event struct"] --> CHK{"which field is non-empty?"}
+  CHK -->|"Introduced != \"\""| I["IsIntroduced() → true"]
+  CHK -->|"Fixed != \"\""| F["IsFixed() → true"]
+  CHK -->|"LastAffected != \"\""| LA["IsLastAffected() → true"]
+  CHK -->|"Limit != \"\""| L["IsLimit() → true"]
+```
+
+::: tip Walk events in order, not in isolation
+A single event tells you *what kind* of boundary it is; the affected/not-affected answer comes from walking the timeline in order and toggling a flag at each `introduced`/`fixed` pair. See [OSV Schema → event-timeline resolution](/reference/osv-schema#is-a-version-affected-—-event-timeline-resolution).
+:::
+
 ## Parsing
 
 | Function | Signature | Description |

@@ -111,6 +111,21 @@ flowchart TD
 | `IsLastAffected` | `() bool` | 事件标记 last_affected 版本 |
 | `IsLimit` | `() bool` | 事件标记 range limit |
 
+`Event` 结构体带四个可选字符串字段（`Introduced`、`Fixed`、`LastAffected`、`Limit`）；每个事件里**只有一个**被填充。每个 `Is*` 谓词只检查自己的字段是否非空——所以四者互斥，且恰好有一个返回 `true`：
+
+```mermaid
+flowchart TD
+  E["Event 结构体"] --> CHK{"哪个字段非空？"}
+  CHK -->|"Introduced != \"\""| I["IsIntroduced() → true"]
+  CHK -->|"Fixed != \"\""| F["IsFixed() → true"]
+  CHK -->|"LastAffected != \"\""| LA["IsLastAffected() → true"]
+  CHK -->|"Limit != \"\""| L["IsLimit() → true"]
+```
+
+::: tip 按顺序遍历事件，而非孤立看单个
+单个事件只告诉你它是*哪种*边界；受影响/不受影响的答案来自按顺序走时间线、在每对 `introduced`/`fixed` 处翻转标记。见 [OSV Schema → 事件时间线判定](/zh/reference/osv-schema#某个版本是否受影响-——-事件时间线判定)。
+:::
+
 ## Parsing
 
 | 函数 | 签名 | 说明 |
