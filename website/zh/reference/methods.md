@@ -43,7 +43,7 @@ mindmap
 
 | 方法 | 签名 | 说明 |
 |------|------|------|
-| `GetCVE` | `() string` | 第一个以 `CVE-` 开头的标识 |
+| `GetCVE` | `() string` | 第一个匹配 `CVE-` 的别名（大小写不敏感——匹配前先转大写，故 `cve-2024-1` 能被找到并返回为 `CVE-2024-1`） |
 | `Filter` | `(func(string) bool) Aliases` | 按谓词过滤别名 |
 
 ## AffectedSlice
@@ -66,8 +66,10 @@ mindmap
 
 | 方法 | 签名 | 说明 |
 |------|------|------|
-| `GetCVSS3` | `() *Severity` | CVSS v3 条目，或 `nil` |
-| `GetCVSS2` | `() *Severity` | CVSS v2 条目，或 `nil` |
+| `GetCVSS3` | `() *Severity` | 第一个 `Type == "CVSS_V3"` 的条目，或 `nil` |
+| `GetCVSS2` | `() *Severity` | 第一个 `Type == "CVSS_V2"` 的条目，或 `nil` |
+
+注意 `Severity` 上两个不同的字符串字段：`Type`（取值 `"CVSS_V2"` / `"CVSS_V3"` 之一，即 OSV `severity[].type` 判别字段）和 `Score`（*内容*——CVSS 向量字符串如 `CVSS:3.1/AV:N/…`，或裸数字如 `7.5`）。`GetCVSS3` 按 `Type` 匹配，绝不按向量前缀匹配。
 
 ## Severity
 
@@ -100,7 +102,7 @@ flowchart TD
 
 | 方法 | 签名 | 说明 |
 |------|------|------|
-| `FilterByType` | `(...ReferenceType) References` | 按 `ADVISORY`、`FIX` 等过滤（可传多个） |
+| `FilterByType` | `(...ReferenceType) References` | 保留 `Type` 匹配给定类型**任一**的引用（OR 语义）；不传类型时返回 `nil` |
 
 ## Event
 

@@ -123,6 +123,10 @@ flowchart TD
 传常量如 `osv.EcosystemPyPI`，而非字面量 `"PyPI"`。常量带有 OSV 规范要求的精确大小写，于是比较区分大小写且杜绝拼写错误。
 :::
 
+::: warning `FilterByEcosystem` 假定 `Package` 非 nil
+`HasEcosystem` 会跳过 `Package` 为 `nil` 的条目（它先检查 `item.Package != nil`）。`FilterByEcosystem` 则**不**检查——它直接解引用 `affected.Package.Ecosystem`，故某条 `affected` 的 `package` 为 `null`/缺失时会 panic。实践中每条合规的 OSV `affected` 条目都带 `package`，但若你解析的是不受信任的数据，请先用 [[osv-validate]] 校验，或自行对切片做防护。
+:::
+
 ## Maven name 的拆分
 
 ```mermaid
@@ -131,5 +135,7 @@ flowchart LR
   SEP --> G["GetGroupID → 'org.apache'"]
   SEP --> A["GetArtifactID → 'commons'"]
 ```
+
+`GetGroupID` / `GetArtifactID` 用 `strings.SplitN(name, ":", 2)`，故 `org.apache.commons:collections4` 这样的 name 会拆成 `org.apache.commons`（group）和 `collections4`（artifact）——只有**第一个** `:` 是分隔符。两者都对 nil 安全：`nil` 的 `Package` 或不含 `:` 的 name 返回 `""`，而非 panic。它们对任意 `Package` 都可调用，但只有 `IsMaven()` 为真时才有意义。
 
 源码：[`package.go`](https://github.com/scagogogo/osv-schema-skills/blob/main/package.go)

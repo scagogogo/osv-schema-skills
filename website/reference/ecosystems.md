@@ -123,6 +123,10 @@ flowchart TD
 Pass a constant like `osv.EcosystemPyPI`, not the literal `"PyPI"`. The constant carries the exact casing the OSV spec requires, so the comparison is case-sensitive and typo-proof.
 :::
 
+::: warning `FilterByEcosystem` assumes `Package` is non-nil
+`HasEcosystem` skips entries whose `Package` is `nil` (it checks `item.Package != nil` first). `FilterByEcosystem` does **not** — it dereferences `affected.Package.Ecosystem` directly, so an `affected` entry with a `null`/missing `package` will panic. In practice every well-formed OSV `affected` entry carries a `package`, but if you parse untrusted data, validate first with [[osv-validate]] or guard the slice yourself.
+:::
+
 ## Maven name decomposition
 
 ```mermaid
@@ -131,5 +135,7 @@ flowchart LR
   SEP --> G["GetGroupID → 'org.apache'"]
   SEP --> A["GetArtifactID → 'commons'"]
 ```
+
+`GetGroupID` / `GetArtifactID` use `strings.SplitN(name, ":", 2)`, so a name like `org.apache.commons:collections4` splits into `org.apache.commons` (group) and `collections4` (artifact) — only the **first** `:` is a separator. Both are nil-safe: a `nil` `Package` or a name without a `:` returns `""` rather than panicking. They work on any `Package` but only carry meaning when `IsMaven()` is true.
 
 Source: [`package.go`](https://github.com/scagogogo/osv-schema-skills/blob/main/package.go)

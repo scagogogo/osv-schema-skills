@@ -43,7 +43,7 @@ mindmap
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `GetCVE` | `() string` | First identifier starting with `CVE-` |
+| `GetCVE` | `() string` | First alias matching `CVE-` (case-insensitive — upper-cased before matching, so `cve-2024-1` is found and returned as `CVE-2024-1`) |
 | `Filter` | `(func(string) bool) Aliases` | Filter aliases by predicate |
 
 ## AffectedSlice
@@ -66,8 +66,10 @@ mindmap
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `GetCVSS3` | `() *Severity` | CVSS v3 entry, or `nil` |
-| `GetCVSS2` | `() *Severity` | CVSS v2 entry, or `nil` |
+| `GetCVSS3` | `() *Severity` | First entry whose `Type == "CVSS_V3"`, or `nil` |
+| `GetCVSS2` | `() *Severity` | First entry whose `Type == "CVSS_V2"`, or `nil` |
+
+Note the two distinct string fields on `Severity`: `Type` (one of `"CVSS_V2"` / `"CVSS_V3"`, the OSV `severity[].type` discriminator) and `Score` (the *contents* — a CVSS vector string like `CVSS:3.1/AV:N/…` or a bare number like `7.5`). `GetCVSS3` matches on `Type`, never on the vector prefix.
 
 ## Severity
 
@@ -100,7 +102,7 @@ Because `GetScore()` drops the error, a vector-string score is indistinguishable
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `FilterByType` | `(...ReferenceType) References` | Filter by `ADVISORY`, `FIX`, etc. (accepts multiple) |
+| `FilterByType` | `(...ReferenceType) References` | Keep references whose `Type` matches **any** of the given types (OR semantics); returns `nil` if no types are passed |
 
 ## Event
 

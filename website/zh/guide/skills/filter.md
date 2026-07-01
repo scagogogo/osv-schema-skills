@@ -19,7 +19,7 @@ osv filter -o json -e PyPI vulnerability.json
 |------|------|
 | `-e, --ecosystem` | 生态，按 OSV 规范区分大小写（`PyPI`、`npm`、`Maven`） |
 | `-r, --ref-type` | 引用类型，自动转大写（`ADVISORY`、`FIX`、`WEB`） |
-| `-a, --alias` | 别名前缀（`CVE`、`GHSA`、`CVE-2024`） |
+| `-a, --alias` | 别名前缀，匹配前转大写（`CVE`、`GHSA`、`CVE-2024`） |
 | `-o, --output` | `text`（默认）或 `json` |
 
 至少需要一个过滤标志。
@@ -101,6 +101,7 @@ flowchart TD
 
 - 生态名区分大小写（`PyPI`，不是 `pypi`）
 - 引用类型在 CLI 中自动转大写
+- 别名前缀匹配前转大写，所以 `-a cve` 等同于 `-a CVE`
 - `HasEcosystem` 返回 bool；`FilterByEcosystem` 返回过滤后的切片
 
 ## 交叉引用

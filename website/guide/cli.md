@@ -89,7 +89,7 @@ osv filter -o json -e PyPI vulnerability.json
 |------|-------------|
 | `-e, --ecosystem` | Ecosystem name, case-sensitive per OSV spec (`PyPI`, `npm`, `Maven`) |
 | `-r, --ref-type` | Reference type, auto-uppercased (`ADVISORY`, `FIX`, `WEB`) |
-| `-a, --alias` | Alias prefix pattern (`CVE`, `GHSA`, or `CVE-2024`) |
+| `-a, --alias` | Alias prefix pattern, upper-cased before matching (`CVE`, `GHSA`, or `CVE-2024` match case-insensitively) |
 | `-o, --output` | `text` (default) or `json` |
 
 ### `osv query`

@@ -89,7 +89,7 @@ osv filter -o json -e PyPI vulnerability.json
 |------|------|
 | `-e, --ecosystem` | 生态名，按 OSV 规范区分大小写（`PyPI`、`npm`、`Maven`） |
 | `-r, --ref-type` | 引用类型，自动转大写（`ADVISORY`、`FIX`、`WEB`） |
-| `-a, --alias` | 别名前缀模式（`CVE`、`GHSA` 或 `CVE-2024`） |
+| `-a, --alias` | 别名前缀模式，匹配前转大写（`CVE`、`GHSA`、`CVE-2024` 均大小写不敏感匹配） |
 | `-o, --output` | `text`（默认）或 `json` |
 
 ### `osv query`

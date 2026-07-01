@@ -19,7 +19,7 @@ osv filter -o json -e PyPI vulnerability.json
 |------|-------------|
 | `-e, --ecosystem` | Ecosystem, case-sensitive per OSV spec (`PyPI`, `npm`, `Maven`) |
 | `-r, --ref-type` | Reference type, auto-uppercased (`ADVISORY`, `FIX`, `WEB`) |
-| `-a, --alias` | Alias prefix (`CVE`, `GHSA`, `CVE-2024`) |
+| `-a, --alias` | Alias prefix, upper-cased before matching (`CVE`, `GHSA`, `CVE-2024`) |
 | `-o, --output` | `text` (default) or `json` |
 
 At least one filter flag is required.
@@ -101,6 +101,7 @@ Ecosystem is compared verbatim against the OSV spec's exact casing, so `-e pypi`
 
 - Ecosystem names are case-sensitive (`PyPI`, not `pypi`)
 - Reference types are auto-uppercased in the CLI
+- Alias prefixes are upper-cased before matching, so `-a cve` works like `-a CVE`
 - `HasEcosystem` returns a bool; `FilterByEcosystem` returns the filtered slice
 
 ## Cross-references
