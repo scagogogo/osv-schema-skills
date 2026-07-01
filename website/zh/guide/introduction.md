@@ -239,6 +239,27 @@ flowchart TD
 
 ## 第 5 章 —— 设计原则
 
+```mermaid
+mindmap
+  root((设计原则))
+    AI 优先
+      意图触发技能
+      复制粘贴命令
+      omitempty 干净 JSON
+    一图抵千言
+      Mermaid 胜过大段文字
+    类型安全
+      泛型 OsvSchema
+      Eco / DB 类型参数
+    广泛序列化
+      json yaml mapstructure
+      gorm bson
+    永不 nil
+      显式返回 error
+    文档与代码一致
+      每个参数都真实存在
+```
+
 | 原则 | 如何体现 |
 |------|----------|
 | **AI First（AI 优先）** | 技能从意图自动触发；文档以智能体可直接执行的复制粘贴命令开头；JSON 输出用 `omitempty` 保持干净，智能体永不会读到误导性的空字段 |

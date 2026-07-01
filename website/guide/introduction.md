@@ -239,6 +239,27 @@ flowchart TD
 
 ## Chapter 5 — Design principles
 
+```mermaid
+mindmap
+  root((design principles))
+    AI First
+      intent-triggered skills
+      copy-paste commands
+      omitempty-clean JSON
+    one picture
+      mermaid over prose
+    type safety
+      generic OsvSchema
+      Eco / DB type params
+    broad serialization
+      json yaml mapstructure
+      gorm bson
+    never nil
+      explicit error returns
+    docs match code
+      every flag is real
+```
+
 | Principle | How it shows up |
 |-----------|-----------------|
 | **AI First** | Skills auto-trigger from intent; docs lead with copy-paste commands an agent can run; JSON output is `omitempty`-clean so an agent never reads a misleading empty field |
