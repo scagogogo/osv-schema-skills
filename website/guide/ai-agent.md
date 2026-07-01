@@ -98,6 +98,24 @@ raw text dumps. Decide which command to run yourself based on my intent — don'
 
 ---
 
+## How the agent resolves the install
+
+Step 1 of the prompt encodes a small decision the agent runs before any analysis. This is why the binary path is preferred — it needs no Go toolchain and works offline once fetched.
+
+```mermaid
+flowchart TD
+  START["Agent needs osv on PATH"] --> HAVE{"osv version works?"}
+  HAVE -->|yes| DONE["ready"]
+  HAVE -->|no| REL["fetch latest GitHub Release"]
+  REL --> DETECT["detect my OS + arch"]
+  DETECT --> PICK["pick matching archive<br/>linux/mac/win · amd64/arm64/arm"]
+  PICK --> EXTRACT["extract osv → chmod +x → PATH"]
+  EXTRACT --> VERIFY{"osv version?"}
+  VERIFY -->|ok| DONE
+  VERIFY -->|fail| GO["fallback: go install …/cmd/osv@latest<br/>(needs Go 1.18+)"]
+  GO --> DONE
+```
+
 ## Why a prompt instead of a plugin install?
 
 | Approach | Pros | Cons |

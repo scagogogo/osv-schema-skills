@@ -98,6 +98,24 @@ raw text dumps. Decide which command to run yourself based on my intent — don'
 
 ---
 
+## 智能体如何解析安装
+
+提示词第 1 步编码了智能体在任何分析之前会跑的一个小决策。这也是为什么优先走二进制路径——它无需 Go 工具链，取回后即可离线工作。
+
+```mermaid
+flowchart TD
+  START["智能体需要 PATH 上有 osv"] --> HAVE{"osv version 能用？"}
+  HAVE -->|能| DONE["就绪"]
+  HAVE -->|不能| REL["取最新 GitHub Release"]
+  REL --> DETECT["检测我的 OS + 架构"]
+  DETECT --> PICK["挑匹配的归档<br/>linux/mac/win · amd64/arm64/arm"]
+  PICK --> EXTRACT["解压 osv → chmod +x → PATH"]
+  EXTRACT --> VERIFY{"osv version？"}
+  VERIFY -->|正常| DONE
+  VERIFY -->|失败| GO["回退：go install …/cmd/osv@latest<br/>（需 Go 1.18+）"]
+  GO --> DONE
+```
+
 ## 为什么用提示词而不是装插件？
 
 | 方案 | 优点 | 缺点 |
