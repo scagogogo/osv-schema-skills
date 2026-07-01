@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	osv_schema "github.com/scagogogo/osv-schema"
+	osv_schema "github.com/scagogogo/osv-schema-skills"
 	"github.com/spf13/cobra"
 )
 

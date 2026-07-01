@@ -1,148 +1,142 @@
 # OSV Schema Skills
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/scagogogo/osv-schema.svg)](https://pkg.go.dev/github.com/scagogogo/osv-schema)
-[![Go Report Card](https://goreportcard.com/badge/github.com/scagogogo/osv-schema)](https://goreportcard.com/report/github.com/scagogogo/osv-schema)
+[![Go Reference](https://pkg.go.dev/badge/github.com/scagogogo/osv-schema-skills.svg)](https://pkg.go.dev/github.com/scagogogo/osv-schema-skills)
+[![Go Report Card](https://goreportcard.com/badge/github.com/scagogogo/osv-schema-skills)](https://goreportcard.com/report/github.com/scagogogo/osv-schema-skills)
+[![CI](https://github.com/scagogogo/osv-schema-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/scagogogo/osv-schema-skills/actions/workflows/ci.yml)
+[![Release](https://github.com/scagogogo/osv-schema-skills/actions/workflows/release.yml/badge.svg)](https://github.com/scagogogo/osv-schema-skills/actions/workflows/release.yml)
+[![GitHub release](https://img.shields.io/github/v/release/scagogogo/osv-schema-skills)](https://github.com/scagogogo/osv-schema-skills/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **简体中文** | [English](README.md)
 
-## 这是什么？
+> **AI 原生** 的 OSV（开源漏洞）Schema 工具包：**Go SDK + CLI + 6 个 Claude Code Skills**。
+> 解析、校验、过滤、查询漏洞数据 —— 三层访问方式，同一个 Go 核心。
+>
+> 📖 文档：<https://scagogogo.github.io/osv-schema-skills/>
 
-**OSV Schema Skills** 是一个 **AI 原生** 的 Go 语言库 + CLI + Skills 套件，用于 [OSV（开源漏洞）Schema](https://ossf.github.io/osv-schema/)。它可以让你通过 **Go SDK**、**CLI 工具** 或直接通过 **AI Agent Skills** 来解析、校验、过滤和查询漏洞数据。
-
-### 解决的问题
-
-处理漏洞数据通常很繁琐：
-
-- **OSV JSON 文件**包含复杂的嵌套结构（受影响包、CVSS 评分、版本范围、参考资料），手动检查很困难
-- **过滤**按生态系统、严重性或引用类型需要每次写自定义代码
-- **校验** OSV 文件是否符合 Schema 规范缺乏工具支持
-- **AI Agent**（如 Claude Code）没有结构化的方式与漏洞数据交互
-
-### 解决方案
-
-本仓库提供 **三层访问方式**，都基于同一个 Go 库：
-
-| 层级 | 适用场景 | 示例 |
-|------|----------|------|
-| 🤖 **AI Agent Skills** | Claude Code、AI 工作流、自动化分析 | Agent 在你提到漏洞文件时自动触发 `osv-parse` |
-| 🖥️ **CLI** | 快速查询、Shell 脚本、CI 流水线 | `osv parse vulnerability.json` |
-| 📦 **Go SDK** | 集成到 Go 应用程序中 | `osv.UnmarshalFromJsonFile[any, any]("vuln.json")` |
+```mermaid
+graph TD
+  A["🤖 AI Agent Skills<br/>6 个自动触发 skills"]
+  C["🖥️ CLI<br/>osv parse/validate/filter/query"]
+  S["📦 Go SDK<br/>OsvSchema 泛型"]
+  CORE["Go 核心库<br/>parse · validate · filter · query"]
+  OSV["OSV Schema<br/>CVE · GHSA · CVSS · affected · ranges"]
+  A --> CORE
+  C --> CORE
+  S --> CORE
+  CORE --> OSV
+```
 
 ---
 
-## 🤖 AI Agent 接入
+## 🚀 AI Agent 快速上手
 
-本仓库被设计为 **Skills 仓库** — AI Agent 可以直接对接，无需任何自定义集成代码。当 Claude Code 打开此仓库时，6 个专用 Skills 自动可用：
+运行 CLI 的最短路径。复制即跑：
+
+```bash
+# 1. 安装 CLI —— 任选其一：
+#    a) 预编译二进制（Linux/macOS/Windows · amd64/arm64/arm）
+VERSION=v0.1.0
+curl -fsSL -o osv.tar.gz \
+  https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
+tar -xzf osv.tar.gz osv && chmod +x osv && sudo mv osv /usr/local/bin/
+
+#    b) 或通过 Go
+go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
+
+# 2. 验证
+osv version
+
+# 3. 解析一条真实漏洞记录（仓库自带样本）
+osv parse test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+需要 Go SDK？
+
+```bash
+go get -u github.com/scagogogo/osv-schema-skills
+```
+
+```go
+import osv "github.com/scagogogo/osv-schema-skills"
+
+v, err := osv.UnmarshalFromJsonFile[any, any]("vulnerability.json")
+fmt.Println(v.ID, v.Aliases.GetCVE(), v.Severity.GetCVSS3())
+```
+
+---
+
+## 🤖 AI Agent Skills
+
+当 Claude Code 打开本仓库时，**6 个专用 skills 自动可用** —— 无需任何集成代码。Agent 根据意图自动调用对应的 `osv` 子命令。
 
 | Skill | 用途 | 自动触发条件 |
 |-------|------|-------------|
-| `osv-parse` | 解析 & 展示 OSV JSON 数据 | 提到解析漏洞文件或提取 CVE/GHSA 数据 |
-| `osv-validate` | 校验 OSV JSON 文件 | 要求检查 Schema 合规性或校验漏洞文件 |
-| `osv-filter` | 按生态/引用类型/别名过滤 | 需要按 npm/PyPI/Maven 过滤或查找 FIX 引用 |
-| `osv-query` | 提取 severity/maven/ranges/events | 需要 CVSS 评分、Maven groupId/artifactId 或版本范围 |
-| `osv-severity` | CVSS 严重级别分析 | 评估漏洞风险或严重性 |
-| `osv-affected` | 受影响包 & 版本分析 | 需要影响分析或版本范围检查 |
-| `osv-installation` | 安装 & 设置指南 | 首次使用 Skills |
+| [`osv-parse`](.claude/skills/osv-parse/SKILL.md) | 解析 & 展示 OSV JSON 数据 | 提到解析漏洞文件或提取 CVE/GHSA 数据 |
+| [`osv-validate`](.claude/skills/osv-validate/SKILL.md) | 校验 OSV JSON 文件 | 要求检查 Schema 合规性或校验漏洞文件 |
+| [`osv-filter`](.claude/skills/osv-filter/SKILL.md) | 按生态/引用类型/别名过滤 | 需要按 npm/PyPI/Maven 过滤或查找 FIX 引用 |
+| [`osv-query`](.claude/skills/osv-query/SKILL.md) | 提取 severity/maven/ranges/events | 需要 CVSS 评分、Maven GAV 或版本范围 |
+| [`osv-severity`](.claude/skills/osv-severity/SKILL.md) | CVSS 严重级别分析 | 评估漏洞风险或严重性 |
+| [`osv-affected`](.claude/skills/osv-affected/SKILL.md) | 受影响包 & 版本分析 | 需要影响分析或版本范围检查 |
+| [`osv-installation`](.claude/skills/osv-installation/SKILL.md) | 安装与配置指南 | 首次使用 skills |
 
-### Skills 工作原理
+每个 skill 是一个 `SKILL.md`，含 YAML 前置数据（`name`、`description`、`allowed-tools`、`argument-hint`）和结构化正文 —— 决策树、任务模式、API 参考。
 
-每个 Skill 是 `.claude/skills/<name>/SKILL.md` 文件，包含：
-
-1. **YAML 前置数据** — 告诉 AI Agent *何时*触发、*能用什么工具*
-2. **结构化正文** — 决策树、任务模式、API 参考、代码示例
-
-示例 — `osv-parse` Skill 的前置数据：
-
-```yaml
----
-name: osv-parse
-description: 解析 OSV JSON 文件并展示结构化漏洞数据。
-             在提到 OSV 解析、CVE/GHSA 数据提取时触发...
-allowed-tools: "Bash(osv:*)"
-argument-hint: <osv-json-file>
----
+```mermaid
+flowchart LR
+  U["用户提到<br/>某个漏洞"] --> P["osv-parse<br/>解析 JSON"]
+  P --> F["osv-filter<br/>按生态过滤"]
+  F --> SEV["osv-severity<br/>CVSS 评分"]
+  SEV --> R["报告结果"]
 ```
 
-当 AI Agent 遇到漏洞 JSON 文件时，它会自动调用 `osv parse <file>` — 无需手动提示。
-
-### 在你的项目中使用 Skills
-
-**方式一：克隆仓库** — Claude Code 打开目录后 Skills 自动生效：
+**在你的项目中使用 skills** —— 克隆仓库即激活：
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git
-cd osv-schema-skills
-# Skills 在 Claude Code 中已激活
-```
-
-**方式二：安装为 Claude Code 插件**（即将推出）：
-
-```bash
-claude plugin add scagogogo/osv-schema-skills
-```
-
-### Skill 实际工作流程
-
-```
-用户: "检查 GHSA-vxv8-r8q2-63xw 是否影响 PyPI 包，严重程度如何"
-
-Agent 工作流:
-1. → osv-parse:    解析 OSV JSON 文件
-2. → osv-filter:   按 PyPI 生态系统过滤受影响包
-3. → osv-severity: 提取 CVSS v3 评分
-4. → 向用户报告发现
+cd osv-schema-skills && claude   # skills 已激活
 ```
 
 ---
 
 ## 🖥️ CLI
 
-### 安装
-
-```bash
-go install github.com/scagogogo/osv-schema/cmd/osv@latest
-```
-
-### 命令
+预编译二进制覆盖 **Linux / macOS / Windows** 的 **amd64、arm64、arm** 架构。见 [下载](#-下载)。
 
 ```bash
 # 解析 OSV JSON 文件
-osv parse vulnerability.json           # 关键字段
-osv parse -v vulnerability.json        # 完整详情（verbose）
+osv parse vulnerability.json           # 关键字段（文本）
+osv parse -v vulnerability.json        # 全字段（日期、详情、范围、致谢）
 osv parse -o json vulnerability.json   # JSON 输出
 
-# 校验 OSV JSON 文件
-osv validate vulnerability.json              # 单个文件
-osv validate file1.json file2.json           # 批量
-osv validate -o json vulnerability.json      # JSON 输出
+# 校验一个或多个文件（任一无效则退出码 1，适配 CI）
+osv validate vulnerability.json
+osv validate file1.json file2.json
+osv validate -o json vulnerability.json
 
 # 按生态/引用类型/别名过滤
 osv filter -e PyPI vulnerability.json        # 按生态
-osv filter -r ADVISORY vulnerability.json    # 按引用类型
+osv filter -r FIX vulnerability.json         # 按引用类型
 osv filter -a CVE vulnerability.json         # 按别名模式
 osv filter -e PyPI -r FIX vulnerability.json # 组合
 
 # 查询特定子信息
-osv query --severity cvss3 vulnerability.json  # CVSS v3 评分
-osv query --maven vulnerability.json           # Maven 分解
+osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 评分
+osv query --maven vulnerability.json           # Maven groupId/artifactId
 osv query --ranges vulnerability.json          # 版本范围
-osv query --events vulnerability.json          # 事件时间线
+osv query --events vulnerability.json          # 事件时间线（introduced/fixed/…）
 
-# 显示版本
+# 查看版本
 osv version
 ```
+
+| 全局参数 | 说明 |
+|---------|------|
+| `-o, --output` | `text`（默认）或 `json` |
 
 ---
 
 ## 📦 Go SDK
-
-### 安装
-
-```bash
-go get -u github.com/scagogogo/osv-schema
-```
-
-### 快速开始
 
 ```go
 package main
@@ -151,65 +145,44 @@ import (
     "fmt"
     "log"
 
-    osv "github.com/scagogogo/osv-schema"
+    osv "github.com/scagogogo/osv-schema-skills"
 )
 
 func main() {
-    // 从 JSON 文件解析 OSV 数据
-    vulnerability, err := osv.UnmarshalFromJsonFile[any, any]("vulnerability.json")
+    v, err := osv.UnmarshalFromJsonFile[any, any]("vulnerability.json")
     if err != nil {
         log.Fatal(err)
     }
 
-    fmt.Printf("漏洞 ID: %s\n", vulnerability.ID)
-    fmt.Printf("摘要: %s\n", vulnerability.Summary)
-
-    // 从别名中获取 CVE
-    if cve := vulnerability.Aliases.GetCVE(); cve != "" {
+    fmt.Printf("ID: %s\n", v.ID)
+    if cve := v.Aliases.GetCVE(); cve != "" {
         fmt.Printf("CVE: %s\n", cve)
     }
-
-    // 检查特定生态系统是否受影响
-    if vulnerability.Affected.HasEcosystem("npm") {
+    if v.Affected.HasEcosystem("npm") {
         fmt.Println("影响 npm 包")
     }
-
-    // 获取 CVSS v3 评分
-    if cvss3 := vulnerability.Severity.GetCVSS3(); cvss3 != nil {
+    if cvss3 := v.Severity.GetCVSS3(); cvss3 != nil {
         fmt.Printf("CVSS v3: %.1f\n", cvss3.GetScore())
     }
 }
 ```
 
-### 关键方法
+### 核心方法
 
-| 类型 | 方法 | 描述 |
+| 类型 | 方法 | 说明 |
 |------|------|------|
-| `OsvSchema` | `Affected.HasEcosystem(eco)` | 检查生态系统是否受影响 |
-| `AffectedSlice` | `FilterByEcosystem(eco)` | 按生态过滤受影响包 |
-| `AffectedSlice` | `Filter(fn)` | 自定义过滤谓词 |
-| `Aliases` | `GetCVE()` | 获取第一个 CVE 标识符 |
-| `Aliases` | `Filter(fn)` | 按模式过滤别名 |
-| `SeveritySlice` | `GetCVSS3()` | 获取 CVSS v3 严重级别 |
-| `SeveritySlice` | `GetCVSS2()` | 获取 CVSS v2 严重级别 |
-| `Severity` | `GetScore()` | 解析评分为 float64 |
-| `References` | `FilterByType(t)` | 按引用类型过滤 |
-| `Package` | `IsMaven()` | 检查是否为 Maven 包 |
-| `Package` | `GetGroupID()` | Maven groupId |
-| `Package` | `GetArtifactID()` | Maven artifactId |
-| `Event` | `IsIntroduced/IsFixed/...` | 事件类型检查 |
+| `AffectedSlice` | `HasEcosystem(eco)` | 是否影响某生态 |
+| `AffectedSlice` | `FilterByEcosystem(eco)` | 按生态过滤 |
+| `AffectedSlice` | `Filter(fn)` | 自定义谓词过滤 |
+| `Aliases` | `GetCVE()` | 首个 `CVE-` 标识符 |
+| `Aliases` | `Filter(fn)` | 按谓词过滤别名 |
+| `SeveritySlice` | `GetCVSS3()` / `GetCVSS2()` | CVSS 严重级别条目 |
+| `Severity` | `GetScore()` | 解析评分为 `float64` |
+| `References` | `FilterByType(t)` | 按引用类型过滤（`ADVISORY`/`FIX`…） |
+| `Package` | `IsMaven()` / `GetGroupID()` / `GetArtifactID()` | Maven 拆解 |
+| `Event` | `IsIntroduced/IsFixed/IsLastAffected/IsLimit` | 事件类型判断 |
 
-### 序列化支持
-
-所有核心类型开箱即支持 JSON、YAML、mapstructure、数据库 (GORM) 和 MongoDB (BSON) 序列化。
-
-### 生态系统支持
-
-npm、PyPI、Maven、NuGet、RubyGems、Go、Cargo、Pub、Hex、Packagist 等 — 18+ 个生态系统定义为常量。
-
----
-
-## 核心类型
+### 核心类型
 
 ```go
 type OsvSchema[EcosystemSpecific, DatabaseSpecific any] struct {
@@ -217,7 +190,7 @@ type OsvSchema[EcosystemSpecific, DatabaseSpecific any] struct {
     ID               string
     Modified         time.Time
     Published        time.Time
-    Withdrawn        string
+    Withdrawn        string // 字符串，非 time.Time
     Aliases          Aliases
     Related          Related
     Summary          string
@@ -230,27 +203,58 @@ type OsvSchema[EcosystemSpecific, DatabaseSpecific any] struct {
 }
 ```
 
-泛型参数 `EcosystemSpecific` 和 `DatabaseSpecific` 允许你附加自定义数据。通用解析使用 `any` 即可。
+泛型参数 `EcosystemSpecific` 和 `DatabaseSpecific` 让你按生态或漏洞库附加自定义数据。通用解析用 `any` 即可。
+
+所有核心类型开箱即支持 **JSON、YAML、mapstructure、GORM、BSON** 序列化。**19 个生态** 定义为常量（npm、PyPI、Maven、NuGet、RubyGems、Go、Cargo、Hex、Pub、Packagist……）。
 
 ---
 
-## 构建与测试
+## ⬇️ 下载
+
+每个 tag 由 goreleaser 构建全平台二进制。按平台选取：
+
+| OS | 架构 | 归档格式 |
+|----|------|---------|
+| Linux | amd64、arm64、arm (v7) | `.tar.gz` |
+| macOS | amd64、arm64 | `.tar.gz` |
+| Windows | amd64、arm64 | `.zip` |
+
+- **全部发布：** <https://github.com/scagogogo/osv-schema-skills/releases>
+- **命名：** `osv_<version>_<os>_<arch>.tar.gz`（或 `.zip`）
+- 每个发布附带 `checksums.txt`（SHA-256），使用前校验：
+
+```bash
+sha256sum -c checksums.txt --ignore-missing
+```
+
+找不到二进制？从源码编译 —— 只需 Go 1.18+：
+
+```bash
+git clone https://github.com/scagogogo/osv-schema-skills.git
+cd osv-schema-skills
+go build -o osv ./cmd/osv/
+```
+
+---
+
+## 📖 文档
+
+- **官网**（完整指南 + 参考）：<https://scagogogo.github.io/osv-schema-skills/>
+- [OSV Schema 规范](https://ossf.github.io/osv-schema/)
+- [Go 包文档](https://pkg.go.dev/github.com/scagogogo/osv-schema-skills)
+
+## 🛠️ 构建与测试
 
 ```bash
 go build ./...
-go test ./...
 go vet ./...
+go test ./...
 ```
 
-## 文档
-
-- [OSV Schema 规范](https://ossf.github.io/osv-schema/)
-- [Go 包文档](https://pkg.go.dev/github.com/scagogogo/osv-schema)
-
-## 贡献
+## 🤝 贡献
 
 欢迎贡献！请随时提交 Pull Request。
 
-## 许可证
+## 📄 许可证
 
-本项目根据 LICENSE 文件中指定的条款进行许可。
+MIT —— 见 [LICENSE](LICENSE)。

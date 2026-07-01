@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 460" width="880" height="460" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6d4aff"/><stop offset="1" stop-color="#4a2fcf"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3c8c4c"/><stop offset="1" stop-color="#2c6c38"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#666"/>
+    </marker>
+  </defs>
+
+  <!-- 三层访问 -->
+  <g>
+    <rect x="40"  y="40" width="220" height="90" rx="12" fill="url(#g1)"/>
+    <text x="150" y="78" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">🤖 AI Agent Skills</text>
+    <text x="150" y="104" text-anchor="middle" fill="#e6e0ff" font-size="13">6 Claude Code Skills</text>
+    <text x="150" y="122" text-anchor="middle" fill="#cfc6ff" font-size="11">auto-trigger · no prompting</text>
+  </g>
+  <g>
+    <rect x="330" y="40" width="220" height="90" rx="12" fill="url(#g1)"/>
+    <text x="440" y="78" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">🖥️ CLI</text>
+    <text x="440" y="104" text-anchor="middle" fill="#e6e0ff" font-size="13">osv parse / validate / filter</text>
+    <text x="440" y="122" text-anchor="middle" fill="#cfc6ff" font-size="11">shell · CI pipelines</text>
+  </g>
+  <g>
+    <rect x="620" y="40" width="220" height="90" rx="12" fill="url(#g1)"/>
+    <text x="730" y="78" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">📦 Go SDK</text>
+    <text x="730" y="104" text-anchor="middle" fill="#e6e0ff" font-size="13">type-safe generics API</text>
+    <text x="730" y="122" text-anchor="middle" fill="#cfc6ff" font-size="11">embed in Go apps</text>
+  </g>
+
+  <!-- 箭头汇聚 -->
+  <path d="M150 130 V200 H440" fill="none" stroke="#888" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M440 130 V200" fill="none" stroke="#888" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M730 130 V200 H440" fill="none" stroke="#888" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Go core -->
+  <g>
+    <rect x="280" y="210" width="320" height="90" rx="12" fill="url(#g2)"/>
+    <text x="440" y="248" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">Go Core Library</text>
+    <text x="440" y="274" text-anchor="middle" fill="#d6f0da" font-size="13">OsvSchema&lt;Eco, DB&gt;</text>
+    <text x="440" y="292" text-anchor="middle" fill="#bfe6c7" font-size="11">parse · validate · filter · query</text>
+  </g>
+
+  <!-- 输出 -->
+  <path d="M440 300 V360" fill="none" stroke="#888" stroke-width="2" marker-end="url(#arr)"/>
+  <g>
+    <rect x="240" y="370" width="400" height="70" rx="12" fill="#f4f4f5" stroke="#d4d4d8"/>
+    <text x="440" y="400" text-anchor="middle" fill="#27272a" font-size="15" font-weight="600">OSV Schema (Open Source Vulnerability)</text>
+    <text x="440" y="422" text-anchor="middle" fill="#71717a" font-size="12">CVE · GHSA · CVSS · affected packages · version ranges</text>
+  </g>
+</svg>

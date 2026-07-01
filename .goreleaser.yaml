@@ -1,0 +1,80 @@
+# .goreleaser.yaml
+# goreleaser 配置：构建 osv CLI 全平台二进制并发布 GitHub Release。
+# 触发方式：打 tag（v*）由 .github/workflows/release.yml 调用。
+# 本地 dry-run：goreleaser release --snapshot --clean
+
+version: 2
+
+project_name: osv
+
+before:
+  hooks:
+    # 发布前保证代码可构建、测试通过
+    - go mod tidy
+    - go build ./...
+    - go test ./...
+
+builds:
+  - id: osv
+    main: ./cmd/osv
+    binary: osv
+    env:
+      - CGO_ENABLED=0
+    # 注入 CLI 版本号到 cmd/osv/version.go 的 cliVersion 变量（默认 "dev"）
+    # 注意：schemaVersion 是 OSV schema 版本（1.4.0），不在此注入
+    ldflags:
+      - -s -w -X main.cliVersion={{.Version}}
+    # 全平台覆盖：linux / darwin / windows，含 ARM
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    # windows/arm 与 darwin/arm 不存在 arm(v7)，仅 linux/arm 需要
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: darwin
+        goarch: arm
+
+archives:
+  - id: default
+    builds: [osv]
+    # 命名：osv_<version>_<os>_<arch>.tar.gz / .zip
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-dev"
+
+changelog:
+  use: git
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - Merge pull request
+      - Merge branch
+
+release:
+  github:
+    owner: scagogogo
+    name: osv-schema-skills
+  draft: false
+  prerelease: auto
+  name_template: "{{ .Tag }}"

@@ -14,7 +14,7 @@ allowed-tools: "Bash(go:*)"
 
 ```bash
 # Install CLI tool
-go install github.com/scagogogo/osv-schema/cmd/osv@latest
+go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
 
 # Verify installation
 osv version
@@ -36,11 +36,11 @@ go build -o osv ./cmd/osv/
 ### Option 3: Use as Go Library
 
 ```bash
-go get -u github.com/scagogogo/osv-schema
+go get -u github.com/scagogogo/osv-schema-skills
 ```
 
 ```go
-import osv "github.com/scagogogo/osv-schema"
+import osv "github.com/scagogogo/osv-schema-skills"
 ```
 
 ## Go SDK Quick Start
@@ -52,7 +52,7 @@ import (
     "fmt"
     "log"
 
-    osv "github.com/scagogogo/osv-schema"
+    osv "github.com/scagogogo/osv-schema-skills"
 )
 
 func main() {

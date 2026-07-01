@@ -19,9 +19,12 @@ This file provides guidance to Claude Code when working in this repository.
 │   ├── osv-affected/     # Affected package and version analysis
 │   └── osv-installation/ # Installation and setup guide
 ├── .claude-plugin/       # Claude Code plugin & marketplace manifests
+├── .github/workflows/    # CI / Release (goreleaser) / Website (Pages) workflows
 ├── cmd/osv/              # CLI binary entrypoint (cobra)
 ├── docs/superpowers/     # Historical development plans
 ├── test_data/            # OSV JSON test fixtures
+├── website/              # VitePress 官网（纯 Markdown，部署到 GitHub Pages）
+├── .goreleaser.yaml      # goreleaser 全平台二进制发布配置
 ├── *.go                  # Core library (root package osv_schema)
 └── *_test.go             # Tests
 ```
