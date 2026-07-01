@@ -37,14 +37,14 @@ Quick reference for the SDK's most-used methods. All verified against source.
 | Method | Signature | Description |
 |--------|-----------|-------------|
 | `GetScore` | `() float64` | Parse the CVSS score as `float64` |
-| `GetScoreAsFloat` | `() float64` | Alias of `GetScore` |
+| `GetScoreAsFloat` | `() (float64, error)` | Parse score, returning an error if the vector string is malformed |
 | `GetScoreAsPointer` | `() *float64` | Score as pointer (for nullable fields) |
 
 ## References
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `FilterByType` | `(ReferenceType) References` | Filter by `ADVISORY`, `FIX`, etc. |
+| `FilterByType` | `(...ReferenceType) References` | Filter by `ADVISORY`, `FIX`, etc. (accepts multiple) |
 
 ## Event
 
