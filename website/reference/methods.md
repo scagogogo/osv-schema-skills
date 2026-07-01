@@ -2,6 +2,43 @@
 
 Quick reference for the SDK's most-used methods. All verified against source.
 
+## Methods at a glance
+
+Grouped by receiver type — this is the whole surface you will use day to day.
+
+```mermaid
+mindmap
+  root((osv SDK))
+    Aliases
+      GetCVE
+      Filter
+    AffectedSlice
+      HasEcosystem
+      FilterByEcosystem
+      Filter
+    Package
+      IsMaven
+      GetGroupID
+      GetArtifactID
+    SeveritySlice
+      GetCVSS3
+      GetCVSS2
+    Severity
+      GetScore
+      GetScoreAsFloat
+      GetScoreAsPointer
+    References
+      FilterByType
+    Event
+      IsIntroduced
+      IsFixed
+      IsLastAffected
+      IsLimit
+    package-level
+      UnmarshalFromJson
+      UnmarshalFromJsonFile
+```
+
 ## Aliases
 
 | Method | Signature | Description |
@@ -104,6 +141,52 @@ flowchart LR
   CHK --> OK{"non-empty?"}
   OK -->|"yes"| VALID["✓ valid"]
   OK -->|"no"| INVALID["✗ invalid"]
+```
+
+## Maven coordinate decomposition
+
+`GetGroupID` / `GetArtifactID` split a Maven package name on the first `:`. They only make sense when `IsMaven()` is true.
+
+```mermaid
+flowchart LR
+  N["package.Name<br/>'com.fasterxml.jackson.core:jackson-databind'"] --> CHK{"IsMaven()?"}
+  CHK -->|no| SKIP["not a Maven package → skip"]
+  CHK -->|yes| SPLIT["split on first ':'"]
+  SPLIT --> G["GetGroupID()<br/>'com.fasterxml.jackson.core'"]
+  SPLIT --> A["GetArtifactID()<br/>'jackson-databind'"]
+```
+
+## A real query, method by method
+
+"Is `GHSA-…` a high-severity PyPI issue, and where's the fix?" — here's the exact method chain an agent (or your code) walks.
+
+```mermaid
+sequenceDiagram
+  participant You as You / agent
+  participant SDK as osv SDK
+  You->>SDK: UnmarshalFromJsonFile[any,any](path)
+  SDK-->>You: *OsvSchema
+  You->>SDK: v.Affected.HasEcosystem(EcosystemPyPI)
+  SDK-->>You: true
+  You->>SDK: v.Severity.GetCVSS3()
+  SDK-->>You: *Severity (vector string)
+  You->>SDK: v.References.FilterByType(ReferenceTypeFix)
+  SDK-->>You: References (fix links)
+  Note over You,SDK: parse → filter → score → fix, all on one typed core
+```
+
+## Which method returns what
+
+```mermaid
+flowchart TD
+  Q["What do you have?"] --> Q1["a slice → want one item"]
+  Q1 --> M1["GetCVSS3 / GetCVSS2 / GetCVE<br/>→ single item or nil/empty"]
+  Q --> Q2["a slice → want a subset"]
+  Q2 --> M2["FilterByEcosystem / FilterByType / Filter<br/>→ a new slice"]
+  Q --> Q3["a slice → yes/no question"]
+  Q3 --> M3["HasEcosystem<br/>→ bool"]
+  Q --> Q4["one item → a derived value"]
+  Q4 --> M4["GetScore / GetGroupID / IsMaven / IsFixed<br/>→ scalar"]
 ```
 
 ## Serialization helpers

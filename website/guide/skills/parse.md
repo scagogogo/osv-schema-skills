@@ -53,6 +53,39 @@ flowchart TD
 
 ID, schema version, summary, aliases/CVE, severity, affected packages, references. With `-v` it additionally shows published/modified dates, withdrawn, related, details, per-range events, and credits.
 
+## What happens under the hood
+
+`osv parse` is a thin shell over the SDK's `UnmarshalFromJsonFile` — the same call you'd make in Go. The text/JSON rendering is the only difference from the SDK path.
+
+```mermaid
+sequenceDiagram
+  participant U as You / agent
+  participant CLI as osv parse
+  participant SDK as UnmarshalFromJsonFile[any,any]
+  participant R as renderer
+  U->>CLI: osv parse file.json [-v] [-o json]
+  CLI->>SDK: read file → decode JSON
+  SDK-->>CLI: *OsvSchema (typed core)
+  CLI->>R: -o text → key fields (or all with -v)
+  CLI->>R: -o json → re-marshal typed core
+  R-->>U: printed output
+```
+
+## Text vs JSON: which to pick
+
+```mermaid
+flowchart TD
+  WHO{"Who reads the output?"} -->|"a human at a terminal"| T["-o text (default)<br/>compact, key fields"]
+  WHO -->|"a script / agent / pipe"| J["-o json<br/>full structure, machine-parseable"]
+  T --> TV{"need every field?"}
+  TV -->|yes| ADDV["add -v"]
+  TV -->|no| OK["done"]
+```
+
+::: tip Parsing never mutates the file
+`parse` only reads. It decodes into the typed core and prints — it never writes back. To check that a file is *well-formed* before parsing, reach for [[osv-validate]]; a malformed file makes `parse` exit non-zero with the decode error.
+:::
+
 ## Cross-references
 
 - [[osv-validate]] — check the file is schema-valid first

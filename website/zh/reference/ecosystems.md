@@ -49,6 +49,42 @@ flowchart TD
   PLAT --> P3["GitHub Actions"]
 ```
 
+## 生态 → 版本方案
+
+一个生态不只是给注册表起名——它还隐含了*版本如何排序*，而这正是 `range.type` 需要的（见 [RangeType](/zh/reference/osv-schema#rangetype-——-版本如何比较)）。正因如此，你不能用普通字符串 `<` 来比较版本。
+
+```mermaid
+flowchart LR
+  subgraph SEMVER["类 SEMVER 优先级"]
+    npm & CratesIo["crates.io"] & Go
+  end
+  subgraph ECO["生态原生排序"]
+    PyPI["PyPI (PEP 440)"] & Maven["Maven（点分+限定符）"] & Debian["Debian (dpkg)"] & RubyGems
+  end
+  subgraph GIT["GIT 提交图"]
+    Linux & Android
+  end
+```
+
+## 命名约定与后缀
+
+`package.name` 字符串并非自由格式——每个生态都有自己的形状，有些还带强制或可选的 `:<release>` 后缀。弄错这一点是 `HasEcosystem` 匹配静默失败的最常见原因。
+
+```mermaid
+flowchart TD
+  E["生态"] --> C{"name 形状"}
+  C -->|"Maven"| M["groupId:artifactId<br/>→ GetGroupID / GetArtifactID"]
+  C -->|"GitHub Actions"| GA["owner/repo"]
+  C -->|"Go"| GO["完整模块路径"]
+  C -->|"Alpine"| AL["Alpine:v3.18（后缀必需）"]
+  C -->|"Debian / Rocky / AlmaLinux"| DEB["Base 或 Base:release（后缀可选）"]
+  C -->|"多数语言包"| PL["普通注册表名"]
+```
+
+::: tip 发行版后缀属于生态字符串，而非 name
+对 Alpine 而言 release 后缀（`Alpine:v3.18`）是**必需**的；对 Debian/Rocky/AlmaLinux 则是可选的。后缀挂在*生态*字符串上，所以精确匹配的 `HasEcosystem(EcosystemAlpine)` 不会匹配 `Alpine:v3.18`。只有在你把后缀归一化掉之后，才应与基础常量比较。
+:::
+
 ## 用法
 
 ```go

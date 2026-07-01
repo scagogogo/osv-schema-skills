@@ -125,6 +125,152 @@ flowchart TD
   USE --> A6["还撤回了吗？"] --> R6["withdrawn 非空?"]
 ```
 
+## 某个版本是否受影响？—— 事件时间线判定
+
+消费 OSV 数据时最重要的一个算法就是：*给定一个具体版本，它脆弱吗？* OSV 不用散文回答，而是用每个 range 里那串有序的 `events`。你从左到右沿时间线走一遍，一路翻转一个"受影响"标志位。
+
+```mermaid
+flowchart TD
+  START["目标版本 V<br/>affected = false"] --> SORT["按顺序遍历 events"]
+  SORT --> E{"事件类型？"}
+  E -->|"introduced: X"| I{"V >= X ?"}
+  I -->|是| SET["affected = true"]
+  I -->|否| NEXT["保持当前标志"]
+  E -->|"fixed: X"| F{"V >= X ?"}
+  F -->|是| CLR["affected = false"]
+  F -->|否| NEXT
+  E -->|"last_affected: X"| L{"V > X ?"}
+  L -->|是| CLR
+  L -->|否| NEXT
+  SET --> DONE{"还有事件？"}
+  CLR --> DONE
+  NEXT --> DONE
+  DONE -->|是| SORT
+  DONE -->|否| RESULT["最终标志 = V 是否受影响"]
+```
+
+特殊值 `introduced: "0"` 表示"从最初的版本起"。SDK 提供逐事件的谓词，方便你自己实现这套判定：
+
+```mermaid
+flowchart LR
+  EV["*Event"] --> P1["IsIntroduced()"]
+  EV --> P2["IsFixed()"]
+  EV --> P3["IsLastAffected()"]
+  EV --> P4["IsLimit()"]
+  P1 & P2 & P3 & P4 --> WHICH["恰好一个为真<br/>（黄金法则）"]
+```
+
+::: tip 黄金法则在这里为何关键
+正因为每个事件恰好携带一个非空键，上面的遍历才能无歧义地对"哪个谓词为真"做 `switch`。这也是 `osv query --events` 输出 `omitempty` JSON 的原因——一个多余的 `"fixed": ""` 会让两个谓词看起来都为真。
+:::
+
+## RangeType —— 版本如何比较
+
+上面算法里的 `<` / `>=` 比较**并非**通用的字符串比较。range 的 `type` 决定排序规则。
+
+```mermaid
+flowchart TD
+  RT["range.type"] --> SEM["SEMVER<br/>SemVer 2.0.0，无前导 v"]
+  RT --> ECO["ECOSYSTEM<br/>该生态自己的版本规则"]
+  RT --> GIT["GIT<br/>完整的提交哈希"]
+  SEM --> C1["按 SemVer 优先级比较<br/>1.2.0 &lt; 1.10.0"]
+  ECO --> C2["按生态语义比较<br/>（如 PyPI 的 PEP 440）"]
+  GIT --> C3["对着提交图解析<br/>（需要仓库，而非字符串顺序）"]
+```
+
+| `RangeType` | 常量 | 版本记号是…… |
+|-------------|------|--------------|
+| `SEMVER` | `RangeTypeSemver` | SemVer 2.0.0 字符串，按优先级比较 |
+| `ECOSYSTEM` | `RangeTypeEcosystem` | 由生态排序的不透明字符串（PyPI→PEP 440 等） |
+| `GIT` | `RangeTypeGit` | Git 提交哈希，需借助提交图解析 |
+
+::: warning GIT 范围不可按字符串排序
+对 `GIT` 范围，你不能靠比较哈希字符串来判断是否受影响——你需要仓库的提交祖先关系。把 `GIT` 范围当成"需要图解析"，而不是"像 SEMVER 那样比较"。
+:::
+
+## Severity 取分内部机制
+
+`severity[].score` 存的是 **CVSS 向量字符串**，不是数字。SDK 暴露三个取分方法，共享同一个惰性解析、带 memoize 的底层值。
+
+```mermaid
+flowchart TD
+  CALL["GetScore() / GetScoreAsFloat() / GetScoreAsPointer()"] --> CACHE{"有缓存的分数或 err？"}
+  CACHE -->|命中| RET["返回缓存"]
+  CACHE -->|未命中| EMPTY{"Score == \"\" ?"}
+  EMPTY -->|是| ERR["err = 'score can not be empty'"]
+  EMPTY -->|否| PARSE["strconv.ParseFloat(Score, 64)"]
+  PARSE -->|成功| STORE["memoize 浮点数 → 返回"]
+  PARSE -->|失败<br/>（向量字符串！）| ERR
+  ERR --> OUT{"哪个取分方法？"}
+  OUT -->|GetScore| Z["返回 0.0（错误被吞掉）"]
+  OUT -->|GetScoreAsFloat| EF["返回 (0, error)"]
+  OUT -->|GetScoreAsPointer| NP["返回 nil"]
+```
+
+| 取分方法 | 遇到向量字符串时 | 何时用 |
+|----------|------------------|--------|
+| `GetScore()` | `0.0` | 只想要个浮点数，且把 0 当作"不可用" |
+| `GetScoreAsFloat()` | `(0, error)` | 必须区分真实的 0 与解析失败 |
+| `GetScoreAsPointer()` | `nil` | 想用 `nil` 表示"没有数值分数" |
+
+当分数是向量时要给严重程度排序，读 `SeveritySlice.GetCVSS3()` / `GetCVSS2()` 并解释向量——见 [Skills → severity](/zh/guide/skills/severity)。
+
+## 序列化：一个结构体，六套标签命名空间
+
+每个核心字段都同时为六个生态打了标签，因此同一个结构体无需适配器即可在 JSON、YAML、配置解码、原生 SQL、MongoDB 与 GORM 之间往返。
+
+```mermaid
+flowchart LR
+  STRUCT["Severity{Type, Score}"] --> J["json"]
+  STRUCT --> Y["yaml"]
+  STRUCT --> M["mapstructure"]
+  STRUCT --> D["db"]
+  STRUCT --> B["bson"]
+  STRUCT --> G["gorm"]
+  J --> API["REST / 智能体"]
+  Y --> CFG["配置文件"]
+  M --> ENV["viper / env 解码"]
+  D --> SQLX["sqlx 原生 SQL"]
+  B --> MONGO["MongoDB"]
+  G --> ORM["GORM ORM"]
+```
+
+### 数据库策略：列 vs JSON 块
+
+简单标量字段直接落成列。复杂的嵌套切片（`AffectedSlice`、`SeveritySlice`、`Range` 等）实现了 `sql.Scanner` + `driver.Valuer`，因此 GORM 把它们存成单个 JSON 字符串，读取时再复原。
+
+```mermaid
+sequenceDiagram
+  participant App as Go 应用
+  participant ORM as GORM
+  participant DB as SQL 行
+  App->>ORM: Save(osvRecord)
+  ORM->>ORM: 标量 → 列
+  ORM->>ORM: SeveritySlice.Value() → JSON 字符串
+  ORM->>DB: INSERT (id, …, severity='[{...}]')
+  DB-->>ORM: SELECT 行
+  ORM->>ORM: SeveritySlice.Scan([]byte) → []*Severity
+  ORM-->>App: 完整带类型的记录
+```
+
+## 泛型类型参数
+
+`OsvSchema[EcosystemSpecific, DatabaseSpecific]` 携带两个类型参数，向下流入 `Affected` 与 `Range`，让厂商专有的数据块保持带类型，而不是塌缩成 `map[string]any`。
+
+```mermaid
+flowchart TD
+  G["OsvSchema[Eco, DB]"] --> A["AffectedSlice[Eco, DB]"]
+  A --> AF["Affected[Eco, DB]"]
+  AF --> ES["ecosystem_specific: Eco"]
+  AF --> R["Range[DB]"]
+  R --> DS["database_specific: DB"]
+  G --> GEN{"选择你的参数"}
+  GEN -->|"通用解析"| ANY["OsvSchema[any, any]"]
+  GEN -->|"带类型的厂商字段"| CUSTOM["OsvSchema[MyEco, MyDB]"]
+```
+
+日常解析用 `[any, any]`（每条 CLI 命令都是如此）。仅当你需要对 `ecosystem_specific` / `database_specific` 做带类型访问时，才传入具体结构体。
+
 ## 源文件
 
 所有类型在根包 `osv_schema` 中：

@@ -60,6 +60,23 @@ flowchart LR
   RC -->|"1"| BLK["Blocks merge ✗"]
 ```
 
+## Batch semantics: one bad file fails the run
+
+With multiple files the exit code is the logical AND of every result — a single invalid file makes the whole invocation exit `1`, but every file is still checked and reported. This is exactly the behaviour you want in a pre-merge gate over a directory of advisories.
+
+```mermaid
+flowchart TD
+  START["osv validate a.json b.json c.json"] --> A["check a.json"]
+  A --> B["check b.json"]
+  B --> C["check c.json"]
+  A -.result.-> AGG["aggregate"]
+  B -.result.-> AGG
+  C -.result.-> AGG
+  AGG --> Q{"any invalid?"}
+  Q -->|"no"| Z0["exit 0 — all ✓"]
+  Q -->|"yes"| Z1["exit 1 — errors listed per file"]
+```
+
 ## SDK equivalent
 
 ```go

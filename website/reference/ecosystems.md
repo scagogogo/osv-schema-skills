@@ -49,6 +49,42 @@ flowchart TD
   PLAT --> P3["GitHub Actions"]
 ```
 
+## Ecosystem → version scheme
+
+An ecosystem doesn't just name a registry — it also implies *how versions sort*, which is exactly what a `range.type` needs (see [RangeType](/reference/osv-schema#rangetype-—-how-versions-are-compared)). This mapping is why you can't compare versions with a plain string `<`.
+
+```mermaid
+flowchart LR
+  subgraph SEMVER["SEMVER-like precedence"]
+    npm & CratesIo["crates.io"] & Go
+  end
+  subgraph ECO["ECOSYSTEM-native ordering"]
+    PyPI["PyPI (PEP 440)"] & Maven["Maven (dotted+qualifier)"] & Debian["Debian (dpkg)"] & RubyGems
+  end
+  subgraph GIT["GIT commit graph"]
+    Linux & Android
+  end
+```
+
+## Naming conventions & suffixes
+
+The `package.name` string is not free-form — each ecosystem has its own shape, and some carry a mandatory or optional `:<release>` suffix. Getting this wrong is the most common reason a `HasEcosystem` match silently fails.
+
+```mermaid
+flowchart TD
+  E["ecosystem"] --> C{"name shape"}
+  C -->|"Maven"| M["groupId:artifactId<br/>→ GetGroupID / GetArtifactID"]
+  C -->|"GitHub Actions"| GA["owner/repo"]
+  C -->|"Go"| GO["full module path"]
+  C -->|"Alpine"| AL["Alpine:v3.18 (suffix required)"]
+  C -->|"Debian / Rocky / AlmaLinux"| DEB["Base or Base:release (suffix optional)"]
+  C -->|"most language pkgs"| PL["plain registry name"]
+```
+
+::: tip Distro suffixes are part of the ecosystem, not the name
+For Alpine the release suffix (`Alpine:v3.18`) is **required**; for Debian/Rocky/AlmaLinux it is optional. The suffix lives on the *ecosystem* string, so an exact-match `HasEcosystem(EcosystemAlpine)` will not match `Alpine:v3.18`. Compare with the base constant only when you have normalized the suffix away.
+:::
+
 ## Usage
 
 ```go

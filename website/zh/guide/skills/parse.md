@@ -53,6 +53,39 @@ flowchart TD
 
 ID、schema 版本、摘要、aliases/CVE、severity、受影响包、引用。加 `-v` 还会展示 published/modified 日期、withdrawn、related、details、每范围事件和 credits。
 
+## 底层发生了什么
+
+`osv parse` 只是 SDK `UnmarshalFromJsonFile` 之上的一层薄壳——和你在 Go 里会写的调用一模一样。与 SDK 路径唯一的区别就是文本/JSON 的渲染。
+
+```mermaid
+sequenceDiagram
+  participant U as 你 / 智能体
+  participant CLI as osv parse
+  participant SDK as UnmarshalFromJsonFile[any,any]
+  participant R as 渲染器
+  U->>CLI: osv parse file.json [-v] [-o json]
+  CLI->>SDK: 读文件 → 解码 JSON
+  SDK-->>CLI: *OsvSchema（带类型内核）
+  CLI->>R: -o text → 关键字段（-v 则全部）
+  CLI->>R: -o json → 把带类型内核重新 marshal
+  R-->>U: 打印输出
+```
+
+## 文本 vs JSON：怎么选
+
+```mermaid
+flowchart TD
+  WHO{"谁来读输出？"} -->|"终端前的人"| T["-o text（默认）<br/>紧凑、关键字段"]
+  WHO -->|"脚本 / 智能体 / 管道"| J["-o json<br/>完整结构、机器可解析"]
+  T --> TV{"需要每个字段？"}
+  TV -->|是| ADDV["加 -v"]
+  TV -->|否| OK["完成"]
+```
+
+::: tip 解析绝不修改文件
+`parse` 只读。它把数据解码进带类型内核再打印——绝不写回。想在解析前先确认文件*格式正确*，用 [[osv-validate]]；格式错误的文件会让 `parse` 以非零码退出并给出解码错误。
+:::
+
 ## 交叉引用
 
 - [[osv-validate]] — 先确认文件 schema 合规
