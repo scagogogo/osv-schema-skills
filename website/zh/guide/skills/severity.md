@@ -70,6 +70,24 @@ flowchart TD
 
 `affected[].severity` 是可选的每包 severity，与顶层 `severity` 相互独立。
 
+## CVSS 向量结构剖析
+
+当 `score` 是向量字符串而非数字时，这些用斜杠分隔的记号就是它们的含义——也正是 `GetScore()` 不能直接 `ParseFloat` 的原因。
+
+```mermaid
+flowchart LR
+  V["CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"] --> H["CVSS:3.1<br/>版本前缀"]
+  V --> AV["AV:N<br/>攻击途径 = 网络"]
+  V --> AC["AC:L<br/>攻击复杂度 = 低"]
+  V --> PR["PR:N<br/>所需权限 = 无"]
+  V --> UI["UI:N<br/>用户交互 = 无"]
+  V --> CIA["C:H / I:H / A:H<br/>机密性 / 完整性 / 可用性"]
+```
+
+::: tip 向量转数值需要 CVSS 计算器
+0–10 的数值分数是由这些指标通过 CVSS 公式*推导*出来的，并不存在字符串里。所以 SDK 把向量原样交给你，把打分留给专门的 CVSS 库——OSV 记录本身只保证给出向量。
+:::
+
 ## 注意事项
 
 - OSV 的 `score` 可能是 CVSS 向量字符串（`CVSS:3.1/AV:N/...`）而非数字——此时 `GetScore()` 返回 `0.0`。若需从向量取数值分数，请自行解析向量。

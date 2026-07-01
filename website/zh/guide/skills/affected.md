@@ -103,6 +103,23 @@ flowchart TD
 
 - `RangeTypeEcosystem`（`ECOSYSTEM`）最常见；`SEMVER` 和 `GIT` 较少见。
 
+## 我的版本受影响吗？—— 实例
+
+`versions[]` 是一份显式枚举，但真实记录更多依赖 `ranges[]`。要从一个 range 回答"`X` 是否受影响"，就解析它的事件。示例：`introduced: 1.2.0`、`fixed: 1.4.1`。
+
+```mermaid
+flowchart TD
+  V["候选版本 X"] --> C1{"X ≥ 1.2.0 ?"}
+  C1 -->|否| SAFE1["尚未引入 → 安全"]
+  C1 -->|是| C2{"X ≥ 1.4.1 ?"}
+  C2 -->|是| SAFE2["在修复版及之后 → 安全"]
+  C2 -->|否| HIT["已引入、未修复 → 受影响"]
+```
+
+::: warning `versions[]` 与 `ranges[]` 的形态可能不一致
+有些记录列出精确受影响的 `versions[]`；有些只给 `ranges[]`；很多两者都给。对"自 1.2.0 起的全部"这类开区间场景优先用 `ranges[]`，当 `versions[]` 存在时把它当作权威枚举。切勿假设其中一个能推出另一个。
+:::
+
 ## 注意事项
 
 - `RangeTypeEcosystem`（`ECOSYSTEM`）最常见；`SEMVER` 和 `GIT` 较少

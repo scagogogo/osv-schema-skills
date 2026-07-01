@@ -103,6 +103,23 @@ flowchart TD
 
 - `RangeTypeEcosystem` (`ECOSYSTEM`) is the most common; `SEMVER` and `GIT` are less frequent.
 
+## Is my version affected? — a worked example
+
+The `versions[]` list is an explicit enumeration, but real records lean on `ranges[]`. To answer "is `X` affected" from a range, resolve its events. Example: `introduced: 1.2.0`, `fixed: 1.4.1`.
+
+```mermaid
+flowchart TD
+  V["candidate version X"] --> C1{"X ≥ 1.2.0 ?"}
+  C1 -->|no| SAFE1["not yet introduced → SAFE"]
+  C1 -->|yes| C2{"X ≥ 1.4.1 ?"}
+  C2 -->|yes| SAFE2["at/after fix → SAFE"]
+  C2 -->|no| HIT["introduced, not fixed → AFFECTED"]
+```
+
+::: warning `versions[]` and `ranges[]` can disagree in shape
+Some records list exact affected `versions[]`; others give only `ranges[]`; many give both. Prefer `ranges[]` for open-ended "everything since 1.2.0" cases, and treat `versions[]` as the authoritative enumeration when present. Never assume one implies the other.
+:::
+
 ## Notes
 
 - `RangeTypeEcosystem` (`ECOSYSTEM`) is the most common; `SEMVER` and `GIT` are less frequent

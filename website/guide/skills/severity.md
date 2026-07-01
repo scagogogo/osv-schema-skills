@@ -70,6 +70,24 @@ flowchart TD
 
 `affected[].severity` is an optional per-package severity, separate from the top-level `severity`.
 
+## Anatomy of a CVSS vector
+
+When `score` is a vector string rather than a number, this is what those slash-separated tokens mean — the reason `GetScore()` can't just `ParseFloat` it.
+
+```mermaid
+flowchart LR
+  V["CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"] --> H["CVSS:3.1<br/>version prefix"]
+  V --> AV["AV:N<br/>Attack Vector = Network"]
+  V --> AC["AC:L<br/>Attack Complexity = Low"]
+  V --> PR["PR:N<br/>Privileges Required = None"]
+  V --> UI["UI:N<br/>User Interaction = None"]
+  V --> CIA["C:H / I:H / A:H<br/>Confidentiality / Integrity / Availability"]
+```
+
+::: tip Vector → number needs a CVSS calculator
+The numeric 0–10 score is *derived* from these metrics by the CVSS formula, not stored in the string. That is why the SDK hands you the vector verbatim and leaves scoring to a dedicated CVSS library — the OSV record itself only guarantees the vector.
+:::
+
 ## Notes
 
 - OSV `score` may be a CVSS vector string (`CVSS:3.1/AV:N/...`) rather than a number — in that case `GetScore()` returns `0.0`. Parse the vector yourself if you need the numeric score from a vector.

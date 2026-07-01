@@ -95,6 +95,24 @@ graph TD
 
 Event fields are mutually exclusive per event object — one of introduced/fixed/last_affected/limit each.
 
+## A worked `--events` timeline
+
+`--events` prints the raw ordered events. To turn them into a yes/no answer for a concrete version, walk them in order. Here is `introduced: 1.0.0` then `fixed: 1.5.0` resolved for three candidate versions:
+
+```mermaid
+flowchart LR
+  subgraph events["range.events (in order)"]
+    I["introduced 1.0.0"] --> F["fixed 1.5.0"]
+  end
+  events --> Q0["0.9.0 → before introduced → SAFE"]
+  events --> Q1["1.2.0 → ≥1.0.0 and <1.5.0 → AFFECTED"]
+  events --> Q2["1.5.0 → ≥ fixed → SAFE"]
+```
+
+::: tip The CLI gives you data, not a verdict
+`osv query --events` deliberately stops at the raw timeline — it never decides "is version X affected", because that requires ecosystem-aware version comparison (see [RangeType](/reference/osv-schema#rangetype-—-how-versions-are-compared)). The walk above is what *you* implement on top of the per-event predicates.
+:::
+
 ## Notes
 
 - `GetCVSS3()` / `GetCVSS2()` return `nil` if the severity type is absent

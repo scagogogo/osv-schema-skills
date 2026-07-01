@@ -95,6 +95,24 @@ graph TD
 
 事件字段在每个 event 对象里互斥——一个 event 只会是 introduced/fixed/last_affected/limit 之一。
 
+## `--events` 时间线实例
+
+`--events` 打印的是原始有序事件。要把它变成对某个具体版本的是/否回答，就按顺序遍历。下面是 `introduced: 1.0.0` 接着 `fixed: 1.5.0`，对三个候选版本的判定：
+
+```mermaid
+flowchart LR
+  subgraph events["range.events（有序）"]
+    I["introduced 1.0.0"] --> F["fixed 1.5.0"]
+  end
+  events --> Q0["0.9.0 → 早于 introduced → 安全"]
+  events --> Q1["1.2.0 → ≥1.0.0 且 <1.5.0 → 受影响"]
+  events --> Q2["1.5.0 → ≥ fixed → 安全"]
+```
+
+::: tip CLI 给你数据，不给结论
+`osv query --events` 有意止步于原始时间线——它从不判定"版本 X 是否受影响"，因为那需要生态感知的版本比较（见 [RangeType](/zh/reference/osv-schema#rangetype-——-版本如何比较)）。上面的遍历是*你*在逐事件谓词之上自行实现的部分。
+:::
+
 ## 注意事项
 
 - `GetCVSS3()` / `GetCVSS2()` 在 severity 类型缺失时返回 `nil`

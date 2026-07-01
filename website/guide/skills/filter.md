@@ -81,6 +81,22 @@ flowchart LR
 
 Each flag independently acts on a different slice of the original data; combining them takes the intersection.
 
+## Matching semantics per flag
+
+The three flags do **not** match the same way — this is the most common source of "why did my filter return nothing?".
+
+```mermaid
+flowchart TD
+  IN["your flag value"] --> E{"which flag?"}
+  E -->|"-e ecosystem"| EX["exact, case-sensitive<br/>'PyPI' ✓  ·  'pypi' ✗"]
+  E -->|"-r ref-type"| UP["auto-uppercased, then exact<br/>'fix' → 'FIX' ✓"]
+  E -->|"-a alias"| PF["prefix match (uppercased)<br/>'CVE' matches 'CVE-2024-1234'"]
+```
+
+::: warning `-e` is the strict one
+Ecosystem is compared verbatim against the OSV spec's exact casing, so `-e pypi` silently returns nothing. Reference types are forgiving (auto-uppercased) and aliases are prefix-based. When a filter comes back empty, check `-e` casing first against the [Ecosystems](/reference/ecosystems) list.
+:::
+
 ## Notes
 
 - Ecosystem names are case-sensitive (`PyPI`, not `pypi`)
