@@ -1,13 +1,13 @@
-# Quick Start
+# 快速开始
 
-Get the `osv` CLI running against a real vulnerability record in under a minute.
+一分钟内让 `osv` CLI 跑通一条真实漏洞记录。
 
-## Install the CLI
+## 安装 CLI
 
 ::: tabs
-== Pre-built binary (any platform)
+== 预编译二进制（任意平台）
 
-Download the right binary for your OS/arch from the [latest Release](https://github.com/scagogogo/osv-schema-skills/releases).
+从 [最新 Release](https://github.com/scagogogo/osv-schema-skills/releases) 下载匹配你 OS/架构 的二进制。
 
 ```bash
 # Linux amd64 示例（替换版本号与平台）
@@ -19,14 +19,14 @@ sudo mv osv /usr/local/bin/
 osv version
 ```
 
-== Go install
+== go install
 
 ```bash
 go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
 osv version
 ```
 
-== Build from source
+== 源码构建
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git
@@ -36,15 +36,15 @@ go build -o osv ./cmd/osv/
 ```
 :::
 
-## Parse your first OSV file
+## 解析你的第一个 OSV 文件
 
-Grab the bundled sample and parse it:
+用自带的样例解析：
 
 ```bash
 osv parse test_data/GHSA-vxv8-r8q2-63xw.json
 ```
 
-Expected output:
+预期输出：
 
 ```
 ID:             GHSA-vxv8-r8q2-63xw
@@ -58,31 +58,31 @@ Affected Packages:
   ...
 ```
 
-## The 30-second workflow
+## 30 秒工作流
 
 ```mermaid
 flowchart LR
-  Install["Install osv CLI"] --> Parse["osv parse file.json"]
+  Install["安装 osv CLI"] --> Parse["osv parse file.json"]
   Parse --> Validate["osv validate file.json"]
   Validate --> Query["osv query --severity cvss3 file.json"]
-  Query --> Done["Done ✅"]
+  Query --> Done["完成 ✅"]
 ```
 
-## What each command gives you
+## 四个命令分别给你什么
 
 ```mermaid
 flowchart TD
-  FILE["vulnerability.json"] --> P["osv parse<br/>→ field overview"]
-  FILE --> V["osv validate<br/>→ schema-compliant?"]
-  FILE --> F["osv filter<br/>→ narrow by criteria"]
-  FILE --> Q["osv query<br/>→ extract sub-info"]
-  P --> H["human / JSON"]
-  V --> G["CI gate exit 0/1"]
+  FILE["vulnerability.json"] --> P["osv parse<br/>→ 字段总览"]
+  FILE --> V["osv validate<br/>→ 是否合规"]
+  FILE --> F["osv filter<br/>→ 按条件缩小"]
+  FILE --> Q["osv query<br/>→ 取某子信息"]
+  P --> H["人看 / JSON"]
+  V --> G["CI 闸门 exit 0/1"]
   F --> H
   Q --> H
 ```
 
-## Use the Go SDK
+## 使用 Go SDK
 
 ```bash
 go get -u github.com/scagogogo/osv-schema-skills
@@ -108,14 +108,14 @@ func main() {
 }
 ```
 
-## Enable Claude Code skills
+## 启用 Claude Code 技能
 
-Just open the repo in Claude Code — the 6 skills activate automatically:
+只需在 Claude Code 中打开本仓库——6 个技能自动激活：
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git
 cd osv-schema-skills
-claude  # skills are live
+claude  # 技能已生效
 ```
 
-See [Skills Overview](/guide/skills) for what triggers each one.
+每个技能何时触发，见 [技能总览](/zh/guide/skills)。

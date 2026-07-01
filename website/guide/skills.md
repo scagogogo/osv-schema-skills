@@ -64,6 +64,29 @@ flowchart TD
   Need -->|"no"| Report["Report findings"]
 ```
 
+## Capability boundaries between skills
+
+```mermaid
+graph TD
+  subgraph ReadOnly["Skills are read-only contracts"]
+    P["osv-parse<br/>display"]
+    V["osv-validate<br/>check"]
+    F["osv-filter<br/>narrow"]
+    Q["osv-query<br/>extract"]
+    SEV["osv-severity<br/>score"]
+    AFF["osv-affected<br/>impact"]
+  end
+  P -.calls.-> CLI["osv CLI"]
+  V -.calls.-> CLI
+  F -.calls.-> CLI
+  Q -.calls.-> CLI
+  SEV -.calls.-> CLI
+  AFF -.calls.-> CLI
+  CLI --> CORE["Shared Go core<br/>where real logic lives"]
+```
+
+Skills carry no logic themselves — they only declare *when to trigger* and *which command to call*.
+
 ## A real workflow
 
 ```
@@ -74,6 +97,21 @@ Agent workflow:
 2. → osv-filter:    Filter affected packages by PyPI ecosystem
 3. → osv-severity:  Extract CVSS v3 score
 4. → Report findings to user
+```
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant A as Agent
+  participant S as Skill chain
+  U->>A: Does GHSA-vxv8 affect PyPI? How severe?
+  A->>S: 1) osv-parse
+  S-->>A: structured data
+  A->>S: 2) osv-filter -e PyPI
+  S-->>A: filtered affected
+  A->>S: 3) osv-severity CVSS
+  S-->>A: 7.5 (High)
+  A-->>U: 3 PyPI packages affected, CVSS v3=7.5 High
 ```
 
 ## Using skills in your project

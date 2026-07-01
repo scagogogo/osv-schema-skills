@@ -49,6 +49,27 @@ flowchart TD
   S --> Band["Map to Low/Medium/High/Critical"]
 ```
 
+## Parsing path: vector vs number
+
+```mermaid
+flowchart TD
+  SRC["OSV score field"] --> T{"Number or vector?"}
+  T -->|"number e.g. 7.5"| NUM["GetScore() returns 7.5"]
+  T -->|"vector e.g. CVSS:3.1/AV:N/..."| VEC["GetScore() returns 0.0<br/>parse vector yourself"]
+  VEC --> GSF["GetScoreAsFloat()<br/>returns error hint"]
+  NUM --> BAND["→ High"]
+```
+
+## Top-level vs per-package severity
+
+```mermaid
+flowchart TD
+  TOP["Top-level severity<br/>v.Severity (SeveritySlice)"] --> G3["GetCVSS3() global CVSS"]
+  AFF["affected[].severity<br/>(optional, per-package)"] --> P3["package-specific CVSS"]
+```
+
+`affected[].severity` is an optional per-package severity, separate from the top-level `severity`.
+
 ## Notes
 
 - OSV `score` may be a CVSS vector string (`CVSS:3.1/AV:N/...`) rather than a number — in that case `GetScore()` returns `0.0`. Parse the vector yourself if you need the numeric score from a vector.

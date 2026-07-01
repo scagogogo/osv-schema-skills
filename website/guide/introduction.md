@@ -19,6 +19,29 @@ Working with vulnerability data is tedious:
 
 This repo closes that last gap: when Claude Code opens it, 6 specialized skills become automatically available.
 
+## Who uses it, and how
+
+```mermaid
+flowchart LR
+  subgraph Who["Who"]
+    H["Human dev"]
+    A["AI Agent"]
+    P["CI / pipeline"]
+  end
+  subgraph How["How"]
+    SDK["Go SDK"]
+    SK["Skills"]
+    CLI["CLI"]
+  end
+  H --> SDK
+  A --> SK
+  A --> CLI
+  P --> CLI
+  SDK --> CORE["Shared Go core"]
+  SK --> CORE
+  CLI --> CORE
+```
+
 ## Design principles
 
 | Principle | How it shows up |
@@ -28,6 +51,19 @@ This repo closes that last gap: when Claude Code opens it, 6 specialized skills 
 | Type safety | Generic `OsvSchema[EcosystemSpecific, DatabaseSpecific any]` |
 | Broad serialization | Every core type supports JSON, YAML, mapstructure, GORM, BSON |
 | Never nil from constructors | Unmarshal functions return errors explicitly |
+
+## How the three layers stay aligned
+
+```mermaid
+flowchart TD
+  REQ["Same vulnerability request"] --> A["Skills path<br/>SKILL.md → Bash(osv:*)"]
+  REQ --> B["CLI path<br/>osv subcommand"]
+  REQ --> C["SDK path<br/>direct Go call"]
+  A --> CORE["OsvSchema core"]
+  B --> CORE
+  C --> CORE
+  CORE --> SAME["Identical result ✓"]
+```
 
 ## What's next
 

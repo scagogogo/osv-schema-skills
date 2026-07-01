@@ -70,6 +70,42 @@ v, err := osv.UnmarshalFromJsonFile[any, any]("vuln.json")
 v, err := osv.UnmarshalFromJsonFile[MyEco, MyDB]("vuln.json")
 ```
 
+## Method call graph
+
+```mermaid
+graph TD
+  OSV["OsvSchema"] --> AL["v.Aliases"]
+  OSV --> SEV["v.Severity"]
+  OSV --> AFF["v.Affected"]
+  OSV --> REF["v.References"]
+
+  AL -->|"GetCVE()"| CVE["string"]
+  AL -->|"Filter(f)"| AL2["Aliases"]
+
+  SEV -->|"GetCVSS3()"| S3["*Severity"]
+  S3 -->|"GetScore()"| SCORE["float64"]
+
+  AFF -->|"HasEcosystem(e)"| BOOL["bool"]
+  AFF -->|"FilterByEcosystem(e)"| AFF2["AffectedSlice"]
+  AFF --> PKG["a.Package"]
+  PKG -->|"IsMaven()"| MBOOL["bool"]
+  PKG -->|"GetGroupID()"| GID["string"]
+
+  REF -->|"FilterByType(t)"| REF2["References"]
+```
+
+## Parse & validate data flow
+
+```mermaid
+flowchart LR
+  F["file/bytes"] --> U["UnmarshalFromJson[File]"]
+  U --> V["*OsvSchema"]
+  V --> CHK["check v.ID / v.SchemaVersion"]
+  CHK --> OK{"non-empty?"}
+  OK -->|"yes"| VALID["✓ valid"]
+  OK -->|"no"| INVALID["✗ invalid"]
+```
+
 ## Serialization helpers
 
 Most types implement `sql.Scanner` and `driver.Valuer`, so they store cleanly as JSON columns under GORM. The complex nested types (`AffectedSlice`, `SeveritySlice`, `Package`, `Credits`) marshal themselves to/from JSON automatically.

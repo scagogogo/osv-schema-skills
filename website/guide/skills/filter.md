@@ -24,6 +24,18 @@ osv filter -o json -e PyPI vulnerability.json
 
 At least one filter flag is required.
 
+## The three filter dimensions
+
+```mermaid
+flowchart TD
+  DATA["OSV data"] --> E["-e ecosystem<br/>Affected → FilterByEcosystem"]
+  DATA --> R["-r reference type<br/>References → FilterByType"]
+  DATA --> A["-a alias pattern<br/>Aliases → Filter(prefix)"]
+  E --> OUT["filtered result"]
+  R --> OUT
+  A --> OUT
+```
+
 ## SDK equivalent
 
 ```go
@@ -56,6 +68,18 @@ flowchart TD
   Comb -->|"yes"| C["chain flags: -e ... -r ..."]
   Comb -->|"no"| Done["results"]
 ```
+
+## Execution order of combined filters
+
+```mermaid
+flowchart LR
+  IN["raw data"] --> E["-e ecosystem filter"]
+  E --> R["-r reference filter"]
+  R --> A["-a alias filter"]
+  A --> OUT["final result"]
+```
+
+Each flag independently acts on a different slice of the original data; combining them takes the intersection.
 
 ## Notes
 

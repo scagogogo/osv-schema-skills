@@ -25,6 +25,21 @@ flowchart LR
   R --> VER["version<br/>CLI + schema version"]
 ```
 
+## How commands map to the core
+
+```mermaid
+flowchart TD
+  P["osv parse"] --> U["UnmarshalFromJson"]
+  V["osv validate"] --> U
+  F["osv filter"] --> U
+  Q["osv query"] --> U
+  U --> SCH["OsvSchema struct"]
+  SCH --> P2["parse: print fields"]
+  SCH --> V2["validate: check id/version"]
+  SCH --> F2["filter: call FilterBy*"]
+  SCH --> Q2["query: call GetCVSS*/ranges"]
+```
+
 ### `osv parse`
 
 Parse an OSV JSON file and display its fields.
@@ -115,6 +130,16 @@ Prints the CLI version (injected at build time by goreleaser) and the supported 
 | Flag | Description |
 |------|-------------|
 | `-o, --output` | `text` (default) or `json` — applies to all subcommands |
+
+## Exit code conventions
+
+```mermaid
+flowchart LR
+  RUN["Run subcommand"] --> RC{"Exit code"}
+  RC -->|"0"| OK["Success / file valid"]
+  RC -->|"1"| FAIL["Failure / some file invalid"]
+  RC -->|"2+"| ERR["Argument or runtime error"]
+```
 
 ## Typical pipeline
 

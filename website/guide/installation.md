@@ -7,6 +7,20 @@ Install the `osv` CLI, the Go SDK, and enable the Claude Code Skills.
 - **Go 1.18+** (for SDK and building from source)
 - Internet access only needed for `go get` / `go install` / downloading binaries
 
+## Install options at a glance
+
+```mermaid
+flowchart TD
+  START["What to install?"] --> Q1{"Pick one"}
+  Q1 -->|"Pre-built binary<br/>(fastest, no Go)"| BIN["Download tar.gz from Release"]
+  Q1 -->|"go install<br/>(needs Go)"| GI["go install ...@latest"]
+  Q1 -->|"Build from source"| SRC["git clone + go build"]
+  BIN --> VER["osv version verify"]
+  GI --> VER
+  SRC --> VER
+  VER --> OK["Ready ✓"]
+```
+
 ## CLI
 
 ::: tabs

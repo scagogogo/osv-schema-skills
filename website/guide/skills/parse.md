@@ -36,6 +36,19 @@ flowchart TD
   V --> Done2["All fields shown"]
 ```
 
+## Output structure
+
+```mermaid
+flowchart TD
+  OUT["parse output"] --> ID["ID"]
+  OUT --> SV["schema version"]
+  OUT --> SUM["summary / aliases / CVE"]
+  OUT --> SEV["severity (CVSS)"]
+  OUT --> AFF["affected packages"]
+  OUT --> REF["references"]
+  OUT --> VV["with -v also:<br/>published/modified/withdrawn/<br/>related/details/per-range events/credits"]
+```
+
 ## What it prints
 
 ID, schema version, summary, aliases/CVE, severity, affected packages, references. With `-v` it additionally shows published/modified dates, withdrawn, related, details, per-range events, and credits.

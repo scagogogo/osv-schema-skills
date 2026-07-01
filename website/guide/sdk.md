@@ -51,6 +51,17 @@ func main() {
 }
 ```
 
+## From JSON to code: object lifecycle
+
+```mermaid
+flowchart LR
+  F["vulnerability.json"] --> U["UnmarshalFromJsonFile"]
+  U --> V["*OsvSchema struct"]
+  V --> Q["Query fields:<br/>v.ID / v.Summary / v.Aliases"]
+  V --> F2["Filter:<br/>v.Affected.FilterByEcosystem"]
+  V --> S["Get severity:<br/>v.Severity.GetCVSS3"]
+```
+
 ## Core type
 
 ```go
@@ -84,6 +95,45 @@ graph TD
   OSV --> D
 ```
 
+## Type relationships at a glance
+
+```mermaid
+classDiagram
+  class OsvSchema {
+    +ID string
+    +SchemaVersion string
+    +Aliases Aliases
+    +Severity SeveritySlice
+    +Affected AffectedSlice
+    +References References
+  }
+  class Aliases {
+    +GetCVE() string
+    +Filter(func) Aliases
+  }
+  class SeveritySlice {
+    +GetCVSS3() *Severity
+    +GetCVSS2() *Severity
+  }
+  class AffectedSlice {
+    +HasEcosystem(Ecosystem) bool
+    +FilterByEcosystem(Ecosystem) AffectedSlice
+  }
+  class Package {
+    +IsMaven() bool
+    +GetGroupID() string
+    +GetArtifactID() string
+  }
+  class References {
+    +FilterByType(...ReferenceType) References
+  }
+  OsvSchema --> Aliases
+  OsvSchema --> SeveritySlice
+  OsvSchema --> AffectedSlice
+  OsvSchema --> References
+  AffectedSlice --> Package
+```
+
 ## Key methods
 
 See the full table in [Reference → Methods](/reference/methods). Highlights:
@@ -101,6 +151,15 @@ See the full table in [Reference → Methods](/reference/methods). Highlights:
 ## Serialization
 
 Every core type carries `json`, `yaml`, `mapstructure`, `db`, `bson`, `gorm` tags — JSON, YAML, mapstructure, GORM, and MongoDB (BSON) work out of the box.
+
+```mermaid
+flowchart LR
+  T["Tagged core types"] --> JSON["json ✓"]
+  T --> YAML["yaml ✓"]
+  T --> MS["mapstructure ✓"]
+  T --> GORM["gorm / db ✓"]
+  T --> BSON["bson ✓"]
+```
 
 ## Design notes
 

@@ -123,6 +123,23 @@ flowchart TD
 
 Under the hood, every command calls the same typed Go core (`OsvSchema[EcosystemSpecific, DatabaseSpecific any]`) — so the CLI, the SDK, and the skills can never disagree. The skills are thin **declarative contracts**; all real logic lives in one place.
 
+### How data flows: from JSON to report
+
+```mermaid
+flowchart LR
+  F["OSV JSON file"] --> U["UnmarshalFromJson"]
+  U --> V["OsvSchema struct<br/>(typed)"]
+  V --> OP{"Operation"}
+  OP -->|display| P["parse prints key fields"]
+  OP -->|validate| VAL["validate checks id/version"]
+  OP -->|filter| FLT["filter by -e/-r/-a"]
+  OP -->|extract| QRY["query takes CVSS/ranges/events"]
+  P --> R["human / JSON"]
+  VAL --> R
+  FLT --> R
+  QRY --> R
+```
+
 ### A typical AI agent workflow
 
 ```mermaid

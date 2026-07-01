@@ -25,6 +25,19 @@ Exits with code `1` if any file is invalid — CI-friendly.
 - Parses as OSV (`UnmarshalFromJson`)
 - Required fields present: `id` and `schema_version`
 
+## Validation flow
+
+```mermaid
+flowchart TD
+  F["Input file"] --> R{"Readable & valid JSON?"}
+  R -->|"no"| E1["✗ error"]
+  R -->|"yes"| P{"Parses as OSV?"}
+  P -->|"no"| E2["✗ error"]
+  P -->|"yes"| C{"id & schema_version<br/>both present?"}
+  C -->|"no"| E3["✗ error"]
+  C -->|"yes"| OK["✓ valid"]
+```
+
 ## Decision tree
 
 ```mermaid
@@ -34,6 +47,17 @@ flowchart TD
   R -->|"0"| OK["✓ all valid"]
   R -->|"1"| Fail["✗ some invalid — errors listed"]
   Fail --> Gate["CI gate fails"]
+```
+
+## Where it sits in CI
+
+```mermaid
+flowchart LR
+  PUSH["Commit / PR"] --> CI["CI pipeline"]
+  CI --> VAL["osv validate *.json"]
+  VAL --> RC{"exit code"}
+  RC -->|"0"| MERGE["Can merge ✓"]
+  RC -->|"1"| BLK["Blocks merge ✗"]
 ```
 
 ## SDK equivalent

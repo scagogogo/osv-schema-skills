@@ -26,6 +26,20 @@ osv query --ranges --events vulnerability.json # Combine
 
 At least one flag is required.
 
+## The four extraction dimensions
+
+```mermaid
+flowchart TD
+  DATA["OSV data"] --> SEV["--severity<br/>Severity → GetCVSS3/2"]
+  DATA --> MAV["--maven<br/>Package → GetGroupID/ArtifactID"]
+  DATA --> RNG["--ranges<br/>Affected[].Ranges"]
+  DATA --> EVT["--events<br/>Range.Events timeline"]
+  SEV --> OUT["extracted result"]
+  MAV --> OUT
+  RNG --> OUT
+  EVT --> OUT
+```
+
 ## SDK equivalent
 
 ```go
@@ -65,6 +79,21 @@ flowchart TD
   E --> Comb
   Comb -->|"yes"| C["--ranges --events"]
 ```
+
+## Version ranges vs events
+
+```mermaid
+graph TD
+  AFF["Affected"] --> RNG["ranges[]"]
+  RNG --> TYPE["type: SEMVER / ECOSYSTEM / GIT"]
+  RNG --> EVT["events[]"]
+  EVT --> I["introduced<br/>first affected version"]
+  EVT --> F["fixed<br/>version with the fix"]
+  EVT --> L["last_affected<br/>last affected version"]
+  EVT --> LM["limit<br/>range upper bound"]
+```
+
+Event fields are mutually exclusive per event object — one of introduced/fixed/last_affected/limit each.
 
 ## Notes
 

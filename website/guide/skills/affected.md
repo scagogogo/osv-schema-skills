@@ -51,6 +51,36 @@ graph TD
   EVT --> LM["limit"]
 ```
 
+## Affected data model
+
+```mermaid
+classDiagram
+  class Affected {
+    +Package Package
+    +Versions []string
+    +Ranges []Range
+    +Severity SeveritySlice
+  }
+  class Package {
+    +Ecosystem Ecosystem
+    +Name string
+    +Purl string
+  }
+  class Range {
+    +Type RangeType
+    +Events []Event
+  }
+  class Event {
+    +Introduced string
+    +Fixed string
+    +LastAffected string
+    +Limit string
+  }
+  Affected --> Package
+  Affected --> Range
+  Range --> Event
+```
+
 ## Decision tree
 
 ```mermaid
@@ -61,6 +91,17 @@ flowchart TD
   Q --> M["Maven GAV → query --maven"]
   Q --> EV["Event timeline → query --events"]
 ```
+
+## Range type comparison
+
+```mermaid
+flowchart TD
+  T["range.type"] --> SE["SEMVER<br/>semantic version range"]
+  T --> EC["ECOSYSTEM<br/>most common, ecosystem versions"]
+  T --> GI["GIT<br/>git commit range"]
+```
+
+- `RangeTypeEcosystem` (`ECOSYSTEM`) is the most common; `SEMVER` and `GIT` are less frequent.
 
 ## Notes
 
