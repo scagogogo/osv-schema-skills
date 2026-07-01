@@ -9,6 +9,15 @@ There are two ways to get going. Pick one.
 - **Path A — let the AI do it (recommended, "AI First").** If you use Claude Code or Codex, you do not install anything by hand. Copy the onboarding prompt from the [AI Agent Integration](/guide/ai-agent) page, paste it into your agent, and it installs the CLI, discovers the skills, and starts working. Skip to [Enable Claude Code skills](#enable-claude-code-skills) to see why that works.
 - **Path B — do it yourself.** Install the CLI and run the commands manually. That is the rest of this page.
 
+```mermaid
+flowchart TD
+  START["Getting started"] --> Q{"Using an AI agent<br/>(Claude Code / Codex)?"}
+  Q -->|yes| A["Path A — paste the onboarding prompt<br/>agent installs + discovers skills"]
+  Q -->|no| B["Path B — install the CLI yourself<br/>continue down this page"]
+  A --> WORK["Describe intent → agent runs osv"]
+  B --> TYPE["Type osv commands directly"]
+```
+
 ---
 
 ## Step 1 — Install the CLI
@@ -181,7 +190,23 @@ cd osv-schema-skills
 claude  # skills are live
 ```
 
-Why this works with zero setup: each skill is a `SKILL.md` file under `.claude/skills/`. Claude Code discovers them on open, reads each one's `description` (its *trigger*), and when your request matches, runs the declared `osv` command for you. You never name the command — you describe the intent. See [Skills Overview](/guide/skills) for what triggers each one, or [AI Agent Integration](/guide/ai-agent) for the copy-paste prompt that also works in Codex.
+Why this works with zero setup: each skill is a `SKILL.md` file under `.claude/skills/`. Claude Code discovers them on open, reads each one's `description` (its *trigger*), and when your request matches, runs the declared `osv` command for you. You never name the command — you describe the intent.
+
+```mermaid
+sequenceDiagram
+  participant You
+  participant CC as Claude Code
+  participant SK as .claude/skills/*/SKILL.md
+  participant CLI as osv CLI
+  CC->>SK: on open, read every description (trigger)
+  You->>CC: "check this advisory's CVSS score"
+  CC->>SK: match intent → osv-severity
+  CC->>CLI: osv query --severity cvss3 file.json
+  CLI-->>CC: parsed score
+  CC-->>You: answer in plain language
+```
+
+See [Skills Overview](/guide/skills) for what triggers each one, or [AI Agent Integration](/guide/ai-agent) for the copy-paste prompt that also works in Codex.
 
 ## Troubleshooting
 

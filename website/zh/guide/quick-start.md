@@ -9,6 +9,15 @@
 - **路径 A —— 让 AI 替你做（推荐，"AI First"）。** 如果你用 Claude Code 或 Codex，就不必手动安装任何东西。从 [AI Agent 接入](/zh/guide/ai-agent) 页复制那段引导提示词，粘贴给你的智能体，它会自动安装 CLI、发现技能，然后开始干活。想知道为什么这样能行，直接跳到 [启用 Claude Code 技能](#启用-claude-code-技能)。
 - **路径 B —— 自己动手。** 手动安装 CLI 并逐条运行命令。这就是本页余下的内容。
 
+```mermaid
+flowchart TD
+  START["开始上手"] --> Q{"在用 AI 智能体<br/>（Claude Code / Codex）吗？"}
+  Q -->|是| A["路径 A —— 粘贴引导提示词<br/>智能体自动安装 + 发现技能"]
+  Q -->|否| B["路径 B —— 自己安装 CLI<br/>继续往下读本页"]
+  A --> WORK["描述意图 → 智能体运行 osv"]
+  B --> TYPE["直接敲 osv 命令"]
+```
+
 ---
 
 ## 第 1 步 —— 安装 CLI
@@ -181,7 +190,23 @@ cd osv-schema-skills
 claude  # 技能已生效
 ```
 
-为什么零配置就能行：每个技能都是 `.claude/skills/` 下的一个 `SKILL.md` 文件。Claude Code 在打开时发现它们，读取每个的 `description`（它的*触发条件*），当你的请求匹配时，就替你运行声明好的 `osv` 命令。你从不点名命令——你只描述意图。每个技能何时触发见 [技能总览](/zh/guide/skills)，能同样用于 Codex 的复制粘贴提示词见 [AI Agent 接入](/zh/guide/ai-agent)。
+为什么零配置就能行：每个技能都是 `.claude/skills/` 下的一个 `SKILL.md` 文件。Claude Code 在打开时发现它们，读取每个的 `description`（它的*触发条件*），当你的请求匹配时，就替你运行声明好的 `osv` 命令。你从不点名命令——你只描述意图。
+
+```mermaid
+sequenceDiagram
+  participant You as 你
+  participant CC as Claude Code
+  participant SK as .claude/skills/*/SKILL.md
+  participant CLI as osv CLI
+  CC->>SK: 打开时读取每个 description（触发条件）
+  You->>CC: "看看这条公告的 CVSS 分数"
+  CC->>SK: 意图匹配 → osv-severity
+  CC->>CLI: osv query --severity cvss3 file.json
+  CLI-->>CC: 解析出的分数
+  CC-->>You: 用自然语言回答
+```
+
+每个技能何时触发见 [技能总览](/zh/guide/skills)，能同样用于 Codex 的复制粘贴提示词见 [AI Agent 接入](/zh/guide/ai-agent)。
 
 ## 排错
 
