@@ -24,6 +24,14 @@ export default withMermaid(
           content: 'AI-native OSV schema toolkit: Go SDK + CLI + Claude Code Skills.',
         },
       ],
+      // 语言记忆：在 Vue 挂载前尽早执行。若上次选择了简体中文，且此刻正落在
+      // 英文根路径上，则直接重定向到 /zh/，避免"先显示英文再跳转"的闪烁。
+      // 写入偏好由 theme/index.ts 的路由 watch 负责，两者配合，不会死循环。
+      [
+        'script',
+        {},
+        `;(function(){try{var b='/osv-schema-skills/';var p=location.pathname;if((p===b||p===b+'index.html')&&localStorage.getItem('osv-lang')==='zh'){location.replace(b+'zh/');}}catch(e){}})();`,
+      ],
     ],
 
     // 顶层 locales：控制 per-locale 的 html lang/dir（themeConfig.locales 控制 nav/sidebar/UI 文案）
@@ -128,6 +136,7 @@ export default withMermaid(
             returnToTopLabel: 'Back to top',
             sidebarMenuLabel: 'Menu',
             darkModeSwitchLabel: 'Appearance',
+            langMenuLabel: 'Change language',
           },
         },
 
