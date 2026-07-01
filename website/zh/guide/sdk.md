@@ -161,6 +161,39 @@ flowchart LR
   T --> BSON["bson ✓"]
 ```
 
+## 带类型的厂商字段——实战示例
+
+`[any, any]` 适合大多数解析，但当你反复读取一个已知形态的 `database_specific`（比如 GitHub 的公告块）时，给它一个具体类型，编译器就会替你检查字段访问。
+
+```go
+// 定义你关心的厂商块形态
+type GHSA struct {
+    Severity   string   `json:"severity"`
+    CWEIDs     []string `json:"cwe_ids"`
+    GitHubURL  string   `json:"github_reviewed_at"`
+}
+
+// 用具体类型作为 DatabaseSpecific 解析
+v, err := osv.UnmarshalFromJsonFile[any, GHSA]("ghsa.json")
+if err != nil {
+    log.Fatal(err)
+}
+// v.DatabaseSpecific 现在是带类型的 GHSA——无需 map[string]any 强转
+fmt.Println(v.DatabaseSpecific.Severity, v.DatabaseSpecific.CWEIDs)
+```
+
+```mermaid
+flowchart LR
+  RAW["database_specific: { … }"] --> ANY["[any, any]<br/>→ map[string]any<br/>（每次访问都要强转）"]
+  RAW --> TYPED["[any, GHSA]<br/>→ 带类型结构体<br/>（编译期检查）"]
+  ANY --> COST["运行时类型断言"]
+  TYPED --> SAFE["字段访问安全"]
+```
+
+::: tip 只为需要的类型付费
+两个参数相互独立。只给 `DatabaseSpecific` 定类型、`EcosystemSpecific` 留 `any`（反之亦然）——不必两个块都建模才能给其中一个上类型。
+:::
+
 ## 设计要点
 
 - **构造器永不返回 nil**——`UnmarshalFromJsonFile` / `UnmarshalFromJson` 显式返回 error；成功时结果绝非 nil 指针。

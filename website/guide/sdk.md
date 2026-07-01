@@ -161,6 +161,39 @@ flowchart LR
   T --> BSON["bson ✓"]
 ```
 
+## Typed vendor fields — a worked example
+
+`[any, any]` is right for most parsing, but when you repeatedly read a known `database_specific` shape (e.g. GitHub's advisory blob), give it a concrete type and the compiler checks your field access.
+
+```go
+// Define the shape of the vendor blob you care about
+type GHSA struct {
+    Severity   string   `json:"severity"`
+    CWEIDs     []string `json:"cwe_ids"`
+    GitHubURL  string   `json:"github_reviewed_at"`
+}
+
+// Parse with the concrete type as DatabaseSpecific
+v, err := osv.UnmarshalFromJsonFile[any, GHSA]("ghsa.json")
+if err != nil {
+    log.Fatal(err)
+}
+// v.DatabaseSpecific is now a typed GHSA — no map[string]any casting
+fmt.Println(v.DatabaseSpecific.Severity, v.DatabaseSpecific.CWEIDs)
+```
+
+```mermaid
+flowchart LR
+  RAW["database_specific: { … }"] --> ANY["[any, any]<br/>→ map[string]any<br/>(cast at every access)"]
+  RAW --> TYPED["[any, GHSA]<br/>→ typed struct<br/>(compiler-checked)"]
+  ANY --> COST["runtime type assertions"]
+  TYPED --> SAFE["field access is safe"]
+```
+
+::: tip Only pay for the types you need
+The two parameters are independent. Type just `DatabaseSpecific` and leave `EcosystemSpecific` as `any` (or vice-versa) — you don't have to model both blobs to get typing on one.
+:::
+
 ## Design notes
 
 - **Never nil from constructors** — `UnmarshalFromJsonFile` / `UnmarshalFromJson` return errors explicitly; the result is never a nil pointer on success.

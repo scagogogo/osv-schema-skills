@@ -156,3 +156,32 @@ sequenceDiagram
   Core-->>CLI: structured data
   CLI-->>CI: JSON to stdout
 ```
+
+## Composing with `jq`
+
+Because every subcommand speaks `-o json`, the CLI drops straight into a Unix pipeline. The `-o json` output is the same typed core re-marshalled, so field names match the [OSV Schema](/reference/osv-schema) exactly.
+
+```mermaid
+flowchart LR
+  OSV["osv … -o json"] --> PIPE["| jq '…'"]
+  PIPE --> SEL["select / map fields"]
+  SEL --> OUT["scalar / filtered JSON"]
+```
+
+```bash
+# Pull just the CVSS v3 vector string
+osv query --severity cvss3 -o json vuln.json | jq -r '.score'
+
+# List every affected ecosystem across a directory, deduplicated
+for f in advisories/*.json; do
+  osv parse -o json "$f" | jq -r '.affected[].package.ecosystem'
+done | sort -u
+
+# Gate CI: fail if any file is invalid, then report the criticals
+osv validate advisories/*.json || exit 1
+osv parse -o json advisories/*.json | jq 'select(.severity != null)'
+```
+
+::: tip Exit code + JSON compose cleanly
+`validate` sets the exit code (`0`/`1`) *and* can emit JSON, so a single command both gates the pipeline and produces a machine-readable report — no second parse needed.
+:::

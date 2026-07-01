@@ -156,3 +156,32 @@ sequenceDiagram
   Core-->>CLI: 结构化数据
   CLI-->>CI: JSON 到 stdout
 ```
+
+## 与 `jq` 组合
+
+由于每个子命令都会说 `-o json`，CLI 能直接接进 Unix 管道。`-o json` 的输出就是同一个带类型内核重新 marshal 的结果，字段名与 [OSV Schema](/zh/reference/osv-schema) 完全一致。
+
+```mermaid
+flowchart LR
+  OSV["osv … -o json"] --> PIPE["| jq '…'"]
+  PIPE --> SEL["选择 / 映射字段"]
+  SEL --> OUT["标量 / 过滤后的 JSON"]
+```
+
+```bash
+# 只取 CVSS v3 向量字符串
+osv query --severity cvss3 -o json vuln.json | jq -r '.score'
+
+# 列出一个目录里所有受影响生态并去重
+for f in advisories/*.json; do
+  osv parse -o json "$f" | jq -r '.affected[].package.ecosystem'
+done | sort -u
+
+# CI 闸门：任一文件无效即失败，再报告有 severity 的记录
+osv validate advisories/*.json || exit 1
+osv parse -o json advisories/*.json | jq 'select(.severity != null)'
+```
+
+::: tip 退出码 + JSON 天然组合
+`validate` 既设置退出码（`0`/`1`）*又*能输出 JSON，所以一条命令就能既守住流水线又产出机器可读报告——无需再解析第二遍。
+:::
