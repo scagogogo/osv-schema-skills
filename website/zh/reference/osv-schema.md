@@ -34,6 +34,26 @@ graph TD
 
 `osv validate` 强制 `id` 和 `schema_version`。
 
+```mermaid
+flowchart TD
+  FILE["file.json"] --> READ{"os.ReadFile<br/>成功？"}
+  READ -->|"否（缺失/权限）"| E1["错误：无法读取文件"]
+  READ -->|是| JSON{"json.Valid？"}
+  JSON -->|否| E2["错误：不是合法 JSON"]
+  JSON -->|是| U["UnmarshalFromJson"]
+  U --> ID{"id != \"\" ？"}
+  ID -->|否| E3["错误：缺失 id"]
+  ID -->|是| SV{"schema_version != \"\" ？"}
+  SV -->|否| E4["错误：缺失 schema_version"]
+  SV -->|是| OK["有效 ✓<br/>exit 0"]
+  E1 --> FAIL["无效 ✗<br/>exit 1"]
+  E2 --> FAIL
+  E3 --> FAIL
+  E4 --> FAIL
+```
+
+检查刻意做得浅——它确认记录*可解析*且带这两个身份字段，而非每个可选字段都合规。`affected`、`severity`、`references` 不检查；一条没有 affected 条目的记录照样通过校验。
+
 ## 完整类型关系图
 
 ```mermaid

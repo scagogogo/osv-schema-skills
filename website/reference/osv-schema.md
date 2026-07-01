@@ -34,6 +34,26 @@ graph TD
 
 `osv validate` enforces `id` and `schema_version`.
 
+```mermaid
+flowchart TD
+  FILE["file.json"] --> READ{"os.ReadFile<br/>ok?"}
+  READ -->|"no (missing/perm)"| E1["error: cannot read file"]
+  READ -->|yes| JSON{"json.Valid?"}
+  JSON -->|no| E2["error: not valid JSON"]
+  JSON -->|yes| U["UnmarshalFromJson"]
+  U --> ID{"id != \"\" ?"}
+  ID -->|no| E3["error: missing id"]
+  ID -->|yes| SV{"schema_version != \"\" ?"}
+  SV -->|no| E4["error: missing schema_version"]
+  SV -->|yes| OK["valid ✓<br/>exit 0"]
+  E1 --> FAIL["invalid ✗<br/>exit 1"]
+  E2 --> FAIL
+  E3 --> FAIL
+  E4 --> FAIL
+```
+
+The check is intentionally shallow — it confirms the record is *parseable* and carries the two identity fields, not that every optional field is well-formed. `affected`, `severity`, and `references` are not checked; a record with no affected entries still validates.
+
 ## Full type relationship
 
 ```mermaid
