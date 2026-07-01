@@ -21,6 +21,19 @@ flowchart TD
   VER --> OK["就绪 ✓"]
 ```
 
+## 三条路，一个内核
+
+无论装哪一种，三层访问方式最终都汇到同一个 Go 内核——所以你从 CLI 学到的事实，在 SDK 和技能里同样成立。
+
+```mermaid
+flowchart TD
+  BIN["osv 二进制"] --> CORE
+  SDK["Go import"] --> CORE
+  SK["Claude Code 技能"] --> SDK
+  SK -.外壳调用.-> BIN
+  CORE["osv_schema Go 内核<br/>parse · validate · filter · query"]
+```
+
 ## CLI
 
 ::: tabs
@@ -33,6 +46,16 @@ flowchart TD
 | Linux | amd64、arm64、arm (v7) |
 | macOS | amd64、arm64 |
 | Windows | amd64、arm64 |
+
+压缩包名由版本号、操作系统和架构拼成——按同一模板填空即可拼出你要的那个：
+
+```mermaid
+flowchart LR
+  T["osv_&lt;版本&gt;_&lt;系统&gt;_&lt;架构&gt;.&lt;后缀&gt;"] --> V["版本 → v0.1.0"]
+  T --> O["系统 → linux / darwin / windows"]
+  T --> A["架构 → amd64 / arm64 / arm"]
+  T --> E["后缀 → tar.gz（unix）· zip（windows）"]
+```
 
 ```bash
 # Linux amd64 示例——按你的情况替换版本号/平台
@@ -57,6 +80,17 @@ Release 地址：<https://github.com/scagogogo/osv-schema-skills/releases>
 ```bash
 go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
 osv version
+```
+
+`go install` 会把二进制放进 `$(go env GOPATH)/bin`。如果这时 `osv version` 报 *command not found*，说明该目录不在你的 `PATH` 里：
+
+```mermaid
+flowchart TD
+  GI["go install …@latest"] --> LOC["二进制 → $(go env GOPATH)/bin"]
+  LOC --> Q{"osv version 能用吗？"}
+  Q -->|能| OK["就绪 ✓"]
+  Q -->|"command not found"| FIX["加入 PATH：<br/>export PATH=\$PATH:\$(go env GOPATH)/bin"]
+  FIX --> OK
 ```
 
 == 源码构建

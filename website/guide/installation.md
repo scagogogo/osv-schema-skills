@@ -21,6 +21,19 @@ flowchart TD
   VER --> OK["Ready ✓"]
 ```
 
+## Three ways in, one core
+
+Whichever you install, all three access layers resolve to the same Go core — so a fact you learn via the CLI holds in the SDK and the skills.
+
+```mermaid
+flowchart TD
+  BIN["osv binary"] --> CORE
+  SDK["Go import"] --> CORE
+  SK["Claude Code skills"] --> SDK
+  SK -.shells out.-> BIN
+  CORE["osv_schema Go core<br/>parse · validate · filter · query"]
+```
+
 ## CLI
 
 ::: tabs
@@ -33,6 +46,16 @@ Pre-built binaries ship for every tag via goreleaser:
 | Linux | amd64, arm64, arm (v7) |
 | macOS | amd64, arm64 |
 | Windows | amd64, arm64 |
+
+The archive name is composed from the version, OS, and arch — build yours by filling the same template:
+
+```mermaid
+flowchart LR
+  T["osv_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.&lt;ext&gt;"] --> V["version → v0.1.0"]
+  T --> O["os → linux / darwin / windows"]
+  T --> A["arch → amd64 / arm64 / arm"]
+  T --> E["ext → tar.gz (unix) · zip (windows)"]
+```
 
 ```bash
 # Linux amd64 example — swap version/platform for your case
@@ -57,6 +80,17 @@ Releases: <https://github.com/scagogogo/osv-schema-skills/releases>
 ```bash
 go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
 osv version
+```
+
+`go install` drops the binary in `$(go env GOPATH)/bin`. If `osv version` then says *command not found*, that directory isn't on your `PATH`:
+
+```mermaid
+flowchart TD
+  GI["go install …@latest"] --> LOC["binary → $(go env GOPATH)/bin"]
+  LOC --> Q{"osv version works?"}
+  Q -->|yes| OK["ready ✓"]
+  Q -->|"command not found"| FIX["add to PATH:<br/>export PATH=\$PATH:\$(go env GOPATH)/bin"]
+  FIX --> OK
 ```
 
 == Build from source
