@@ -77,6 +77,25 @@ mindmap
 | `GetScoreAsFloat` | `() (float64, error)` | 解析分数，向量字符串畸形时返回 error |
 | `GetScoreAsPointer` | `() *float64` | 分数指针（用于可空字段） |
 
+三者共用同一个解析器（`GetScoreAsFloat`），另外两个的差别只在**如何报告解析失败**——而 `score` 字段里若是 CVSS *向量字符串*（如 `CVSS:3.1/AV:N/…`）而非数字，那*就是*一次解析失败。按你能处理的失败形态来选变体：
+
+```mermaid
+flowchart TD
+  SCORE["Severity.score"] --> PARSE{"strconv.ParseFloat<br/>成功？"}
+  PARSE -->|"是（数字字符串）"| NUM["浮点值"]
+  PARSE -->|"否（向量字符串 / 空）"| FAIL["解析错误"]
+  NUM --> G["GetScore() → 值"]
+  NUM --> F["GetScoreAsFloat() → (值, nil)"]
+  NUM --> P["GetScoreAsPointer() → &值"]
+  FAIL --> G2["GetScore() → 0.0 ⚠️ 静默"]
+  FAIL --> F2["GetScoreAsFloat() → (0, err)"]
+  FAIL --> P2["GetScoreAsPointer() → nil"]
+```
+
+::: warning `GetScore()` 会掩盖向量字符串情形
+因为 `GetScore()` 丢弃了 error，向量字符串分数与真实的 `0.0` 无法区分。当这个区分重要时，改用 `GetScoreAsFloat()`（检查 `err`）或 `GetScoreAsPointer()`（检查 `nil`）——并直接从 `Severity.Score` 读取 CVSS 向量。
+:::
+
 ## References
 
 | 方法 | 签名 | 说明 |

@@ -77,6 +77,25 @@ mindmap
 | `GetScoreAsFloat` | `() (float64, error)` | Parse score, returning an error if the vector string is malformed |
 | `GetScoreAsPointer` | `() *float64` | Score as pointer (for nullable fields) |
 
+All three share one parser (`GetScoreAsFloat`); the other two only differ in **how they report a parse failure** — and a `score` that holds a CVSS *vector string* (e.g. `CVSS:3.1/AV:N/…`) rather than a number *is* a parse failure. Pick the variant whose failure shape you can handle:
+
+```mermaid
+flowchart TD
+  SCORE["Severity.score"] --> PARSE{"strconv.ParseFloat<br/>succeeds?"}
+  PARSE -->|"yes (numeric string)"| NUM["the float value"]
+  PARSE -->|"no (vector string / empty)"| FAIL["parse error"]
+  NUM --> G["GetScore() → value"]
+  NUM --> F["GetScoreAsFloat() → (value, nil)"]
+  NUM --> P["GetScoreAsPointer() → &value"]
+  FAIL --> G2["GetScore() → 0.0 ⚠️ silent"]
+  FAIL --> F2["GetScoreAsFloat() → (0, err)"]
+  FAIL --> P2["GetScoreAsPointer() → nil"]
+```
+
+::: warning `GetScore()` hides the vector-string case
+Because `GetScore()` drops the error, a vector-string score is indistinguishable from a real `0.0`. When the distinction matters, use `GetScoreAsFloat()` (check `err`) or `GetScoreAsPointer()` (check `nil`) — and read the CVSS vector from `Severity.Score` directly.
+:::
+
 ## References
 
 | Method | Signature | Description |
