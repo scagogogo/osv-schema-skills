@@ -60,6 +60,19 @@ flowchart LR
   RC -->|"1"| BLK["Blocks merge ✗"]
 ```
 
+Add `-o json` to get a machine-readable report alongside the exit code — one array entry per file, with `valid` plus the parsed `id` / `schema_version`:
+
+```bash
+osv validate -o json advisories/*.json
+```
+
+```json
+[
+  { "file": "advisories/GHSA-vxv8-r8q2-63xw.json", "valid": true, "id": "GHSA-vxv8-r8q2-63xw", "schema_version": "1.4.0" },
+  { "file": "advisories/bad.json", "valid": false, "errors": ["missing required field: id"] }
+]
+```
+
 ## Batch semantics: one bad file fails the run
 
 With multiple files the exit code is the logical AND of every result — a single invalid file makes the whole invocation exit `1`, but every file is still checked and reported. This is exactly the behaviour you want in a pre-merge gate over a directory of advisories.

@@ -60,6 +60,19 @@ flowchart LR
   RC -->|"1"| BLK["阻止合并 ✗"]
 ```
 
+加 `-o json` 可在退出码之外拿到机器可读报告——每个文件一项，含 `valid` 及解析出的 `id` / `schema_version`：
+
+```bash
+osv validate -o json advisories/*.json
+```
+
+```json
+[
+  { "file": "advisories/GHSA-vxv8-r8q2-63xw.json", "valid": true, "id": "GHSA-vxv8-r8q2-63xw", "schema_version": "1.4.0" },
+  { "file": "advisories/bad.json", "valid": false, "errors": ["missing required field: id"] }
+]
+```
+
 ## 批量语义：一个坏文件让整次运行失败
 
 传多个文件时，退出码是每个结果的逻辑与——只要有一个无效，整次调用就以 `1` 退出，但每个文件仍会被检查并逐一报告。这正是你想要的：在一个存放公告的目录上做合并前闸门。
