@@ -198,6 +198,7 @@ flowchart LR
 
 - **成功时永不 nil，出错时必为 nil**——`UnmarshalFromJsonFile` / `UnmarshalFromJson` 失败时返回 `(nil, err)`，成功时返回非 nil 的 `*OsvSchema`。碰指针前先检查 `err`。
 - **Withdrawn 是字符串**——不是 `time.Time`。用非空字符串判断撤回状态。
+- **SDK 结构体不带 `omitempty`**——`OsvSchema` / `Event` / `Package` 结构体有序列化标签但无 `omitempty`。故对一条半填充记录 `json.Marshal(v)` 会输出空字段（`"withdrawn": ""`、`"published":"0001-01-01T00:00:00Z"`、`"fixed": ""`）。CLI 的 `-o json` 通过自带带 `omitempty` 的 DTO 层规避了这点；若你在 SDK 里也想要同样干净的输出，请自建 DTO 或自行过滤空字段。
 - **数据库策略**——简单字段做列；复杂嵌套结构（`AffectedSlice`、`SeveritySlice`）经 GORM serializer 存为 JSON 字符串。
 
 ## 环境要求

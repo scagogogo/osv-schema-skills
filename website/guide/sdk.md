@@ -198,6 +198,7 @@ The two parameters are independent. Type just `DatabaseSpecific` and leave `Ecos
 
 - **Never nil on success, always nil on error** — `UnmarshalFromJsonFile` / `UnmarshalFromJson` return `(nil, err)` on failure and a non-nil `*OsvSchema` on success. Check `err` before touching the pointer.
 - **Withdrawn is a string** — not `time.Time`. Check for a non-empty string to determine withdrawal status.
+- **No `omitempty` on the SDK struct** — the `OsvSchema` / `Event` / `Package` structs carry serialization tags but no `omitempty`. So `json.Marshal(v)` of a partially-filled record emits empty fields (`"withdrawn": ""`, `"published":"0001-01-01T00:00:00Z"`, `"fixed": ""`). The CLI's `-o json` avoids this by routing through its own DTO layer with `omitempty`; if you need the same clean output from the SDK, build a DTO or post-filter empties yourself.
 - **Database strategy** — simple fields are columns; complex nested structures (`AffectedSlice`, `SeveritySlice`) are stored as JSON strings via the GORM serializer.
 
 ## Requirements
