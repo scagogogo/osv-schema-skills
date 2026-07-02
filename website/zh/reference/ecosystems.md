@@ -123,8 +123,8 @@ flowchart TD
 传常量如 `osv.EcosystemPyPI`，而非字面量 `"PyPI"`。常量带有 OSV 规范要求的精确大小写，于是比较区分大小写且杜绝拼写错误。
 :::
 
-::: warning `FilterByEcosystem` 假定 `Package` 非 nil
-`HasEcosystem` 会跳过 `Package` 为 `nil` 的条目（它先检查 `item.Package != nil`）。`FilterByEcosystem` 则**不**检查——它直接解引用 `affected.Package.Ecosystem`，故某条 `affected` 的 `package` 为 `null`/缺失时会 panic。实践中每条合规的 OSV `affected` 条目都带 `package`，但若你解析的是不受信任的数据，请先用 [[osv-validate]] 校验，或自行对切片做防护。
+::: warning `FilterByEcosystem` 防的是切片 nil，不是元素级 `Package`
+`HasEcosystem` 在读 `.Ecosystem` 前先检查 `item.Package != nil`（第 49 行），故条目上 `null`/缺失的 `package` 会被安全跳过。`FilterByEcosystem` 只防*切片本身*为 `nil`（`if x == nil { return nil }`，第 69 行）——其谓词随后直接读 `affected.Package.Ecosystem`，没有逐元素 nil 检查。故某条 `affected` 的 `package` 为 `null` 时会 panic。实践中每条合规的 OSV `affected` 条目都带 `package`，但若你解析的是不受信任的数据，请先用 [[osv-validate]] 校验，或自行对切片做防护。
 :::
 
 ## Maven name 的拆分

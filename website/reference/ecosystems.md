@@ -123,8 +123,8 @@ flowchart TD
 Pass a constant like `osv.EcosystemPyPI`, not the literal `"PyPI"`. The constant carries the exact casing the OSV spec requires, so the comparison is case-sensitive and typo-proof.
 :::
 
-::: warning `FilterByEcosystem` assumes `Package` is non-nil
-`HasEcosystem` skips entries whose `Package` is `nil` (it checks `item.Package != nil` first). `FilterByEcosystem` does **not** — it dereferences `affected.Package.Ecosystem` directly, so an `affected` entry with a `null`/missing `package` will panic. In practice every well-formed OSV `affected` entry carries a `package`, but if you parse untrusted data, validate first with [[osv-validate]] or guard the slice yourself.
+::: warning `FilterByEcosystem` guards the slice, not the element's `Package`
+`HasEcosystem` checks `item.Package != nil` before reading `.Ecosystem` (line 49), so a `null`/missing `package` on an entry is skipped safely. `FilterByEcosystem` only guards against the *slice itself* being `nil` (`if x == nil { return nil }`, line 69) — its predicate then reads `affected.Package.Ecosystem` directly, with no per-element nil check. So an `affected` entry whose `package` is `null` will panic. In practice every well-formed OSV `affected` entry carries a `package`, but if you parse untrusted data, validate first with [[osv-validate]] or guard the slice yourself.
 :::
 
 ## Maven name decomposition
