@@ -16,7 +16,7 @@
 
 ```mermaid
 graph TD
-  A["🤖 AI Agent Skills<br/>6 个自动触发 skills"]
+  A["🤖 AI Agent Skills<br/>7 个自动触发 skills"]
   C["🖥️ CLI<br/>osv parse/validate/filter/query"]
   S["📦 Go SDK<br/>OsvSchema 泛型"]
   CORE["Go 核心库<br/>parse · validate · filter · query"]
@@ -68,7 +68,7 @@ fmt.Println(v.ID, v.Aliases.GetCVE(), v.Severity.GetCVSS3())
 
 ## 🤖 AI Agent Skills
 
-当 Claude Code 打开本仓库时，**6 个专用 skills 自动可用** —— 无需任何集成代码。Agent 根据意图自动调用对应的 `osv` 子命令。
+当 Claude Code 打开本仓库时，**7 个专用 skills 自动可用** —— 无需任何集成代码。Agent 根据意图自动调用对应的 `osv` 子命令。
 
 | Skill | 用途 | 自动触发条件 |
 |-------|------|-------------|

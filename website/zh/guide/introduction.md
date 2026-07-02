@@ -289,6 +289,6 @@ mindmap
 
 - 🤖 **[AI Agent 接入](/zh/guide/ai-agent)** —— 把一段提示词复制进 Claude Code / Codex，搞定
 - [快速开始](/zh/guide/quick-start) —— 30 秒内对着真实记录跑起来
-- [Skills 总览](/zh/guide/skills) —— 6 个自动触发的技能
+- [Skills 总览](/zh/guide/skills) —— 7 个自动触发的技能
 - [OSV Schema 参考](/zh/reference/osv-schema) —— 上面这个模型的详尽字段参考
 - [CLI](/zh/guide/cli) / [Go SDK](/zh/guide/sdk) —— 两扇上手的门

@@ -289,6 +289,6 @@ New to the space? These are the terms used throughout the docs.
 
 - 🤖 **[AI Agent Integration](/guide/ai-agent)** — copy one prompt into Claude Code / Codex, done
 - [Quick Start](/guide/quick-start) — running against a real record in 30 seconds
-- [Skills Overview](/guide/skills) — the 6 auto-triggering skills
+- [Skills Overview](/guide/skills) — the 7 auto-triggering skills
 - [OSV Schema Reference](/reference/osv-schema) — the model above, as an exhaustive field reference
 - [CLI](/guide/cli) / [Go SDK](/guide/sdk) — the two hands-on doors

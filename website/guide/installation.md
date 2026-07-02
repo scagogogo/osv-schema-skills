@@ -117,7 +117,7 @@ See the [Go SDK guide](/guide/sdk) for usage.
 
 ## Claude Code Skills
 
-The 6 skills activate automatically when Claude Code opens this repo — no install step:
+The 7 skills activate automatically when Claude Code opens this repo — no install step:
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git

@@ -186,7 +186,7 @@ The `[any, any]` type parameters are the `EcosystemSpecific` and `DatabaseSpecif
 
 ## Enable Claude Code skills
 
-Here is the AI-First payoff. Open the repo in Claude Code and the 6 skills activate automatically — no plugin, no config:
+Here is the AI-First payoff. Open the repo in Claude Code and the 7 skills activate automatically — no plugin, no config:
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git
@@ -224,6 +224,6 @@ See [Skills Overview](/guide/skills) for what triggers each one, or [AI Agent In
 ## What's next
 
 - [CLI reference](/guide/cli) — every command and flag
-- [Skills Overview](/guide/skills) — the 6 auto-triggering skills
+- [Skills Overview](/guide/skills) — the 7 auto-triggering skills
 - [Go SDK guide](/guide/sdk) — typed access from Go
 - [OSV Schema reference](/reference/osv-schema) — the full data model

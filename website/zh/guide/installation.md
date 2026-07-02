@@ -117,7 +117,7 @@ import osv "github.com/scagogogo/osv-schema-skills"
 
 ## Claude Code 技能
 
-当 Claude Code 打开本仓库时，6 个技能自动激活——无需安装步骤：
+当 Claude Code 打开本仓库时，7 个技能自动激活——无需安装步骤：
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git

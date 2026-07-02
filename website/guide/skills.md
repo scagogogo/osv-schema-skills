@@ -1,6 +1,6 @@
 # Skills Overview
 
-This repository is designed as a **Skills repository**. When Claude Code opens it, 6 specialized skills become automatically available — no integration code required.
+This repository is designed as a **Skills repository**. When Claude Code opens it, 7 specialized skills become automatically available — no integration code required.
 
 ## The skills
 

@@ -40,8 +40,8 @@ Set it up now, then use it for any vulnerability task I give you:
      executable, and put it on PATH.
    - Fallback: `go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest` (requires Go 1.18+).
    - Verify with `osv version`.
-2. This repository also ships 6 Claude Code Skills in `.claude/skills/` (osv-parse, osv-validate,
-   osv-filter, osv-query, osv-severity, osv-affected). If you want the skills active, clone the
+2. This repository also ships 7 Claude Code Skills in `.claude/skills/` (osv-parse, osv-validate,
+   osv-filter, osv-query, osv-severity, osv-affected, osv-installation). If you want the skills active, clone the
    repo locally: `git clone https://github.com/scagogogo/osv-schema-skills.git` and open that
    directory; the skills auto-trigger on vulnerability tasks. You don't have to clone if you only
    need the CLI.

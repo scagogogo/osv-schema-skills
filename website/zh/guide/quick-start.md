@@ -186,7 +186,7 @@ func main() {
 
 ## 启用 Claude Code 技能
 
-这里就是 AI-First 的回报所在。在 Claude Code 中打开本仓库，6 个技能自动激活——无需插件、无需配置：
+这里就是 AI-First 的回报所在。在 Claude Code 中打开本仓库，7 个技能自动激活——无需插件、无需配置：
 
 ```bash
 git clone https://github.com/scagogogo/osv-schema-skills.git
@@ -224,6 +224,6 @@ sequenceDiagram
 ## 下一步
 
 - [CLI 参考](/zh/guide/cli) —— 每条命令与参数
-- [Skills 总览](/zh/guide/skills) —— 6 个自动触发的技能
+- [Skills 总览](/zh/guide/skills) —— 7 个自动触发的技能
 - [Go SDK 指南](/zh/guide/sdk) —— 从 Go 带类型访问
 - [OSV Schema 参考](/zh/reference/osv-schema) —— 完整数据模型

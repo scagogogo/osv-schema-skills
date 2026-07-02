@@ -16,7 +16,7 @@
 
 ```mermaid
 graph TD
-  A["🤖 AI Agent Skills<br/>6 auto-trigger skills"]
+  A["🤖 AI Agent Skills<br/>7 auto-trigger skills"]
   C["🖥️ CLI<br/>osv parse/validate/filter/query"]
   S["📦 Go SDK<br/>OsvSchema generics"]
   CORE["Go Core Library<br/>parse · validate · filter · query"]
@@ -68,7 +68,7 @@ fmt.Println(v.ID, v.Aliases.GetCVE(), v.Severity.GetCVSS3())
 
 ## 🤖 AI Agent Skills
 
-When Claude Code opens this repo, **6 specialized skills activate automatically** — no integration code. The agent auto-invokes the right `osv` subcommand based on intent.
+When Claude Code opens this repo, **7 specialized skills activate automatically** — no integration code. The agent auto-invokes the right `osv` subcommand based on intent.
 
 | Skill | Purpose | Auto-triggers when… |
 |-------|---------|---------------------|
