@@ -42,6 +42,25 @@ osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json
 }
 ```
 
+`--maven -o json` decomposes each Maven package name into `group_id` / `artifact_id` (split on the first `:`). Non-Maven packages are skipped — only `Maven`-ecosystem entries appear:
+
+```bash
+osv query --maven -o json maven-record.json
+```
+
+```json
+{
+  "id": "GHSA-maven-example",
+  "maven": [
+    {
+      "name": "org.apache.commons:commons-text",
+      "group_id": "org.apache.commons",
+      "artifact_id": "commons-text"
+    }
+  ]
+}
+```
+
 ## The four extraction dimensions
 
 ```mermaid

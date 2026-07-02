@@ -42,6 +42,25 @@ osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json
 }
 ```
 
+`--maven -o json` 把每个 Maven 包名拆成 `group_id` / `artifact_id`（按首个 `:` 拆分）。非 Maven 包会被跳过——只有 `Maven` 生态的条目出现：
+
+```bash
+osv query --maven -o json maven-record.json
+```
+
+```json
+{
+  "id": "GHSA-maven-example",
+  "maven": [
+    {
+      "name": "org.apache.commons:commons-text",
+      "group_id": "org.apache.commons",
+      "artifact_id": "commons-text"
+    }
+  ]
+}
+```
+
 ## 四个提取维度
 
 ```mermaid
