@@ -4,7 +4,7 @@ layout: home
 hero:
   name: OSV Schema Skills
   text: AI-native vulnerability toolkit
-  tagline: Paste one prompt into Claude Code or Codex — the agent installs itself and starts parsing, validating & querying OSV vulnerability data. Go SDK + CLI + 6 Skills, one Go core.
+  tagline: Paste one prompt into Claude Code or Codex — the agent installs itself and starts parsing, validating & querying OSV vulnerability data. Go SDK + CLI + 7 Skills, one Go core.
   image:
     src: /architecture.svg
     alt: Three-layer architecture
@@ -22,7 +22,7 @@ hero:
 features:
   - icon: 🤖
     title: AI Agent First
-    details: 6 specialized Claude Code Skills auto-trigger on vulnerability tasks. No custom integration — clone the repo and the skills are live.
+    details: 6 data Skills (parse/validate/filter/query/severity/affected) plus a setup guide Skill, all auto-triggering on vulnerability tasks. No custom integration — clone the repo and the skills are live.
     link: /guide/skills
     linkText: Explore skills
   - icon: 🖥️
@@ -63,7 +63,7 @@ Skills bundle for the OSV vulnerability schema. Set it up now:
    OS/arch, or `go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest`. Verify `osv version`.
 2. Commands: `osv parse [-v] <file>`, `osv validate <file>…`, `osv filter -e/-r/-a <file>`,
    `osv query --severity cvss3|cvss2 --maven --ranges --events <file>`. Use `-o json` for parsing.
-3. Clone the repo to activate the 6 Claude Code Skills (osv-parse/validate/filter/query/severity/affected).
+3. Clone the repo to activate the 7 Claude Code Skills (osv-parse/validate/filter/query/severity/affected/installation).
 When I ask about a vulnerability, pick the right command automatically, filter by ecosystem if I
 name one, extract CVSS + affected ranges, and report concisely. Don't ask me which command to run.
 ```
@@ -87,7 +87,7 @@ One Go core, **three access layers**, so the same parsing/filtering/querying log
 
 ```mermaid
 graph TD
-  A["🤖 AI Agent Skills<br/>6 auto-trigger skills"]
+  A["🤖 AI Agent Skills<br/>7 auto-trigger skills"]
   C["🖥️ CLI<br/>osv parse/validate/filter/query"]
   S["📦 Go SDK<br/>OsvSchema generics"]
   CORE["Go Core Library<br/>parse · validate · filter · query"]

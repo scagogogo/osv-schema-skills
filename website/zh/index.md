@@ -4,7 +4,7 @@ layout: home
 hero:
   name: OSV Schema Skills
   text: AI 原生的漏洞数据工具箱
-  tagline: 把一段提示词粘贴进 Claude Code 或 Codex——智能体会自动安装，并开始解析、校验、查询 OSV 漏洞数据。Go SDK + CLI + 6 个技能，共用同一个 Go 内核。
+  tagline: 把一段提示词粘贴进 Claude Code 或 Codex——智能体会自动安装，并开始解析、校验、查询 OSV 漏洞数据。Go SDK + CLI + 7 个技能，共用同一个 Go 内核。
   image:
     src: /architecture.svg
     alt: 三层架构
@@ -22,7 +22,7 @@ hero:
 features:
   - icon: 🤖
     title: AI Agent 优先
-    details: 6 个专用 Claude Code 技能会在漏洞任务上自动触发。无需自定义集成——克隆仓库即可激活。
+    details: 6 个数据技能（parse/validate/filter/query/severity/affected）外加 1 个安装向导技能，全部在漏洞任务上自动触发。无需自定义集成——克隆仓库即可激活。
     link: /zh/guide/skills
     linkText: 浏览技能
   - icon: 🖥️
@@ -63,7 +63,7 @@ Skills bundle for the OSV vulnerability schema. Set it up now:
    OS/arch, or `go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest`. Verify `osv version`.
 2. Commands: `osv parse [-v] <file>`, `osv validate <file>…`, `osv filter -e/-r/-a <file>`,
    `osv query --severity cvss3|cvss2 --maven --ranges --events <file>`. Use `-o json` for parsing.
-3. Clone the repo to activate the 6 Claude Code Skills (osv-parse/validate/filter/query/severity/affected).
+3. Clone the repo to activate the 7 Claude Code Skills (osv-parse/validate/filter/query/severity/affected/installation).
 When I ask about a vulnerability, pick the right command automatically, filter by ecosystem if I
 name one, extract CVSS + affected ranges, and report concisely. Don't ask me which command to run.
 ```
@@ -87,7 +87,7 @@ name one, extract CVSS + affected ranges, and report concisely. Don't ask me whi
 
 ```mermaid
 graph TD
-  A["🤖 AI Agent 技能<br/>6 个自动触发技能"]
+  A["🤖 AI Agent 技能<br/>7 个自动触发技能"]
   C["🖥️ CLI<br/>osv parse/validate/filter/query"]
   S["📦 Go SDK<br/>OsvSchema 泛型"]
   CORE["Go 内核库<br/>parse · validate · filter · query"]
