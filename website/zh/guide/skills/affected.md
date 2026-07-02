@@ -25,6 +25,9 @@ pypi := v.Affected.FilterByEcosystem(osv.EcosystemPyPI)
 
 // 遍历范围与事件
 for _, a := range v.Affected {
+    if a.Package == nil {
+        continue // 缺失 package 罕见，但在不受信任的数据上可能发生
+    }
     fmt.Println(a.Package.Ecosystem, a.Package.Name)
     for _, r := range a.Ranges {
         fmt.Println("  range type:", r.Type)   // SEMVER / ECOSYSTEM / GIT
@@ -64,10 +67,11 @@ classDiagram
   class Package {
     +Ecosystem Ecosystem
     +Name string
-    +Purl string
+    +PackageUrl string
   }
   class Range {
     +Type RangeType
+    +Repo string
     +Events []Event
   }
   class Event {
