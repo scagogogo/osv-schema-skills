@@ -81,10 +81,11 @@ classDiagram
   class Package {
     +Ecosystem Ecosystem
     +Name string
-    +Purl string
+    +PackageUrl string
   }
   class Range {
     +Type RangeType
+    +Repo string
     +Events []Event
   }
   class Event {
