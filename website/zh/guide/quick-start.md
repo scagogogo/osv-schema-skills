@@ -30,8 +30,9 @@ flowchart TD
 零依赖方案——不需要 Go 工具链。从 [最新 Release](https://github.com/scagogogo/osv-schema-skills/releases) 下载匹配你 OS/架构的二进制：
 
 ```bash
-# Linux amd64 示例（把版本号与平台换成你自己的）
-VERSION=v0.1.0
+# Linux amd64 示例（把版本号与平台换成你自己的）。
+# 将 <latest-tag> 替换为 Releases 页面上最新的 tag。
+VERSION=<latest-tag>
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv
@@ -39,7 +40,7 @@ sudo mv osv /usr/local/bin/
 osv version
 ```
 
-二进制覆盖 Linux（amd64/arm64/arm）、macOS（amd64/arm64）与 Windows（amd64/arm64）。每个 Release 还附带 `checksums.txt` 供你校验完整性。
+二进制覆盖 Linux（amd64/arm64/arm）、macOS（amd64/arm64）与 Windows（amd64/arm64）。每个 Release 还附带 `checksums.txt` 供你校验完整性。若最新 release 暂无预编译资产，改用下方的 `go install`。
 
 == go install
 

@@ -36,10 +36,12 @@ graph TD
 ```bash
 # 1. 安装 CLI —— 任选其一：
 #    a) 预编译二进制（Linux/macOS/Windows · amd64/arm64/arm）
-VERSION=v0.1.0
+#       将 <latest-tag> 替换为 Releases 页面上最新的 tag。
+VERSION=<latest-tag>
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv && chmod +x osv && sudo mv osv /usr/local/bin/
+#       若最新 release 暂无预编译资产，改用 (b)。
 
 #    b) 或通过 Go
 go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest

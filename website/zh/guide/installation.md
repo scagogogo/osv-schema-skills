@@ -39,7 +39,7 @@ flowchart TD
 ::: tabs
 == 预编译二进制
 
-每个 tag 都通过 goreleaser 发布预编译二进制：
+每个 tag 都通过 goreleaser 发布预编译二进制。若最新 release 暂无预编译资产（例如首个 goreleaser 打的 tag 尚未发布），改用下方的 `go install`。
 
 | 操作系统 | 架构 |
 |----------|------|
@@ -51,15 +51,16 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  T["osv_&lt;版本&gt;_&lt;系统&gt;_&lt;架构&gt;.&lt;后缀&gt;"] --> V["版本 → v0.1.0"]
+  T["osv_&lt;版本&gt;_&lt;系统&gt;_&lt;架构&gt;.&lt;后缀&gt;"] --> V["版本 → &lt;latest-tag&gt;"]
   T --> O["系统 → linux / darwin / windows"]
   T --> A["架构 → amd64 / arm64 / arm"]
   T --> E["后缀 → tar.gz（unix）· zip（windows）"]
 ```
 
 ```bash
-# Linux amd64 示例——按你的情况替换版本号/平台
-VERSION=v0.1.0
+# Linux amd64 示例——按你的情况替换版本号/平台。
+# 将 <latest-tag> 替换为 Releases 页面上最新的 tag。
+VERSION=<latest-tag>
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv

@@ -30,8 +30,9 @@ Choose whichever fits your machine. All three end with `osv version`, which both
 The zero-dependency option — no Go toolchain needed. Download the binary for your OS/arch from the [latest Release](https://github.com/scagogogo/osv-schema-skills/releases):
 
 ```bash
-# Linux amd64 example (swap the version and platform for yours)
-VERSION=v0.1.0
+# Linux amd64 example (swap the version and platform for yours).
+# Replace <latest-tag> with the newest tag on the Releases page.
+VERSION=<latest-tag>
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv
@@ -39,7 +40,7 @@ sudo mv osv /usr/local/bin/
 osv version
 ```
 
-Binaries are published for Linux (amd64/arm64/arm), macOS (amd64/arm64) and Windows (amd64/arm64). Each release also ships a `checksums.txt` you can verify against.
+Binaries are published for Linux (amd64/arm64/arm), macOS (amd64/arm64) and Windows (amd64/arm64). Each release also ships a `checksums.txt` you can verify against. If the latest release has no pre-built assets yet, use `go install` below.
 
 == Go install
 
