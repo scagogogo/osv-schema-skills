@@ -10,7 +10,7 @@
 severity 经由 `osv query` 查询：
 
 ```bash
-osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析分数
+osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析分数（向量串时为 0.0）
 osv query --severity cvss2 vulnerability.json  # CVSS v2
 ```
 
@@ -19,8 +19,11 @@ osv query --severity cvss2 vulnerability.json  # CVSS v2
 ## SDK
 
 ```go
-// CVSS v3 条目（缺失则为 nil）
+// CVSS v3 条目（缺失则为 nil——使用前先检查）
 s := v.Severity.GetCVSS3()
+if s == nil {
+    return // 无 CVSS v3 条目
+}
 
 // 解析后的数值分数
 fmt.Println(s.GetScore())        // float64，无法解析时为 0.0

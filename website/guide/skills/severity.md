@@ -10,7 +10,7 @@ Analyze CVSS severity data from OSV records.
 Severity is queried via `osv query`:
 
 ```bash
-osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score
+osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score (0.0 on a vector string)
 osv query --severity cvss2 vulnerability.json  # CVSS v2
 ```
 
@@ -19,8 +19,11 @@ Or see all severities at once with `osv parse -v`.
 ## SDK
 
 ```go
-// CVSS v3 entry (nil if absent)
+// CVSS v3 entry (nil if absent — check before use)
 s := v.Severity.GetCVSS3()
+if s == nil {
+    return // no CVSS v3 entry
+}
 
 // Parsed numeric score
 fmt.Println(s.GetScore())        // float64, 0.0 if unparseable
