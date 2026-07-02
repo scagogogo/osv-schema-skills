@@ -75,6 +75,18 @@ func printParseText(w io.Writer, o *osv_schema.OsvSchema[any, any], verbose bool
 		fmt.Fprintln(w, "  "+strings.ReplaceAll(o.Details, "\n", "\n  "))
 	}
 
+	if verbose && o.Credits != nil && o.Credits.Name != "" {
+		fmt.Fprintln(w, "\nCredits:")
+		fmt.Fprintf(w, "  %s", o.Credits.Name)
+		if o.Credits.Type != "" {
+			fmt.Fprintf(w, " (%s)", o.Credits.Type)
+		}
+		if len(o.Credits.Contact) > 0 {
+			fmt.Fprintf(w, " %s", strings.Join(o.Credits.Contact, ", "))
+		}
+		fmt.Fprintln(w)
+	}
+
 	if len(o.Severity) > 0 {
 		fmt.Fprintln(w, "\nSeverity:")
 		for _, s := range o.Severity {
