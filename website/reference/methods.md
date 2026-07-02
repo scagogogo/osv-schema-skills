@@ -198,7 +198,7 @@ flowchart LR
 
 ## A real query, method by method
 
-"Is `GHSA-…` a high-severity PyPI issue, and where's the fix?" — here's the exact method chain an agent (or your code) walks.
+"Is `GHSA-…` a high-severity PyPI issue, and are there fix links?" — here's the exact method chain an agent (or your code) walks. (This sample's references happen to carry no `FIX` entries, so the last call returns an empty slice — the chain is the same regardless.)
 
 ```mermaid
 sequenceDiagram
@@ -211,7 +211,7 @@ sequenceDiagram
   You->>SDK: v.Severity.GetCVSS3()
   SDK-->>You: *Severity (vector string)
   You->>SDK: v.References.FilterByType(ReferenceTypeFix)
-  SDK-->>You: References (fix links)
+  SDK-->>You: References (fix links, if any)
   Note over You,SDK: parse → filter → score → fix, all on one typed core
 ```
 

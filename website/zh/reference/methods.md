@@ -198,7 +198,7 @@ flowchart LR
 
 ## 一次真实查询，逐个方法
 
-"某条 `GHSA-…` 是不是一个高危的 PyPI 漏洞，修复在哪？"——下面就是智能体（或你的代码）会走的精确方法链。
+"某条 `GHSA-…` 是不是一个高危的 PyPI 漏洞，有没有修复链接？"——下面就是智能体（或你的代码）会走的精确方法链。（这条样例的 references 恰好不带 `FIX` 条目，所以最后一步返回空切片——但方法链本身无所谓。）
 
 ```mermaid
 sequenceDiagram
@@ -211,7 +211,7 @@ sequenceDiagram
   You->>SDK: v.Severity.GetCVSS3()
   SDK-->>You: *Severity（向量字符串）
   You->>SDK: v.References.FilterByType(ReferenceTypeFix)
-  SDK-->>You: References（修复链接）
+  SDK-->>You: References（修复链接，若有）
   Note over You,SDK: 解析 → 过滤 → 取分 → 修复，全在同一个带类型的内核上
 ```
 
