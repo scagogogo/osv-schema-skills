@@ -8,7 +8,7 @@ Extract specific sub-information: CVSS severity, Maven decomposition, version ra
 ## CLI
 
 ```bash
-osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score
+osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score (0.0 on a vector string)
 osv query --severity cvss2 vulnerability.json  # CVSS v2
 osv query --maven vulnerability.json           # Maven groupId/artifactId
 osv query --ranges vulnerability.json          # Version ranges
@@ -26,7 +26,7 @@ osv query --ranges --events vulnerability.json # Combine
 
 At least one flag is required.
 
-`--severity -o json` returns the CVSS entry. The `score` is the raw vector string; the DTO also computes a `numeric_score` via `GetScore()`, but it carries `omitempty` — and since `GetScore()` returns `0.0` on a vector string, that field is dropped from the JSON:
+`--severity -o json` returns the CVSS entry. The `score` is the raw vector string; the DTO also computes a `numeric_score` via `GetScore()`, but it carries `omitempty` — and since `GetScore()` returns `0.0` on a vector string, that field is dropped from the JSON. In text mode the same `0.0` is still printed as `Numeric score: 0.0`, so the field appears in text but vanishes in JSON for the same record:
 
 ```bash
 osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json

@@ -8,7 +8,7 @@
 ## CLI
 
 ```bash
-osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析分数
+osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析分数（向量串时为 0.0）
 osv query --severity cvss2 vulnerability.json  # CVSS v2
 osv query --maven vulnerability.json           # Maven groupId/artifactId
 osv query --ranges vulnerability.json          # 版本范围
@@ -26,7 +26,7 @@ osv query --ranges --events vulnerability.json # 组合
 
 至少需要一个标志。
 
-`--severity -o json` 返回 CVSS 条目。`score` 是原始向量字符串；DTO 也会经 `GetScore()` 算一个 `numeric_score`，但它带 `omitempty`——而向量字符串时 `GetScore()` 返回 `0.0`，于是该字段被从 JSON 里省略：
+`--severity -o json` 返回 CVSS 条目。`score` 是原始向量字符串；DTO 也会经 `GetScore()` 算一个 `numeric_score`，但它带 `omitempty`——而向量字符串时 `GetScore()` 返回 `0.0`，于是该字段被从 JSON 里省略。文本模式下同一个 `0.0` 仍会打印为 `Numeric score: 0.0`，所以同一条记录下该字段在文本里出现、在 JSON 里消失：
 
 ```bash
 osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json
