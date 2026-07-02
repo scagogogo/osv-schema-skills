@@ -172,7 +172,7 @@ flowchart TD
   DONE -->|否| RESULT["最终标志 = V 是否受影响"]
 ```
 
-特殊值 `introduced: "0"` 表示"从最初的版本起"。SDK 提供逐事件的谓词，方便你自己实现这套判定：
+特殊值 `introduced: "0"` 表示"从最初的版本起"。上面的流程覆盖了三种常见事件（`introduced` / `fixed` / `last_affected`）；第四种 `limit` 标记范围上限，处理方式类似 `last_affected`——一旦 `V` 抵达 `limit`，标志即清零。它在 `GIT` 范围之外很少见。SDK 提供逐事件的谓词，方便你自己实现这套判定：
 
 ```mermaid
 flowchart LR

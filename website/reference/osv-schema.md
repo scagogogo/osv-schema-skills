@@ -172,7 +172,7 @@ flowchart TD
   DONE -->|no| RESULT["final flag = is V affected"]
 ```
 
-The special value `introduced: "0"` means "from the very first version". The SDK gives you the per-event predicates to implement this yourself:
+The special value `introduced: "0"` means "from the very first version". The flow above covers the three common event kinds (`introduced` / `fixed` / `last_affected`); the fourth, `limit`, marks a range's upper bound and is treated like `last_affected` — once `V` reaches `limit`, the flag clears. It is rare outside `GIT` ranges. The SDK gives you the per-event predicates to implement this yourself:
 
 ```mermaid
 flowchart LR
