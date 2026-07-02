@@ -2,17 +2,19 @@
 
 本仓库被设计为一个 **技能仓库**。当 Claude Code 打开它时，6 个专用技能自动可用——无需集成代码。
 
-## 六个技能
+## 技能
+
+六个**数据技能**干真正的活——解析、校验、过滤、查询、评分、影响面。第七个 `osv-installation` 是**安装向导**，首次使用时触发；它不调用 `osv`（其 `allowed-tools` 是 `Bash(go:*)`，而非 `Bash(osv:*)`）。
 
 | 技能 | 用途 | 何时自动触发 |
 |------|------|--------------|
-| `osv-parse` | 解析并展示 OSV JSON 数据 | 你提到解析漏洞文件或提取 CVE/GHSA 数据 |
-| `osv-validate` | 校验 OSV JSON 文件 | 你要检查 schema 合规性或验证漏洞文件 |
-| `osv-filter` | 按生态 / 引用类型 / 别名过滤 | 你想要 npm/PyPI/Maven 过滤或 FIX 引用 |
-| `osv-query` | 提取 severity、Maven、ranges、events | 你需要 CVSS 分数、Maven GAV 或版本范围 |
-| `osv-severity` | CVSS 严重程度分析 | 你在评估漏洞风险或严重程度 |
-| `osv-affected` | 受影响包与版本分析 | 你需要影响分析或版本范围检查 |
-| `osv-installation` | 安装与设置指南 | 你是第一次使用这些技能 |
+| [`osv-parse`](/zh/guide/skills/parse) | 解析并展示 OSV JSON 数据 | 你提到解析漏洞文件或提取 CVE/GHSA 数据 |
+| [`osv-validate`](/zh/guide/skills/validate) | 校验 OSV JSON 文件 | 你要检查 schema 合规性或验证漏洞文件 |
+| [`osv-filter`](/zh/guide/skills/filter) | 按生态 / 引用类型 / 别名过滤 | 你想要 npm/PyPI/Maven 过滤或 FIX 引用 |
+| [`osv-query`](/zh/guide/skills/query) | 提取 severity、Maven、ranges、events | 你需要 CVSS 分数、Maven GAV 或版本范围 |
+| [`osv-severity`](/zh/guide/skills/severity) | CVSS 严重程度分析 | 你在评估漏洞风险或严重程度 |
+| [`osv-affected`](/zh/guide/skills/affected) | 受影响包与版本分析 | 你需要影响分析或版本范围检查 |
+| [`osv-installation`](/zh/guide/installation) | 安装与设置指南 | 你是第一次使用这些技能 |
 
 ## 什么措辞落到哪个技能
 

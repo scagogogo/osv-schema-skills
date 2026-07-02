@@ -2,17 +2,19 @@
 
 This repository is designed as a **Skills repository**. When Claude Code opens it, 6 specialized skills become automatically available — no integration code required.
 
-## The six skills
+## The skills
+
+Six **data skills** do the real work — parse, validate, filter, query, score, and map impact. A seventh, `osv-installation`, is a **setup guide** that triggers on first use; it doesn't call `osv` (its `allowed-tools` is `Bash(go:*)`, not `Bash(osv:*)`).
 
 | Skill | Purpose | Auto-triggers when… |
 |-------|---------|---------------------|
-| `osv-parse` | Parse & display OSV JSON data | You mention parsing a vulnerability file or extracting CVE/GHSA data |
-| `osv-validate` | Validate OSV JSON files | You ask to check schema compliance or verify a vulnerability file |
-| `osv-filter` | Filter by ecosystem / reference type / alias | You want npm/PyPI/Maven filtering or FIX references |
-| `osv-query` | Extract severity, Maven, ranges, events | You need CVSS scores, Maven GAV, or version ranges |
-| `osv-severity` | CVSS severity analysis | You're assessing vulnerability risk or severity |
-| `osv-affected` | Affected package & version analysis | You need impact analysis or version range inspection |
-| `osv-installation` | Setup & installation guide | It's your first time using the skills |
+| [`osv-parse`](/guide/skills/parse) | Parse & display OSV JSON data | You mention parsing a vulnerability file or extracting CVE/GHSA data |
+| [`osv-validate`](/guide/skills/validate) | Validate OSV JSON files | You ask to check schema compliance or verify a vulnerability file |
+| [`osv-filter`](/guide/skills/filter) | Filter by ecosystem / reference type / alias | You want npm/PyPI/Maven filtering or FIX references |
+| [`osv-query`](/guide/skills/query) | Extract severity, Maven, ranges, events | You need CVSS scores, Maven GAV, or version ranges |
+| [`osv-severity`](/guide/skills/severity) | CVSS severity analysis | You're assessing vulnerability risk or severity |
+| [`osv-affected`](/guide/skills/affected) | Affected package & version analysis | You need impact analysis or version range inspection |
+| [`osv-installation`](/guide/installation) | Setup & installation guide | It's your first time using the skills |
 
 ## What phrasing lands on which skill
 
