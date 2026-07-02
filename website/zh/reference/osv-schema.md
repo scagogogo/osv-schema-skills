@@ -76,8 +76,9 @@ classDiagram
     +Credits *Credits
   }
   class Affected {
-    +Package Package
-    +Ranges []Range
+    +Package *Package
+    +Ranges []*Range
+    +Severity []*Severity
     +Versions []string
   }
   class Package {
@@ -117,6 +118,7 @@ classDiagram
 graph LR
   AFF["Affected"] --> PKG["package<br/>ecosystem · name · purl"]
   AFF --> VER["versions[]"]
+  AFF --> SEV["severity[]（affected 级）"]
   AFF --> RNG["ranges[]"]
   RNG --> EVT["events[]"]
   EVT --> I["introduced"]
@@ -125,7 +127,7 @@ graph LR
   EVT --> V["limit"]
 ```
 
-`package` 对象带三个字段：`ecosystem`（[类型化常量](/zh/reference/ecosystems)之一）、`name`（包名——对 Maven 是 `groupId:artifactId`）和 `purl`（可选的 [Package URL](https://github.com/package-url/purl-spec) 字符串）。`purl` 仅供参考；SDK 不解析它，故生态专属拆分（如 Maven GAV）应走 `name` 经 `GetGroupID` / `GetArtifactID`，而非 `purl`。
+`package` 对象带三个字段：`ecosystem`（[类型化常量](/zh/reference/ecosystems)之一）、`name`（包名——对 Maven 是 `groupId:artifactId`）和 `purl`（可选的 [Package URL](https://github.com/package-url/purl-spec) 字符串）。`purl` 仅供参考；SDK 不解析它，故生态专属拆分（如 Maven GAV）应走 `name` 经 `GetGroupID` / `GetArtifactID`，而非 `purl`。一条 `affected` 条目还可自带 `severity` 切片，作用域仅限该 affected 范围。
 
 ## 一条记录的生命周期
 

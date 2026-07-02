@@ -76,8 +76,9 @@ classDiagram
     +Credits *Credits
   }
   class Affected {
-    +Package Package
-    +Ranges []Range
+    +Package *Package
+    +Ranges []*Range
+    +Severity []*Severity
     +Versions []string
   }
   class Package {
@@ -117,6 +118,7 @@ classDiagram
 graph LR
   AFF["Affected"] --> PKG["package<br/>ecosystem · name · purl"]
   AFF --> VER["versions[]"]
+  AFF --> SEV["severity[] (per-affected)"]
   AFF --> RNG["ranges[]"]
   RNG --> EVT["events[]"]
   EVT --> I["introduced"]
@@ -125,7 +127,7 @@ graph LR
   EVT --> V["limit"]
 ```
 
-The `package` object carries three fields: `ecosystem` (one of the [typed constants](/reference/ecosystems)), `name` (the package name — for Maven this is `groupId:artifactId`), and `purl` (an optional [Package URL](https://github.com/package-url/purl-spec) string). `purl` is informational; the SDK doesn't parse it, so for ecosystem-specific decomposition (like Maven GAV) use `name` via `GetGroupID` / `GetArtifactID`, not `purl`.
+The `package` object carries three fields: `ecosystem` (one of the [typed constants](/reference/ecosystems)), `name` (the package name — for Maven this is `groupId:artifactId`), and `purl` (an optional [Package URL](https://github.com/package-url/purl-spec) string). `purl` is informational; the SDK doesn't parse it, so for ecosystem-specific decomposition (like Maven GAV) use `name` via `GetGroupID` / `GetArtifactID`, not `purl`. An `affected` entry may also carry its own `severity` slice, scoped to that affected range.
 
 ## Lifecycle of a record
 
