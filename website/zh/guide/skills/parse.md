@@ -93,7 +93,7 @@ osv parse -o json vulnerability.json | jq '{id, summary, severity, affected}'
   "id": "GHSA-vxv8-r8q2-63xw",
   "summary": "TensorFlow vulnerable to `CHECK` fail in `FractionalMaxPoolGrad`",
   "severity": [{ "type": "CVSS_V3", "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H" }],
-  "affected": [{ "package": { "ecosystem": "PyPI", "name": "tensorflow" }, "ranges": [...] }]
+  "affected": [{ "package": { "ecosystem": "PyPI", "name": "tensorflow", "purl": "" }, "ranges": [...] }]
 }
 ```
 
