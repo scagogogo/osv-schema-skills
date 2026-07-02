@@ -4,13 +4,13 @@ This file provides guidance to Claude Code when working in this repository.
 
 ## Project Overview
 
-**osv-schema-skills** is a Go library + CLI + Claude Code Skills bundle for the OSV (Open Source Vulnerability) Schema. It provides type-safe parsing, validation, filtering, and querying of vulnerability data in the OSV format — accessible via 6 specialized Claude Code skills and a Go SDK.
+**osv-schema-skills** is a Go library + CLI + Claude Code Skills bundle for the OSV (Open Source Vulnerability) Schema. It provides type-safe parsing, validation, filtering, and querying of vulnerability data in the OSV format — accessible via 7 Claude Code skills (6 data skills + 1 setup guide) and a Go SDK.
 
 ## Repository Structure
 
 ```
 .
-├── .claude/skills/       # 6 Claude Code Skills (SKILL.md files)
+├── .claude/skills/       # 7 Claude Code Skills (6 data + 1 setup guide)
 │   ├── osv-parse/        # Parse and display OSV JSON data
 │   ├── osv-validate/     # Validate OSV JSON files
 │   ├── osv-filter/       # Filter by ecosystem, reference type, alias
@@ -63,7 +63,7 @@ go test -v -run TestUnmarshal ./...
 
 ## Skills
 
-The 6 skills in `.claude/skills/*/SKILL.md` follow this structure:
+The 7 skills in `.claude/skills/*/SKILL.md` (6 data skills + `osv-installation` setup guide) follow this structure:
 - YAML frontmatter with `name`, `description`, `allowed-tools`, `argument-hint`
 - Two access paths per skill: SDK (Go) and CLI
 - Each skill has: When to Use, Decision Tree, Task Patterns, API Reference, Cross-References, Important Notes
