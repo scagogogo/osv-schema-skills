@@ -170,7 +170,7 @@ flowchart LR
 
 ```bash
 # Pull just the CVSS v3 vector string
-osv query --severity cvss3 -o json vuln.json | jq -r '.score'
+osv query --severity cvss3 -o json vuln.json | jq -r '.severity.score'
 
 # List every affected ecosystem across a directory, deduplicated
 for f in advisories/*.json; do
@@ -179,7 +179,9 @@ done | sort -u
 
 # Gate CI: fail if any file is invalid, then report the criticals
 osv validate advisories/*.json || exit 1
-osv parse -o json advisories/*.json | jq 'select(.severity != null)'
+for f in advisories/*.json; do
+  osv parse -o json "$f" | jq 'select(.severity != null)'
+done
 ```
 
 ::: tip Exit code + JSON compose cleanly

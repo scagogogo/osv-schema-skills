@@ -170,7 +170,7 @@ flowchart LR
 
 ```bash
 # 只取 CVSS v3 向量字符串
-osv query --severity cvss3 -o json vuln.json | jq -r '.score'
+osv query --severity cvss3 -o json vuln.json | jq -r '.severity.score'
 
 # 列出一个目录里所有受影响生态并去重
 for f in advisories/*.json; do
@@ -179,7 +179,9 @@ done | sort -u
 
 # CI 闸门：任一文件无效即失败，再报告有 severity 的记录
 osv validate advisories/*.json || exit 1
-osv parse -o json advisories/*.json | jq 'select(.severity != null)'
+for f in advisories/*.json; do
+  osv parse -o json "$f" | jq 'select(.severity != null)'
+done
 ```
 
 ::: tip 退出码 + JSON 天然组合
