@@ -123,13 +123,20 @@ osv query --ranges --events vulnerability.json # Combine
 osv version
 ```
 
-Prints the CLI version (injected at build time by goreleaser) and the supported OSV schema version.
+Prints the CLI version (injected at build time by goreleaser) and the supported OSV schema version:
+
+```text
+osv-cli version: dev
+OSV schema version: 1.4.0
+```
+
+The `dev` placeholder is replaced with the release tag by goreleaser's ldflags. Unlike the other subcommands, `version` ignores `-o json` — it always prints these two text lines.
 
 ## Global flag
 
 | Flag | Description |
 |------|-------------|
-| `-o, --output` | `text` (default) or `json` — applies to all subcommands |
+| `-o, --output` | `text` (default) or `json` — applies to `parse`/`validate`/`filter`/`query`; `version` ignores it |
 
 ## Exit code conventions
 

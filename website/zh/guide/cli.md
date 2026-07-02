@@ -123,13 +123,20 @@ osv query --ranges --events vulnerability.json # 组合
 osv version
 ```
 
-打印 CLI 版本（构建时由 goreleaser 注入）和所支持的 OSV schema 版本。
+打印 CLI 版本（构建时由 goreleaser 注入）和所支持的 OSV schema 版本：
+
+```text
+osv-cli version: dev
+OSV schema version: 1.4.0
+```
+
+`dev` 占位符会被 goreleaser 的 ldflags 替换为发布 tag。与其他子命令不同，`version` 忽略 `-o json`——它总是打印这两行文本。
 
 ## 全局标志
 
 | 标志 | 说明 |
 |------|------|
-| `-o, --output` | `text`（默认）或 `json`——适用于所有子命令 |
+| `-o, --output` | `text`（默认）或 `json`——适用于 `parse`/`validate`/`filter`/`query`；`version` 忽略它 |
 
 ## 退出码约定
 
