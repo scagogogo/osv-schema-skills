@@ -24,6 +24,23 @@ osv filter -o json -e PyPI vulnerability.json
 
 At least one filter flag is required.
 
+`-o json` returns the filtered `affected` entries — note each event object carries only its one non-empty field (`omitempty` at work):
+
+```bash
+osv filter -e PyPI -o json test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```json
+{
+  "affected": [
+    {
+      "package": { "ecosystem": "PyPI", "name": "tensorflow" },
+      "ranges": [{ "type": "ECOSYSTEM", "events": [ { "introduced": "0" }, { "fixed": "2.7.2" } ] }]
+    }
+  ]
+}
+```
+
 ## The three filter dimensions
 
 ```mermaid

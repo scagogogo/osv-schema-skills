@@ -24,6 +24,23 @@ osv filter -o json -e PyPI vulnerability.json
 
 至少需要一个过滤标志。
 
+`-o json` 返回过滤后的 `affected` 条目——注意每个事件对象只携带它那一个非空字段（`omitempty` 在起作用）：
+
+```bash
+osv filter -e PyPI -o json test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```json
+{
+  "affected": [
+    {
+      "package": { "ecosystem": "PyPI", "name": "tensorflow" },
+      "ranges": [{ "type": "ECOSYSTEM", "events": [ { "introduced": "0" }, { "fixed": "2.7.2" } ] }]
+    }
+  ]
+}
+```
+
 ## 三个过滤维度
 
 ```mermaid
