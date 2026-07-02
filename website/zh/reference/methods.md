@@ -143,6 +143,10 @@ v, err := osv.UnmarshalFromJsonFile[any, any]("vuln.json")
 v, err := osv.UnmarshalFromJsonFile[MyEco, MyDB]("vuln.json")
 ```
 
+::: tip 务必先检查 `err`——出错时指针为 `nil`
+两者在任何失败（JSON 畸形、文件缺失、解码错误）时都返回 `(nil, err)`。成功时指针绝不为 `nil`。契约即：先看 `err` 再碰 `v`，你就永远不会解引用 nil 的 `*OsvSchema`。
+:::
+
 ## 方法调用关系图
 
 ```mermaid

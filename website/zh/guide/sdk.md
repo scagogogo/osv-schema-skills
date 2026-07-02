@@ -196,7 +196,7 @@ flowchart LR
 
 ## 设计要点
 
-- **构造器永不返回 nil**——`UnmarshalFromJsonFile` / `UnmarshalFromJson` 显式返回 error；成功时结果绝非 nil 指针。
+- **成功时永不 nil，出错时必为 nil**——`UnmarshalFromJsonFile` / `UnmarshalFromJson` 失败时返回 `(nil, err)`，成功时返回非 nil 的 `*OsvSchema`。碰指针前先检查 `err`。
 - **Withdrawn 是字符串**——不是 `time.Time`。用非空字符串判断撤回状态。
 - **数据库策略**——简单字段做列；复杂嵌套结构（`AffectedSlice`、`SeveritySlice`）经 GORM serializer 存为 JSON 字符串。
 

@@ -196,7 +196,7 @@ The two parameters are independent. Type just `DatabaseSpecific` and leave `Ecos
 
 ## Design notes
 
-- **Never nil from constructors** — `UnmarshalFromJsonFile` / `UnmarshalFromJson` return errors explicitly; the result is never a nil pointer on success.
+- **Never nil on success, always nil on error** — `UnmarshalFromJsonFile` / `UnmarshalFromJson` return `(nil, err)` on failure and a non-nil `*OsvSchema` on success. Check `err` before touching the pointer.
 - **Withdrawn is a string** — not `time.Time`. Check for a non-empty string to determine withdrawal status.
 - **Database strategy** — simple fields are columns; complex nested structures (`AffectedSlice`, `SeveritySlice`) are stored as JSON strings via the GORM serializer.
 

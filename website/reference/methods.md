@@ -143,6 +143,10 @@ v, err := osv.UnmarshalFromJsonFile[any, any]("vuln.json")
 v, err := osv.UnmarshalFromJsonFile[MyEco, MyDB]("vuln.json")
 ```
 
+::: tip Always check `err` first — on error the pointer is `nil`
+Both functions return `(nil, err)` on any failure (bad JSON, missing file, decode error). On success the pointer is never `nil`. So the contract is: inspect `err` before touching `v`, and you'll never dereference a nil `*OsvSchema`.
+:::
+
 ## Method call graph
 
 ```mermaid
