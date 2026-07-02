@@ -82,6 +82,21 @@ flowchart TD
   TV -->|no| OK["done"]
 ```
 
+`-o json` re-marshals the typed `OsvSchema` core, so the output is a standard OSV record — field names match the [OSV Schema](/reference/osv-schema) exactly:
+
+```bash
+osv parse -o json vulnerability.json | jq '{id, summary, severity, affected}'
+```
+
+```json
+{
+  "id": "GHSA-vxv8-r8q2-63xw",
+  "summary": "TensorFlow vulnerable to `CHECK` fail in `FractionalMaxPoolGrad`",
+  "severity": [{ "type": "CVSS_V3", "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H" }],
+  "affected": [{ "package": { "ecosystem": "PyPI", "name": "tensorflow" }, "ranges": [...] }]
+}
+```
+
 ::: tip Parsing never mutates the file
 `parse` only reads. It decodes into the typed core and prints — it never writes back. To check that a file is *well-formed* before parsing, reach for [[osv-validate]]; a malformed file makes `parse` exit non-zero with the decode error.
 :::

@@ -82,6 +82,21 @@ flowchart TD
   TV -->|否| OK["完成"]
 ```
 
+`-o json` 把带类型的 `OsvSchema` 内核重新 marshal，所以输出就是标准 OSV 记录——字段名与 [OSV Schema](/zh/reference/osv-schema) 完全一致：
+
+```bash
+osv parse -o json vulnerability.json | jq '{id, summary, severity, affected}'
+```
+
+```json
+{
+  "id": "GHSA-vxv8-r8q2-63xw",
+  "summary": "TensorFlow vulnerable to `CHECK` fail in `FractionalMaxPoolGrad`",
+  "severity": [{ "type": "CVSS_V3", "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H" }],
+  "affected": [{ "package": { "ecosystem": "PyPI", "name": "tensorflow" }, "ranges": [...] }]
+}
+```
+
 ::: tip 解析绝不修改文件
 `parse` 只读。它把数据解码进带类型内核再打印——绝不写回。想在解析前先确认文件*格式正确*，用 [[osv-validate]]；格式错误的文件会让 `parse` 以非零码退出并给出解码错误。
 :::
