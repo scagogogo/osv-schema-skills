@@ -208,7 +208,7 @@ flowchart TD
 | `GIT` | `RangeTypeGit` | Git commit hashes, resolved via the commit graph |
 
 ::: warning GIT ranges are not string-sortable
-For `GIT` ranges you cannot decide affectedness by comparing hash strings — you need the repository's commit ancestry. Treat `GIT` ranges as "requires graph resolution", not "compare like SEMVER".
+For `GIT` ranges you cannot decide affectedness by comparing hash strings — you need the repository's commit ancestry. Treat `GIT` ranges as "requires graph resolution", not "compare like SEMVER". The `Range.Repo` field (the repo URL) is what anchors a `GIT` range to that ancestry; for `SEMVER` / `ECOSYSTEM` ranges it is usually empty.
 :::
 
 ## Severity scoring internals
