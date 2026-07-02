@@ -26,6 +26,22 @@ osv query --ranges --events vulnerability.json # Combine
 
 At least one flag is required.
 
+`--severity -o json` returns the CVSS entry. The `score` is the raw vector string; the DTO also computes a `numeric_score` via `GetScore()`, but it carries `omitempty` — and since `GetScore()` returns `0.0` on a vector string, that field is dropped from the JSON:
+
+```bash
+osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```json
+{
+  "id": "GHSA-vxv8-r8q2-63xw",
+  "severity": {
+    "type": "CVSS_V3",
+    "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+  }
+}
+```
+
 ## The four extraction dimensions
 
 ```mermaid

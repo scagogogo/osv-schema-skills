@@ -26,6 +26,22 @@ osv query --ranges --events vulnerability.json # 组合
 
 至少需要一个标志。
 
+`--severity -o json` 返回 CVSS 条目。`score` 是原始向量字符串；DTO 也会经 `GetScore()` 算一个 `numeric_score`，但它带 `omitempty`——而向量字符串时 `GetScore()` 返回 `0.0`，于是该字段被从 JSON 里省略：
+
+```bash
+osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```json
+{
+  "id": "GHSA-vxv8-r8q2-63xw",
+  "severity": {
+    "type": "CVSS_V3",
+    "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+  }
+}
+```
+
 ## 四个提取维度
 
 ```mermaid
