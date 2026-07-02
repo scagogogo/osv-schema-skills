@@ -125,7 +125,7 @@ cd osv-schema-skills
 claude   # skills are live
 ```
 
-Or install as a plugin (coming soon):
+Or install as a plugin — the manifest is already in `.claude-plugin/`, so once the marketplace listing is live you can add it directly:
 
 ```bash
 claude plugin add scagogogo/osv-schema-skills

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "osv-schema",
-  "description": "Go library + CLI + Claude Code Skills for parsing, validating, filtering, and querying OSV (Open Source Vulnerability) schema data — 6 specialized skills for vulnerability analysis",
+  "description": "Go library + CLI + Claude Code Skills for parsing, validating, filtering, and querying OSV (Open Source Vulnerability) schema data — 7 specialized skills for vulnerability analysis",
   "owner": {
     "name": "scagogogo",
     "url": "https://github.com/scagogogo"

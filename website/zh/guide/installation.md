@@ -125,7 +125,7 @@ cd osv-schema-skills
 claude   # 技能已生效
 ```
 
-或作为插件安装（即将推出）：
+或作为插件安装——`.claude-plugin/` 里的 manifest 已就绪，待 marketplace 上线后即可直接添加：
 
 ```bash
 claude plugin add scagogogo/osv-schema-skills
