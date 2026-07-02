@@ -45,7 +45,7 @@ graph TD
   AFF["Affected[]"] --> PKG["package<br/>ecosystem · name · purl"]
   AFF --> VER["versions[]"]
   AFF --> RNG["ranges[]"]
-  AFF --> ASEV["severity[] (per-package)"]
+  AFF --> ASEV["severity[] (per-affected)"]
   RNG --> TYPE["type: SEMVER/ECOSYSTEM/GIT"]
   RNG --> EVT["events[]"]
   EVT --> I["introduced"]
@@ -59,10 +59,10 @@ graph TD
 ```mermaid
 classDiagram
   class Affected {
-    +Package Package
+    +Package *Package
     +Versions []string
-    +Ranges []Range
-    +Severity SeveritySlice
+    +Ranges []*Range
+    +Severity []*Severity
   }
   class Package {
     +Ecosystem Ecosystem
@@ -128,7 +128,7 @@ Some records list exact affected `versions[]`; others give only `ranges[]`; many
 
 - `RangeTypeEcosystem` (`ECOSYSTEM`) is the most common; `SEMVER` and `GIT` are less frequent
 - Event fields are mutually exclusive per event object
-- `affected[].severity` is optional per-package severity, separate from top-level `severity`
+- `affected[].severity` is optional per-affected severity, separate from top-level `severity`
 
 ## Cross-references
 

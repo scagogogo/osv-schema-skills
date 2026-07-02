@@ -45,7 +45,7 @@ graph TD
   AFF["Affected[]"] --> PKG["package<br/>ecosystem · name · purl"]
   AFF --> VER["versions[]"]
   AFF --> RNG["ranges[]"]
-  AFF --> ASEV["severity[]（每包）"]
+  AFF --> ASEV["severity[]（每 affected）"]
   RNG --> TYPE["type: SEMVER/ECOSYSTEM/GIT"]
   RNG --> EVT["events[]"]
   EVT --> I["introduced"]
@@ -59,10 +59,10 @@ graph TD
 ```mermaid
 classDiagram
   class Affected {
-    +Package Package
+    +Package *Package
     +Versions []string
-    +Ranges []Range
-    +Severity SeveritySlice
+    +Ranges []*Range
+    +Severity []*Severity
   }
   class Package {
     +Ecosystem Ecosystem
@@ -128,7 +128,7 @@ flowchart TD
 
 - `RangeTypeEcosystem`（`ECOSYSTEM`）最常见；`SEMVER` 和 `GIT` 较少
 - 每个 event 对象的字段互斥
-- `affected[].severity` 是可选的每包 severity，与顶层 `severity` 相互独立
+- `affected[].severity` 是可选的每 affected severity，与顶层 `severity` 相互独立
 
 ## 交叉引用
 
