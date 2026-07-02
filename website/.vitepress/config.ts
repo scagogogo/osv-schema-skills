@@ -108,6 +108,7 @@ export default withMermaid(
                     { text: 'osv-query', link: '/guide/skills/query' },
                     { text: 'osv-severity', link: '/guide/skills/severity' },
                     { text: 'osv-affected', link: '/guide/skills/affected' },
+                    { text: 'osv-installation', link: '/guide/installation' },
                   ],
                 },
                 {
@@ -189,6 +190,7 @@ export default withMermaid(
                     { text: 'osv-query', link: '/zh/guide/skills/query' },
                     { text: 'osv-severity', link: '/zh/guide/skills/severity' },
                     { text: 'osv-affected', link: '/zh/guide/skills/affected' },
+                    { text: 'osv-installation', link: '/zh/guide/installation' },
                   ],
                 },
                 {
