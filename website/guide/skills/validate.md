@@ -33,10 +33,16 @@ flowchart TD
   R -->|"no"| E1["✗ error"]
   R -->|"yes"| P{"Parses as OSV?"}
   P -->|"no"| E2["✗ error"]
-  P -->|"yes"| C{"id & schema_version<br/>both present?"}
-  C -->|"no"| E3["✗ error"]
-  C -->|"yes"| OK["✓ valid"]
+  P -->|"yes"| ID{"id != \"\" ?"}
+  ID -->|"no"| E3["+ error: missing id"]
+  ID -->|"yes"| SV{"schema_version != \"\" ?"}
+  SV -->|"no"| E4["+ error: missing schema_version"]
+  SV -->|"yes"| OK["✓ valid"]
+  E3 --> FAIL["✗ (errors aggregated)"]
+  E4 --> FAIL
 ```
+
+The `id` and `schema_version` checks are two **independent `if`s, not a short-circuit** — both errors are collected when both fields are empty, so a record missing `id` still gets checked for `schema_version` and can surface two errors. The earlier layers (readable/valid-JSON/OSV-parse) each fail fast on their own condition.
 
 ## Decision tree
 
