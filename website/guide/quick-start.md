@@ -219,7 +219,7 @@ See [Skills Overview](/guide/skills) for what triggers each one, or [AI Agent In
 | Symptom | Likely cause & fix |
 |---------|--------------------|
 | `osv: command not found` | The binary isn't on your `PATH`. For `go install`, add `$(go env GOPATH)/bin` to `PATH`; for the binary, move it into `/usr/local/bin`. |
-| `at least one filter flag is required` | `osv filter`/`osv query` need at least one flag — e.g. `-e PyPI` or `--severity cvss3`. |
+| `at least one filter flag is required` / `at least one query flag is required` | `osv filter`/`osv query` need at least one selector flag — e.g. `-e PyPI` or `--severity cvss3`. `filter` names its three (`--ecosystem`, `--ref-type`, `--alias`); `query` names its four (`--severity`, `--maven`, `--ranges`, `--events`). |
 | Numeric score shows `0.0` | The `score` field is a CVSS *vector string*, not a number — that's expected. See [Methods → severity](/reference/methods#severity). |
 | `go install` fails on Go < 1.18 | The generics core needs Go 1.18+. Run `go version` and upgrade. |
 

@@ -219,7 +219,7 @@ sequenceDiagram
 | 现象 | 可能原因与解决 |
 |------|----------------|
 | `osv: command not found` | 二进制不在 `PATH` 上。用 `go install` 的把 `$(go env GOPATH)/bin` 加进 `PATH`；用二进制的把它移到 `/usr/local/bin`。 |
-| `at least one filter flag is required` | `osv filter`/`osv query` 至少需要一个参数——如 `-e PyPI` 或 `--severity cvss3`。 |
+| `at least one filter flag is required` / `at least one query flag is required` | `osv filter`/`osv query` 至少需要一个选择标志——如 `-e PyPI` 或 `--severity cvss3`。`filter` 报错会列出它的三个（`--ecosystem`、`--ref-type`、`--alias`）；`query` 会列出它的四个（`--severity`、`--maven`、`--ranges`、`--events`）。 |
 | 数值分数显示 `0.0` | `score` 字段是 CVSS *向量字符串* 而非数字——这是预期行为。见 [方法清单 → severity](/zh/reference/methods#severity)。 |
 | Go < 1.18 上 `go install` 失败 | 泛型内核需要 Go 1.18+。运行 `go version` 并升级。 |
 
