@@ -96,6 +96,7 @@ flowchart TD
 raw, _ := os.ReadFile("vulnerability.json")
 if !json.Valid(raw) { /* not JSON */ }
 v, err := osv.UnmarshalFromJson[any, any](raw)
+if err != nil { /* decode error — v is nil, don't touch it */ }
 // then check v.ID != "" && v.SchemaVersion != ""
 ```
 
