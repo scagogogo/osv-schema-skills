@@ -128,7 +128,22 @@ graph TD
   EVT --> LM["limit<br/>范围上限"]
 ```
 
-事件字段在每个 event 对象里互斥——一个 event 只会是 introduced/fixed/last_affected/limit 之一。
+事件字段在每个 event 对象里互斥——一个 event 只会是 introduced/fixed/last_affected/limit 之一。`-o json` 输出把这层可视化了：每个 event 对象只携带它那一个非空字段（`omitempty` 剥掉了其余字段）：
+
+```bash
+osv query --events -o json test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```json
+{
+  "events": [
+    { "package": "PyPI/tensorflow", "introduced": "0" },
+    { "package": "PyPI/tensorflow", "fixed": "2.7.2" },
+    { "package": "PyPI/tensorflow", "introduced": "2.8.0" },
+    { "package": "PyPI/tensorflow", "fixed": "2.8.1" }
+  ]
+}
+```
 
 ## `--events` 时间线实例
 

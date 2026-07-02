@@ -128,7 +128,22 @@ graph TD
   EVT --> LM["limit<br/>range upper bound"]
 ```
 
-Event fields are mutually exclusive per event object — one of introduced/fixed/last_affected/limit each.
+Event fields are mutually exclusive per event object — one of introduced/fixed/last_affected/limit each. The `-o json` output makes this visible: each event object carries only its one non-empty field (`omitempty` strips the rest):
+
+```bash
+osv query --events -o json test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```json
+{
+  "events": [
+    { "package": "PyPI/tensorflow", "introduced": "0" },
+    { "package": "PyPI/tensorflow", "fixed": "2.7.2" },
+    { "package": "PyPI/tensorflow", "introduced": "2.8.0" },
+    { "package": "PyPI/tensorflow", "fixed": "2.8.1" }
+  ]
+}
+```
 
 ## A worked `--events` timeline
 
