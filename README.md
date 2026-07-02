@@ -9,7 +9,7 @@
 
 [简体中文](README.zh-CN.md) | **English**
 
-> **AI-native** OSV (Open Source Vulnerability) schema toolkit: **Go SDK + CLI + 6 Claude Code Skills**.
+> **AI-native** OSV (Open Source Vulnerability) schema toolkit: **Go SDK + CLI + 7 Claude Code Skills**.
 > Parse, validate, filter & query vulnerability data — three access layers, one Go core.
 >
 > 📖 Docs: <https://scagogogo.github.io/osv-schema-skills/>

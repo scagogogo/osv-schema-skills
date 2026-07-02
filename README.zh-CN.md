@@ -9,7 +9,7 @@
 
 **简体中文** | [English](README.md)
 
-> **AI 原生** 的 OSV（开源漏洞）Schema 工具包：**Go SDK + CLI + 6 个 Claude Code Skills**。
+> **AI 原生** 的 OSV（开源漏洞）Schema 工具包：**Go SDK + CLI + 7 个 Claude Code Skills**。
 > 解析、校验、过滤、查询漏洞数据 —— 三层访问方式，同一个 Go 核心。
 >
 > 📖 文档：<https://scagogogo.github.io/osv-schema-skills/>

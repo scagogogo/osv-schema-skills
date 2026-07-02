@@ -98,7 +98,7 @@ osv query --severity cvss3 vulnerability.json
 
 ## Claude Code Skills Integration
 
-This repository includes 6 Claude Code Skills in `.claude/skills/`:
+This repository includes 7 Claude Code Skills in `.claude/skills/`:
 
 | Skill | Purpose |
 |-------|---------|
@@ -108,6 +108,7 @@ This repository includes 6 Claude Code Skills in `.claude/skills/`:
 | `osv-query` | Extract severity, maven, ranges, events |
 | `osv-severity` | CVSS severity analysis |
 | `osv-affected` | Affected package and version analysis |
+| `osv-installation` | Setup & installation guide (this skill) |
 
 Skills are automatically available when Claude Code opens this repository.
 

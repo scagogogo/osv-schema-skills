@@ -9,7 +9,7 @@ export default withMermaid(
     lang: 'en-US', // 站点默认；zh/ locale 在客户端切换 html lang
     title: 'OSV Schema Skills',
     description:
-      'AI-native OSV schema toolkit — Go SDK + CLI + 6 Claude Code Skills for parsing, validating, filtering and querying vulnerability data.',
+      'AI-native OSV schema toolkit — Go SDK + CLI + 7 Claude Code Skills for parsing, validating, filtering, querying vulnerability data and setup.',
     base: '/osv-schema-skills/',
     cleanDist: true,
     lastUpdated: true,
