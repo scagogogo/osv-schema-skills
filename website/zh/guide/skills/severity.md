@@ -63,15 +63,15 @@ flowchart TD
   NUM --> BAND["→ 高"]
 ```
 
-## 顶层 vs 包级 severity
+## 顶层 vs affected 级 severity
 
 ```mermaid
 flowchart TD
-  TOP["顶层 severity<br/>v.Severity (SeveritySlice)"] --> G3["GetCVSS3() 全局 CVSS"]
-  AFF["affected[].severity<br/>（可选，每包）"] --> P3["该包专属 CVSS"]
+  TOP["顶层 severity<br/>v.Severity (SeveritySlice)"] --> G3["GetCVSS3() 记录级 CVSS"]
+  AFF["affected[].severity<br/>（[]*Severity，可选，每 affected）"] --> P3["该 affected 范围专属 CVSS"]
 ```
 
-`affected[].severity` 是可选的每包 severity，与顶层 `severity` 相互独立。
+`affected[].severity` 是作用域仅限单条 affected 条目的可选 severity 切片（类型 `[]*Severity`——注意这是裸切片，*不是* `SeveritySlice`，故没有 `GetCVSS3()` 便捷方法，需自行遍历）。它与顶层 `severity` 相互独立。
 
 ## CVSS 向量结构剖析
 
@@ -99,5 +99,5 @@ flowchart LR
 ## 交叉引用
 
 - [[osv-query]] — `--severity` 标志在这里
-- [[osv-affected]] — 每包 severity（`affected[].severity`）
+- [[osv-affected]] — 每 affected severity（`affected[].severity`）
 - [方法清单](/zh/reference/methods#severity) — 完整 severity API

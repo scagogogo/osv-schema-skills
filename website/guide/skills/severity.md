@@ -63,15 +63,15 @@ flowchart TD
   NUM --> BAND["→ High"]
 ```
 
-## Top-level vs per-package severity
+## Top-level vs per-affected severity
 
 ```mermaid
 flowchart TD
-  TOP["Top-level severity<br/>v.Severity (SeveritySlice)"] --> G3["GetCVSS3() global CVSS"]
-  AFF["affected[].severity<br/>(optional, per-package)"] --> P3["package-specific CVSS"]
+  TOP["Top-level severity<br/>v.Severity (SeveritySlice)"] --> G3["GetCVSS3() record-level CVSS"]
+  AFF["affected[].severity<br/>([]*Severity, optional, per-affected)"] --> P3["per-affected-range CVSS"]
 ```
 
-`affected[].severity` is an optional per-package severity, separate from the top-level `severity`.
+`affected[].severity` is an optional severity slice scoped to a single affected entry (type `[]*Severity` — note this is a bare slice, *not* `SeveritySlice`, so it has no `GetCVSS3()` helper; iterate it directly). It is separate from the top-level `severity`.
 
 ## Anatomy of a CVSS vector
 
@@ -99,5 +99,5 @@ The numeric 0–10 score is *derived* from these metrics by the CVSS formula, no
 ## Cross-references
 
 - [[osv-query]] — the `--severity` flag lives here
-- [[osv-affected]] — per-package severity (`affected[].severity`)
+- [[osv-affected]] — per-affected severity (`affected[].severity`)
 - [Methods](/reference/methods#severity) — full severity API
