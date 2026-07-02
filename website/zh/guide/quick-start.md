@@ -82,6 +82,8 @@ osv parse test_data/GHSA-vxv8-r8q2-63xw.json
 ID:             GHSA-vxv8-r8q2-63xw
 Schema Version: 1.4.0
 Summary:        ...
+Aliases:        CVE-2022-35981
+CVE:            CVE-2022-35981
 
 Severity:
   CVSS_V3: CVSS:3.1/... (score: 0.0)
@@ -135,7 +137,7 @@ flowchart LR
 ```bash
 osv validate test_data/GHSA-vxv8-r8q2-63xw.json        # 是否合规？
 osv filter -e PyPI test_data/GHSA-vxv8-r8q2-63xw.json  # 只看受影响的 PyPI 项
-osv query --severity cvss3 test_data/GHSA-vxv8-r8q2-63xw.json  # 只要 CVSS 分数
+osv query --severity cvss3 test_data/GHSA-vxv8-r8q2-63xw.json  # CVSS v3 条目（向量 + 分数）
 ```
 
 ### 四个命令分别给你什么

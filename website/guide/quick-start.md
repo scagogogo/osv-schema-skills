@@ -82,6 +82,8 @@ Expected output (abridged):
 ID:             GHSA-vxv8-r8q2-63xw
 Schema Version: 1.4.0
 Summary:        ...
+Aliases:        CVE-2022-35981
+CVE:            CVE-2022-35981
 
 Severity:
   CVSS_V3: CVSS:3.1/... (score: 0.0)
@@ -135,7 +137,7 @@ Try each verb on the sample:
 ```bash
 osv validate test_data/GHSA-vxv8-r8q2-63xw.json        # is it schema-compliant?
 osv filter -e PyPI test_data/GHSA-vxv8-r8q2-63xw.json  # only PyPI-affected entries
-osv query --severity cvss3 test_data/GHSA-vxv8-r8q2-63xw.json  # just the CVSS score
+osv query --severity cvss3 test_data/GHSA-vxv8-r8q2-63xw.json  # the CVSS v3 entry (vector + score)
 ```
 
 ### What each command gives you
