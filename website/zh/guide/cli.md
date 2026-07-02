@@ -97,7 +97,7 @@ osv filter -o json -e PyPI vulnerability.json
 提取聚焦的子信息。至少需要一个标志；标志可组合。
 
 ```bash
-osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析分数
+osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析分数（向量串时为 0.0）
 osv query --severity cvss2 vulnerability.json  # CVSS v2
 osv query --maven vulnerability.json           # Maven groupId/artifactId 拆分
 osv query --ranges vulnerability.json          # 每个受影响包的版本范围

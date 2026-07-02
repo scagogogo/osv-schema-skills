@@ -97,7 +97,7 @@ osv filter -o json -e PyPI vulnerability.json
 Extract focused sub-information. At least one flag required; flags combine.
 
 ```bash
-osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score
+osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score (0.0 on a vector string)
 osv query --severity cvss2 vulnerability.json  # CVSS v2
 osv query --maven vulnerability.json           # Maven groupId/artifactId decomposition
 osv query --ranges vulnerability.json          # Version ranges per affected package
