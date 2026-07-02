@@ -40,8 +40,8 @@ func main() {
     }
 
     // Check if a specific ecosystem is affected
-    if v.Affected.HasEcosystem("npm") {
-        fmt.Println("Affects npm packages")
+    if v.Affected.HasEcosystem(osv.EcosystemPyPI) {
+        fmt.Println("Affects PyPI packages")
     }
 
     // Get CVSS v3 score

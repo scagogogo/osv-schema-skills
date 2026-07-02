@@ -40,8 +40,8 @@ func main() {
     }
 
     // 检查是否影响某生态
-    if v.Affected.HasEcosystem("npm") {
-        fmt.Println("影响 npm 包")
+    if v.Affected.HasEcosystem(osv.EcosystemPyPI) {
+        fmt.Println("影响 PyPI 包")
     }
 
     // 取 CVSS v3 分数
