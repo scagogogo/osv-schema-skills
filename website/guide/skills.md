@@ -47,6 +47,10 @@ mindmap
       "which versions"
       "am I impacted"
       "affected packages"
+    osv-installation
+      "install the CLI"
+      "set up osv"
+      "first time"
 ```
 
 ## How a skill is wired
