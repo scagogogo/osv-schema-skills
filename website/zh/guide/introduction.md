@@ -157,7 +157,7 @@ flowchart TD
 读作：*"从最初的版本（`0`）起脆弱，直到 `2.2.24`（不含）为止。"* 要判断版本 `2.2.10` 是否受影响，机器沿着时间线走一遍即可；它永远不必解析一个句子。`type` 说明如何比较版本——`ECOSYSTEM`（该生态自己的版本规则）、`SEMVER`，或 `GIT`（提交哈希）。
 
 ::: tip 事件的黄金法则
-每个事件对象**恰好**携带一个键——`introduced`、`fixed`、`last_affected` 或 `limit`。这正是本工具箱的 JSON 输出使用 `omitempty` 的原因：在一个真实的 `"introduced"` 旁边输出 `"fixed": ""` 会违反规范，并让读它的 AI 智能体困惑。
+每个事件对象**恰好**携带一个键——`introduced`、`fixed`、`last_affected` 或 `limit`。这正是 CLI 的 `-o json` 输出对事件字段使用 `omitempty` 的原因：在一个真实的 `"introduced"` 旁边输出 `"fixed": ""` 会违反规范，并让读它的 AI 智能体困惑。（SDK 的 `Event` 结构体本身**不**带 `omitempty` 标签——CLI 在 JSON 输出时加了一层干净的 DTO。）
 :::
 
 ### 第 6 层 —— 去哪了解更多？（`references`）
@@ -245,7 +245,7 @@ mindmap
     AI 优先
       意图触发技能
       复制粘贴命令
-      omitempty 干净 JSON
+      CLI -o json omitempty 干净
     一图抵千言
       Mermaid 胜过大段文字
     类型安全
@@ -262,7 +262,7 @@ mindmap
 
 | 原则 | 如何体现 |
 |------|----------|
-| **AI First（AI 优先）** | 技能从意图自动触发；文档以智能体可直接执行的复制粘贴命令开头；JSON 输出用 `omitempty` 保持干净，智能体永不会读到误导性的空字段 |
+| **AI First（AI 优先）** | 技能从意图自动触发；文档以智能体可直接执行的复制粘贴命令开头；CLI 的 `-o json` 输出经带 `omitempty` 的干净 DTO 路由，智能体永不会读到误导性的空字段 |
 | **一图抵千言** | 本站大量使用 Mermaid 图，而非成片的文字 |
 | **类型安全** | 泛型 `OsvSchema[EcosystemSpecific, DatabaseSpecific any]`——可按生态/数据库定制，通用解析用 `any` 即可 |
 | **广泛序列化** | 每个核心类型都支持 JSON、YAML、mapstructure、GORM、BSON 标签 |

@@ -157,7 +157,7 @@ A `range` is an ordered list of `events`. The most common events are `introduced
 Read this as: *"vulnerable from the very first version (`0`) up to — but not including — `2.2.24`."* To decide whether version `2.2.10` is affected, a machine walks the timeline; it never has to parse a sentence. `type` says how to compare versions — `ECOSYSTEM` (the ecosystem's own version rules), `SEMVER`, or `GIT` (commit hashes).
 
 ::: tip The golden rule of events
-Each event object carries **exactly one** key — `introduced`, `fixed`, `last_affected`, or `limit`. That is why this toolkit's JSON output uses `omitempty`: emitting `"fixed": ""` next to a real `"introduced"` would violate the spec and confuse an AI agent reading it.
+Each event object carries **exactly one** key — `introduced`, `fixed`, `last_affected`, or `limit`. That is why the CLI's `-o json` output uses `omitempty` on event fields: emitting `"fixed": ""` next to a real `"introduced"` would violate the spec and confuse an AI agent reading it. (The SDK's `Event` struct itself does **not** tag `omitempty` — the CLI adds a clean DTO layer on top for JSON output.)
 :::
 
 ### Step 6 — Where to learn more? (`references`)
@@ -245,7 +245,7 @@ mindmap
     AI First
       intent-triggered skills
       copy-paste commands
-      omitempty-clean JSON
+      CLI -o json omitempty-clean
     one picture
       mermaid over prose
     type safety
@@ -262,7 +262,7 @@ mindmap
 
 | Principle | How it shows up |
 |-----------|-----------------|
-| **AI First** | Skills auto-trigger from intent; docs lead with copy-paste commands an agent can run; JSON output is `omitempty`-clean so an agent never reads a misleading empty field |
+| **AI First** | Skills auto-trigger from intent; docs lead with copy-paste commands an agent can run; the CLI's `-o json` output routes through clean DTOs with `omitempty`, so an agent never reads a misleading empty field |
 | **One picture beats a thousand words** | This site leans on Mermaid diagrams instead of walls of prose |
 | **Type safety** | Generic `OsvSchema[EcosystemSpecific, DatabaseSpecific any]` — customize per ecosystem/database, or use `any` for general parsing |
 | **Broad serialization** | Every core type supports JSON, YAML, mapstructure, GORM, BSON tags |
