@@ -84,11 +84,15 @@ Schema Version: 1.4.0
 Summary:        ...
 
 Severity:
-  CVSS_V3: CVSS:3.1/... (score: 7.5)
+  CVSS_V3: CVSS:3.1/... (score: 0.0)
 
 Affected Packages:
   ...
 ```
+
+::: warning 为什么分数是 `0.0`？
+这里的 `score` 字段是 CVSS **向量字符串**（`CVSS:3.1/AV:N/…`），不是数字。`parse` 调用的是 `GetScore()`，它对该字符串跑 `strconv.ParseFloat`——在向量字符串上必然失败，于是返回 `0.0` 并吞掉错误。这正是 [方法清单页](/zh/reference/methods#severity) 记录的那个坑：要区分真实的 `0.0` 与向量字符串解析失败，请用 `GetScoreAsFloat()`（检查 `err`）或 `GetScoreAsPointer()`（检查 `nil`）。想从向量拿到数值分数，你得自行解析向量。
+:::
 
 ### 读懂输出
 

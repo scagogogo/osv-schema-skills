@@ -84,11 +84,15 @@ Schema Version: 1.4.0
 Summary:        ...
 
 Severity:
-  CVSS_V3: CVSS:3.1/... (score: 7.5)
+  CVSS_V3: CVSS:3.1/... (score: 0.0)
 
 Affected Packages:
   ...
 ```
+
+::: warning Why is the score `0.0`?
+The `score` field here is a CVSS **vector string** (`CVSS:3.1/AV:N/…`), not a number. `parse` calls `GetScore()`, which runs `strconv.ParseFloat` on it — that fails on a vector string, so it returns `0.0` and swallows the error. This is the same gotcha the [Methods page](/reference/methods#severity) documents: to distinguish a real `0.0` from a vector-string parse failure, use `GetScoreAsFloat()` (check `err`) or `GetScoreAsPointer()` (check `nil`). To get a numeric score from a vector, you must parse the vector yourself.
+:::
 
 ### Reading the output
 
