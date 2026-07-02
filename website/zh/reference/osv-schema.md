@@ -41,18 +41,20 @@ flowchart TD
   READ -->|是| JSON{"json.Valid？"}
   JSON -->|否| E2["错误：不是合法 JSON"]
   JSON -->|是| U["UnmarshalFromJson"]
-  U --> ID{"id != \"\" ？"}
-  ID -->|否| E3["错误：缺失 id"]
+  U -->|"解析错误（如字段类型错误）"| E5["错误：OSV 解析错误"]
+  U -->|已解析| ID{"id != \"\" ？"}
+  ID -->|否| E3["+ 错误：缺失 id"]
   ID -->|是| SV{"schema_version != \"\" ？"}
-  SV -->|否| E4["错误：缺失 schema_version"]
+  SV -->|否| E4["+ 错误：缺失 schema_version"]
   SV -->|是| OK["有效 ✓<br/>exit 0"]
   E1 --> FAIL["无效 ✗<br/>exit 1"]
   E2 --> FAIL
+  E5 --> FAIL
   E3 --> FAIL
   E4 --> FAIL
 ```
 
-检查刻意做得浅——它确认记录*可解析*且带这两个身份字段，而非每个可选字段都合规。`affected`、`severity`、`references` 不检查；一条没有 affected 条目的记录照样通过校验。
+检查刻意做得浅——它确认记录*可解析*且带这两个身份字段，而非每个可选字段都合规。失败分三层、按序检查：文件可读性、原始 JSON 语法、再到 OSV 结构反序列化。`json.Valid` 通过并不保证 `UnmarshalFromJson` 成功——例如 `affected` 是字符串而非数组时，JSON 语法合法，但 OSV 解码失败，报为解析错误。解码成功后，`id` 与 `schema_version` 是**两个独立 `if`，非短路**：两者都为空时两条错误都会收集（只缺 `id` 的记录仍会继续检查 `schema_version`）。`affected`、`severity`、`references` 不检查；一条没有 affected 条目的记录照样通过校验。
 
 ## 完整类型关系图
 

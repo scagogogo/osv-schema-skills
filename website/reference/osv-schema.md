@@ -41,18 +41,20 @@ flowchart TD
   READ -->|yes| JSON{"json.Valid?"}
   JSON -->|no| E2["error: not valid JSON"]
   JSON -->|yes| U["UnmarshalFromJson"]
-  U --> ID{"id != \"\" ?"}
-  ID -->|no| E3["error: missing id"]
+  U -->|"parse error (e.g. wrong field type)"| E5["error: OSV parse error"]
+  U -->|parsed| ID{"id != \"\" ?"}
+  ID -->|no| E3["+ error: missing id"]
   ID -->|yes| SV{"schema_version != \"\" ?"}
-  SV -->|no| E4["error: missing schema_version"]
+  SV -->|no| E4["+ error: missing schema_version"]
   SV -->|yes| OK["valid ✓<br/>exit 0"]
   E1 --> FAIL["invalid ✗<br/>exit 1"]
   E2 --> FAIL
+  E5 --> FAIL
   E3 --> FAIL
   E4 --> FAIL
 ```
 
-The check is intentionally shallow — it confirms the record is *parseable* and carries the two identity fields, not that every optional field is well-formed. `affected`, `severity`, and `references` are not checked; a record with no affected entries still validates.
+The check is intentionally shallow — it confirms the record is *parseable* and carries the two identity fields, not that every optional field is well-formed. There are three independent failure layers, checked in order: file readability, raw JSON syntax, then OSV struct decode. `json.Valid` passing does not guarantee `UnmarshalFromJson` succeeds — a record where, say, `affected` is a string instead of an array is syntactically valid JSON but fails OSV decoding and is reported as a parse error. Once decoded, `id` and `schema_version` are checked as **two independent `if`s, not a short-circuit**: both errors are collected when both are empty (a record missing only `id` still gets checked for `schema_version`). `affected`, `severity`, and `references` are not checked; a record with no affected entries still validates.
 
 ## Full type relationship
 
