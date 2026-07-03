@@ -69,16 +69,24 @@ Severity:
 
 Affected Packages:
   PyPI/tensorflow
+  PyPI/tensorflow
+  PyPI/tensorflow
+  PyPI/tensorflow-cpu
+  PyPI/tensorflow-cpu
   PyPI/tensorflow-cpu
   PyPI/tensorflow-gpu
-  ...
+  PyPI/tensorflow-gpu
+  PyPI/tensorflow-gpu
 
 References:
   [WEB] https://github.com/tensorflow/tensorflow/security/advisories/GHSA-vxv8-r8q2-63xw
   [ADVISORY] https://nvd.nist.gov/vuln/detail/CVE-2022-35981
+  [WEB] https://github.com/tensorflow/tensorflow/commit/8741e57d163a079db05a7107a7609af70931def4
   [PACKAGE] https://github.com/tensorflow/tensorflow
-  ...
+  [WEB] https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0
 ```
+
+Each affected package is printed once **per `affected` entry** it appears in — this record carries three separate `affected` entries for `tensorflow` (one per patched branch), so `PyPI/tensorflow` shows up three times. That's the structure of the data, not a bug. References are listed in source order across all `WEB` / `ADVISORY` / `PACKAGE` / … types (no grouping).
 
 The `(score: 0.0)` next to the CVSS vector is the same vector-string parse-failure documented in [Methods → severity](/reference/methods#severity) — the vector itself is in the `Score:` field.
 

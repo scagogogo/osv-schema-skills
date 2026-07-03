@@ -69,16 +69,24 @@ Severity:
 
 Affected Packages:
   PyPI/tensorflow
+  PyPI/tensorflow
+  PyPI/tensorflow
+  PyPI/tensorflow-cpu
+  PyPI/tensorflow-cpu
   PyPI/tensorflow-cpu
   PyPI/tensorflow-gpu
-  ...
+  PyPI/tensorflow-gpu
+  PyPI/tensorflow-gpu
 
 References:
   [WEB] https://github.com/tensorflow/tensorflow/security/advisories/GHSA-vxv8-r8q2-63xw
   [ADVISORY] https://nvd.nist.gov/vuln/detail/CVE-2022-35981
+  [WEB] https://github.com/tensorflow/tensorflow/commit/8741e57d163a079db05a7107a7609af70931def4
   [PACKAGE] https://github.com/tensorflow/tensorflow
-  ...
+  [WEB] https://github.com/tensorflow/tensorflow/releases/tag/v2.10.0
 ```
+
+每个受影响包按它出现的**每个 `affected` 条目**打印一次——这条记录为 `tensorflow` 带了 3 个独立 `affected` 条目（每个修补分支一条），所以 `PyPI/tensorflow` 出现 3 次。这是数据结构本身如此，不是 bug。引用按源顺序列出，横跨 `WEB`/`ADVISORY`/`PACKAGE`/… 各类型（不分组）。
 
 CVSS 向量旁的 `(score: 0.0)` 就是 [方法清单 → severity](/zh/reference/methods#severity) 里记录的向量字符串解析失败表现——向量本身在 `Score:` 字段里。
 
