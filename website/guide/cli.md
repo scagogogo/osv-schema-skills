@@ -52,7 +52,7 @@ osv parse -o json vulnerability.json   # JSON output
 
 | Flag | Description |
 |------|-------------|
-| `-v, --verbose` | Show all fields: published/modified, withdrawn, related, details, ranges, credits |
+| `-v, --verbose` | Show all fields: published/modified, withdrawn, related, details, credits, per-range events |
 | `-o, --output` | Output format: `text` (default) or `json` |
 
 Output includes ID, schema version, summary, aliases/CVE, severity, affected packages, and references.

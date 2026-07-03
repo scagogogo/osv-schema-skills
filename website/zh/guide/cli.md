@@ -52,7 +52,7 @@ osv parse -o json vulnerability.json   # JSON 输出
 
 | 标志 | 说明 |
 |------|------|
-| `-v, --verbose` | 展示全字段：published/modified、withdrawn、related、details、ranges、credits |
+| `-v, --verbose` | 展示全字段：published/modified、withdrawn、related、details、credits、每段 range 事件 |
 | `-o, --output` | 输出格式：`text`（默认）或 `json` |
 
 输出含 ID、schema 版本、摘要、aliases/CVE、severity、受影响包和引用。
