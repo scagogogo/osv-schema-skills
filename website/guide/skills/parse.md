@@ -46,12 +46,41 @@ flowchart TD
   OUT --> SEV["severity (CVSS)"]
   OUT --> AFF["affected packages"]
   OUT --> REF["references"]
-  OUT --> VV["with -v also:<br/>published/modified/withdrawn/<br/>related/details/per-range events/credits"]
+  OUT --> VV["with -v also:<br/>published/modified/withdrawn/<br/>related/details/credits/per-range events"]
 ```
 
 ## What it prints
 
-ID, schema version, summary, aliases/CVE, severity, affected packages, references. With `-v` it additionally shows published/modified dates, withdrawn, related, details, per-range events, and credits.
+ID, schema version, summary, aliases/CVE, severity, affected packages, references. With `-v` it additionally shows published/modified dates, withdrawn, related, details, credits, and per-range events.
+
+```bash
+osv parse test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```text
+ID:             GHSA-vxv8-r8q2-63xw
+Schema Version: 1.4.0
+Summary:        TensorFlow vulnerable to `CHECK` fail in `FractionalMaxPoolGrad`
+Aliases:        CVE-2022-35981
+CVE:            CVE-2022-35981
+
+Severity:
+  CVSS_V3: CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H (score: 0.0)
+
+Affected Packages:
+  PyPI/tensorflow
+  PyPI/tensorflow-cpu
+  PyPI/tensorflow-gpu
+  ...
+
+References:
+  [WEB] https://github.com/tensorflow/tensorflow/security/advisories/GHSA-vxv8-r8q2-63xw
+  [ADVISORY] https://nvd.nist.gov/vuln/detail/CVE-2022-35981
+  [PACKAGE] https://github.com/tensorflow/tensorflow
+  ...
+```
+
+The `(score: 0.0)` next to the CVSS vector is the same vector-string parse-failure documented in [Methods → severity](/reference/methods#severity) — the vector itself is in the `Score:` field.
 
 ## What happens under the hood
 

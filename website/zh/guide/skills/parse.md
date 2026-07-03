@@ -46,12 +46,41 @@ flowchart TD
   OUT --> SEV["severity（CVSS）"]
   OUT --> AFF["受影响包"]
   OUT --> REF["引用"]
-  OUT --> VV["-v 时额外:<br/>published/modified/withdrawn/<br/>related/details/各范围事件/credits"]
+  OUT --> VV["-v 时额外:<br/>published/modified/withdrawn/<br/>related/details/credits/各范围事件"]
 ```
 
 ## 它打印什么
 
-ID、schema 版本、摘要、aliases/CVE、severity、受影响包、引用。加 `-v` 还会展示 published/modified 日期、withdrawn、related、details、每范围事件和 credits。
+ID、schema 版本、摘要、aliases/CVE、severity、受影响包、引用。加 `-v` 还会展示 published/modified 日期、withdrawn、related、details、credits 和每范围事件。
+
+```bash
+osv parse test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```text
+ID:             GHSA-vxv8-r8q2-63xw
+Schema Version: 1.4.0
+Summary:        TensorFlow vulnerable to `CHECK` fail in `FractionalMaxPoolGrad`
+Aliases:        CVE-2022-35981
+CVE:            CVE-2022-35981
+
+Severity:
+  CVSS_V3: CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H (score: 0.0)
+
+Affected Packages:
+  PyPI/tensorflow
+  PyPI/tensorflow-cpu
+  PyPI/tensorflow-gpu
+  ...
+
+References:
+  [WEB] https://github.com/tensorflow/tensorflow/security/advisories/GHSA-vxv8-r8q2-63xw
+  [ADVISORY] https://nvd.nist.gov/vuln/detail/CVE-2022-35981
+  [PACKAGE] https://github.com/tensorflow/tensorflow
+  ...
+```
+
+CVSS 向量旁的 `(score: 0.0)` 就是 [方法清单 → severity](/zh/reference/methods#severity) 里记录的向量字符串解析失败表现——向量本身在 `Score:` 字段里。
 
 ## 底层发生了什么
 
