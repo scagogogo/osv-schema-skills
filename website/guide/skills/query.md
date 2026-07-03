@@ -26,7 +26,22 @@ osv query --ranges --events vulnerability.json # Combine
 
 At least one flag is required.
 
-`--severity -o json` returns the CVSS entry. The `score` is the raw vector string; the DTO also computes a `numeric_score` via `GetScore()`, but it carries `omitempty` — and since `GetScore()` returns `0.0` on a vector string, that field is dropped from the JSON. In text mode the same `0.0` is still printed as `Numeric score: 0.0`, so the field appears in text but vanishes in JSON for the same record:
+The default text output prints the ID then one block per requested flag. For `--severity` it shows the CVSS type, the raw vector string, and a parsed `Numeric score` line:
+
+```bash
+osv query --severity cvss3 test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```text
+ID: GHSA-vxv8-r8q2-63xw
+
+Severity (cvss3):
+  Type:  CVSS_V3
+  Score: CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H
+  Numeric score: 0.0
+```
+
+`--severity -o json` returns the CVSS entry. The `score` is the raw vector string; the DTO also computes a `numeric_score` via `GetScore()`, but it carries `omitempty` — and since `GetScore()` returns `0.0` on a vector string, that field is dropped from the JSON. In text mode the same `0.0` is still printed as `Numeric score: 0.0` (the line above), so the field appears in text but vanishes in JSON for the same record:
 
 ```bash
 osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json

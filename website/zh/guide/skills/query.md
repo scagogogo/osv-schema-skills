@@ -26,7 +26,22 @@ osv query --ranges --events vulnerability.json # 组合
 
 至少需要一个标志。
 
-`--severity -o json` 返回 CVSS 条目。`score` 是原始向量字符串；DTO 也会经 `GetScore()` 算一个 `numeric_score`，但它带 `omitempty`——而向量字符串时 `GetScore()` 返回 `0.0`，于是该字段被从 JSON 里省略。文本模式下同一个 `0.0` 仍会打印为 `Numeric score: 0.0`，所以同一条记录下该字段在文本里出现、在 JSON 里消失：
+默认文本输出先打印 ID，再按请求的标志各打印一个块。`--severity` 会显示 CVSS 类型、原始向量字符串和一行解析后的 `Numeric score`：
+
+```bash
+osv query --severity cvss3 test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```text
+ID: GHSA-vxv8-r8q2-63xw
+
+Severity (cvss3):
+  Type:  CVSS_V3
+  Score: CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H
+  Numeric score: 0.0
+```
+
+`--severity -o json` 返回 CVSS 条目。`score` 是原始向量字符串；DTO 也会经 `GetScore()` 算一个 `numeric_score`，但它带 `omitempty`——而向量字符串时 `GetScore()` 返回 `0.0`，于是该字段被从 JSON 里省略。文本模式下同一个 `0.0` 仍会打印为 `Numeric score: 0.0`（即上面那行），所以同一条记录下该字段在文本里出现、在 JSON 里消失：
 
 ```bash
 osv query --severity cvss3 -o json test_data/GHSA-vxv8-r8q2-63xw.json
