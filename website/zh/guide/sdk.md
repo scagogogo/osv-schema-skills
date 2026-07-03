@@ -168,9 +168,9 @@ flowchart LR
 ```go
 // 定义你关心的厂商块形态
 type GHSA struct {
-    Severity   string   `json:"severity"`
-    CWEIDs     []string `json:"cwe_ids"`
-    GitHubURL  string   `json:"github_reviewed_at"`
+    Severity         string   `json:"severity"`
+    CWEIDs           []string `json:"cwe_ids"`
+    GitHubReviewedAt string   `json:"github_reviewed_at"`
 }
 
 // 用具体类型作为 DatabaseSpecific 解析
