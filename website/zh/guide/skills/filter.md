@@ -24,6 +24,22 @@ osv filter -o json -e PyPI vulnerability.json
 
 至少需要一个过滤标志。
 
+默认文本输出会报告过滤条件、`Has ecosystem` 是/否判定以及匹配计数。不加 `-o json` 时，每个过滤维度各打印一个块：
+
+```bash
+osv filter -e PyPI test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```text
+ID: GHSA-vxv8-r8q2-63xw
+
+Ecosystem filter: PyPI
+  Has ecosystem: true
+  Matching packages (9):
+    - PyPI/tensorflow
+    ...
+```
+
 `-o json` 返回过滤后的 `affected` 条目——注意每个事件对象只携带它那一个非空字段（`omitempty` 在起作用）：
 
 ```bash

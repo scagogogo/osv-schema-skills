@@ -24,6 +24,22 @@ osv filter -o json -e PyPI vulnerability.json
 
 At least one filter flag is required.
 
+The default text output reports the filter, a yes/no `Has ecosystem` check, and matching counts. With no `-o json`, each dimension prints its own block:
+
+```bash
+osv filter -e PyPI test_data/GHSA-vxv8-r8q2-63xw.json
+```
+
+```text
+ID: GHSA-vxv8-r8q2-63xw
+
+Ecosystem filter: PyPI
+  Has ecosystem: true
+  Matching packages (9):
+    - PyPI/tensorflow
+    ...
+```
+
 `-o json` returns the filtered `affected` entries — note each event object carries only its one non-empty field (`omitempty` at work):
 
 ```bash
