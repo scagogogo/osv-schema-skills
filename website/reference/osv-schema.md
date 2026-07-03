@@ -80,6 +80,8 @@ classDiagram
     +Ranges []*Range
     +Severity []*Severity
     +Versions []string
+    +EcosystemSpecific Eco
+    +DatabaseSpecific DB
   }
   class Package {
     +Ecosystem Ecosystem
@@ -90,6 +92,7 @@ classDiagram
     +Type RangeType
     +Repo string
     +Events []Event
+    +DatabaseSpecific DB
   }
   class Event {
     +Introduced string
