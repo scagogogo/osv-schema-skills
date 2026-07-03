@@ -9,7 +9,7 @@ Parse an OSV JSON file and display structured vulnerability data.
 
 ```bash
 osv parse vulnerability.json           # Key fields (text)
-osv parse -v vulnerability.json        # All fields (dates, details, ranges, credits)
+osv parse -v vulnerability.json        # All fields (dates, details, credits, ranges)
 osv parse -o json vulnerability.json   # JSON output
 ```
 

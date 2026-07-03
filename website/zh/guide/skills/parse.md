@@ -9,7 +9,7 @@
 
 ```bash
 osv parse vulnerability.json           # 关键字段（文本）
-osv parse -v vulnerability.json        # 全字段（日期、详情、范围、鸣谢）
+osv parse -v vulnerability.json        # 全字段（日期、详情、鸣谢、范围）
 osv parse -o json vulnerability.json   # JSON 输出
 ```
 

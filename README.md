@@ -108,7 +108,7 @@ Pre-built binaries cover **Linux / macOS / Windows** on **amd64, arm64, arm**. S
 ```bash
 # Parse an OSV JSON file
 osv parse vulnerability.json           # Key fields (text)
-osv parse -v vulnerability.json        # All fields (dates, details, ranges, credits)
+osv parse -v vulnerability.json        # All fields (dates, details, credits, ranges)
 osv parse -o json vulnerability.json   # JSON output
 
 # Validate one or more files (exits 1 if any invalid — CI-friendly)
@@ -123,7 +123,7 @@ osv filter -a CVE vulnerability.json         # By alias pattern
 osv filter -e PyPI -r FIX vulnerability.json # Combine
 
 # Query specific sub-information
-osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + score
+osv query --severity cvss3 vulnerability.json  # CVSS v3 entry + parsed score (0.0 on a vector string)
 osv query --maven vulnerability.json           # Maven groupId/artifactId
 osv query --ranges vulnerability.json          # Version ranges
 osv query --events vulnerability.json          # Event timeline (introduced/fixed/…)
@@ -160,7 +160,7 @@ func main() {
     if cve := v.Aliases.GetCVE(); cve != "" {
         fmt.Printf("CVE: %s\n", cve)
     }
-    if v.Affected.HasEcosystem("npm") {
+    if v.Affected.HasEcosystem(osv.EcosystemNpm) {
         fmt.Println("Affects npm packages")
     }
     if cvss3 := v.Severity.GetCVSS3(); cvss3 != nil {

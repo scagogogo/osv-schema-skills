@@ -108,7 +108,7 @@ cd osv-schema-skills && claude   # skills 已激活
 ```bash
 # 解析 OSV JSON 文件
 osv parse vulnerability.json           # 关键字段（文本）
-osv parse -v vulnerability.json        # 全字段（日期、详情、范围、致谢）
+osv parse -v vulnerability.json        # 全字段（日期、详情、鸣谢、范围）
 osv parse -o json vulnerability.json   # JSON 输出
 
 # 校验一个或多个文件（任一无效则退出码 1，适配 CI）
@@ -123,7 +123,7 @@ osv filter -a CVE vulnerability.json         # 按别名模式
 osv filter -e PyPI -r FIX vulnerability.json # 组合
 
 # 查询特定子信息
-osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 评分
+osv query --severity cvss3 vulnerability.json  # CVSS v3 条目 + 解析评分（向量串时为 0.0）
 osv query --maven vulnerability.json           # Maven groupId/artifactId
 osv query --ranges vulnerability.json          # 版本范围
 osv query --events vulnerability.json          # 事件时间线（introduced/fixed/…）
@@ -160,7 +160,7 @@ func main() {
     if cve := v.Aliases.GetCVE(); cve != "" {
         fmt.Printf("CVE: %s\n", cve)
     }
-    if v.Affected.HasEcosystem("npm") {
+    if v.Affected.HasEcosystem(osv.EcosystemNpm) {
         fmt.Println("影响 npm 包")
     }
     if cvss3 := v.Severity.GetCVSS3(); cvss3 != nil {

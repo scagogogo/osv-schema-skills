@@ -82,7 +82,7 @@ Set up now:
 2. Verify: `osv version`.
 
 Commands (append `-o json` for machine-readable output):
-- `osv parse <file>`            — key fields; `-v` for all fields (dates, details, ranges, credits)
+- `osv parse <file>`            — key fields; `-v` for all fields (dates, details, credits, ranges)
 - `osv validate <file> [file…]` — schema check; exits 1 if any invalid
 - `osv filter -e <eco> -r <ref-type> -a <alias> <file>` — filter by ecosystem / reference type / alias
 - `osv query --severity cvss3|cvss2 --maven --ranges --events <file>` — extract sub-info
