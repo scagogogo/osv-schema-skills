@@ -15,6 +15,15 @@ osv validate -o json vulnerability.json      # JSON 输出
 
 若有文件无效则以退出码 `1` 退出——对 CI 友好。
 
+默认文本输出按文件用 `✓`/`✗` 标记，成功时附上解析出的 `id` 和 `schema_version`，失败时列出错误要点（一条同时缺 id 和 schema_version 的记录会列出两条，因为检查不短路）：
+
+```text
+✓ test_data/GHSA-vxv8-r8q2-63xw.json (id=GHSA-vxv8-r8q2-63xw, schema_version=1.4.0)
+✗ bad.json
+  - missing required field: id
+  - missing required field: schema_version
+```
+
 | 标志 | 说明 |
 |------|------|
 | `-o, --output` | `text`（默认）或 `json` |

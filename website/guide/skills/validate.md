@@ -15,6 +15,15 @@ osv validate -o json vulnerability.json      # JSON output
 
 Exits with code `1` if any file is invalid — CI-friendly.
 
+The default text output uses `✓`/`✗` per file, with the parsed `id` and `schema_version` on success and a bulleted error list on failure (a record missing both fields lists both, since the checks don't short-circuit):
+
+```text
+✓ test_data/GHSA-vxv8-r8q2-63xw.json (id=GHSA-vxv8-r8q2-63xw, schema_version=1.4.0)
+✗ bad.json
+  - missing required field: id
+  - missing required field: schema_version
+```
+
 | Flag | Description |
 |------|-------------|
 | `-o, --output` | `text` (default) or `json` |
