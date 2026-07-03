@@ -169,6 +169,9 @@ flowchart TD
   E -->|"last_affected: X"| L{"V > X ?"}
   L -->|是| CLR
   L -->|否| NEXT
+  E -->|"limit: X"| LM{"V >= X ?"}
+  LM -->|是| CLR
+  LM -->|否| NEXT
   SET --> DONE{"还有事件？"}
   CLR --> DONE
   NEXT --> DONE
@@ -176,7 +179,7 @@ flowchart TD
   DONE -->|否| RESULT["最终标志 = V 是否受影响"]
 ```
 
-特殊值 `introduced: "0"` 表示"从最初的版本起"。上面的流程覆盖了三种常见事件（`introduced` / `fixed` / `last_affected`）；第四种 `limit` 标记范围上限，处理方式类似 `last_affected`——一旦 `V` 抵达 `limit`，标志即清零。它在 `GIT` 范围之外很少见。SDK 提供逐事件的谓词，方便你自己实现这套判定：
+特殊值 `introduced: "0"` 表示"从最初的版本起"。上面的流程覆盖了三种常见事件（`introduced` / `fixed` / `last_affected`）；第四种 `limit` 标记范围上限，但**与 `last_affected` 不同**——`limit` 是排他的，即 `V >= limit` 时清零标志（`limit` 版本本身*不受影响*），而 `last_affected` 是含它的（`last_affected` 版本*受影响*，只有 `V > last_affected` 才清零）。`limit` 在 `GIT` 范围之外很少见。SDK 提供逐事件的谓词，方便你自己实现这套判定：
 
 ```mermaid
 flowchart LR
