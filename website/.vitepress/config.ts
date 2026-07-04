@@ -64,19 +64,37 @@ export default withMermaid(
         root: {
           label: 'English',
           nav: [
+            // Guide：入门与访问层（下拉分组扁平，按主题排序）
             { text: 'Guide', items: [
-              { text: 'Introduction', link: '/guide/introduction' },
-              { text: '🤖 AI Agent', link: '/guide/ai-agent' },
+              { text: '📖 Introduction', link: '/guide/introduction' },
+              { text: '🤖 AI Agent Integration', link: '/guide/ai-agent' },
               { text: 'Installation', link: '/guide/installation' },
               { text: 'Quick Start', link: '/guide/quick-start' },
-              { text: 'Skills', link: '/guide/skills' },
               { text: 'CLI', link: '/guide/cli' },
               { text: 'Go SDK', link: '/guide/sdk' },
             ]},
+            // Skills：7 个技能的总览与逐项
+            { text: 'Skills', items: [
+              { text: 'Overview', link: '/guide/skills' },
+              { text: 'osv-parse', link: '/guide/skills/parse' },
+              { text: 'osv-validate', link: '/guide/skills/validate' },
+              { text: 'osv-filter', link: '/guide/skills/filter' },
+              { text: 'osv-query', link: '/guide/skills/query' },
+              { text: 'osv-severity', link: '/guide/skills/severity' },
+              { text: 'osv-affected', link: '/guide/skills/affected' },
+            ]},
+            // Reference：字段、生态、方法
             { text: 'Reference', items: [
               { text: 'OSV Schema', link: '/reference/osv-schema' },
               { text: 'Ecosystems', link: '/reference/ecosystems' },
               { text: 'Methods', link: '/reference/methods' },
+            ]},
+            // More：实战、FAQ、版本
+            { text: 'More', items: [
+              { text: '📚 Examples & Cookbook', link: '/guide/examples' },
+              { text: '❓ FAQ & Troubleshooting', link: '/guide/faq' },
+              { text: '📝 Changelog', link: '/guide/changelog' },
+              { text: '⬇️ Releases & Downloads', link: 'https://github.com/scagogogo/osv-schema-skills/releases' },
             ]},
             {
               text: 'GitHub',
@@ -116,6 +134,14 @@ export default withMermaid(
                   { text: 'Go SDK', link: '/guide/sdk' },
                 ],
               },
+              {
+                text: 'Cookbook & Help',
+                items: [
+                  { text: 'Examples & Cookbook', link: '/guide/examples' },
+                  { text: 'FAQ & Troubleshooting', link: '/guide/faq' },
+                  { text: 'Changelog', link: '/guide/changelog' },
+                ],
+              },
             ],
             '/reference/': [
               {
@@ -144,18 +170,32 @@ export default withMermaid(
           link: '/zh/',
           nav: [
             { text: '指南', items: [
-              { text: '项目介绍', link: '/zh/guide/introduction' },
+              { text: '📖 项目介绍', link: '/zh/guide/introduction' },
               { text: '🤖 AI Agent 接入', link: '/zh/guide/ai-agent' },
               { text: '安装', link: '/zh/guide/installation' },
               { text: '快速开始', link: '/zh/guide/quick-start' },
-              { text: 'Skills 技能', link: '/zh/guide/skills' },
               { text: 'CLI 命令行', link: '/zh/guide/cli' },
               { text: 'Go SDK', link: '/zh/guide/sdk' },
+            ]},
+            { text: 'Skills 技能', items: [
+              { text: '总览', link: '/zh/guide/skills' },
+              { text: 'osv-parse', link: '/zh/guide/skills/parse' },
+              { text: 'osv-validate', link: '/zh/guide/skills/validate' },
+              { text: 'osv-filter', link: '/zh/guide/skills/filter' },
+              { text: 'osv-query', link: '/zh/guide/skills/query' },
+              { text: 'osv-severity', link: '/zh/guide/skills/severity' },
+              { text: 'osv-affected', link: '/zh/guide/skills/affected' },
             ]},
             { text: '参考', items: [
               { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
               { text: '生态系统', link: '/zh/reference/ecosystems' },
               { text: '方法清单', link: '/zh/reference/methods' },
+            ]},
+            { text: '更多', items: [
+              { text: '📚 实战示例', link: '/zh/guide/examples' },
+              { text: '❓ 常见问题与排错', link: '/zh/guide/faq' },
+              { text: '📝 更新日志', link: '/zh/guide/changelog' },
+              { text: '⬇️ 版本与下载', link: 'https://github.com/scagogogo/osv-schema-skills/releases' },
             ]},
             {
               text: 'GitHub',
@@ -193,6 +233,14 @@ export default withMermaid(
                 items: [
                   { text: 'CLI 命令行', link: '/zh/guide/cli' },
                   { text: 'Go SDK', link: '/zh/guide/sdk' },
+                ],
+              },
+              {
+                text: '实战与帮助',
+                items: [
+                  { text: '实战示例', link: '/zh/guide/examples' },
+                  { text: '常见问题与排错', link: '/zh/guide/faq' },
+                  { text: '更新日志', link: '/zh/guide/changelog' },
                 ],
               },
             ],

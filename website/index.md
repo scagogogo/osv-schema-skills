@@ -51,6 +51,34 @@ features:
     linkText: Downloads
 ---
 
+---
+
+### 📊 By the numbers
+
+| | |
+|---|---|
+| **7** Claude Code Skills | 6 data skills + 1 setup guide, auto-triggering |
+| **5** CLI subcommands | `parse` · `validate` · `filter` · `query` · `version` |
+| **7** pre-built binaries | Linux (amd64/arm64/arm) · macOS (amd64/arm64) · Windows (amd64/arm64) |
+| **19** ecosystems | npm · PyPI · Maven · NuGet · RubyGems · Go · Cargo · Hex · Pub · Packagist · … |
+| **1** Go core | Same typed `OsvSchema` kernel under all three access layers |
+
+### ⚡ Install in one line
+
+```bash
+# Pre-built binary (Linux amd64 example — swap version/platform for yours)
+curl -fsSL https://github.com/scagogogo/osv-schema-skills/releases/download/v0.1.0/osv_v0.1.0_linux_amd64.tar.gz | tar -xz osv && sudo mv osv /usr/local/bin/ && osv version
+```
+
+```bash
+# Or via Go (1.18+)
+go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
+```
+
+Prefer the **AI Agent route**? Copy one prompt into Claude Code or Codex — the agent installs itself. ↓
+
+---
+
 ### 🤖 One prompt to onboard your AI agent
 
 The fastest path: **copy this prompt, paste it into Claude Code or Codex, hit Enter.** The agent installs the CLI, discovers the skills, and is ready to work with OSV vulnerability data. Full version on the [AI Agent Integration](/guide/ai-agent) page.

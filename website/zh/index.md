@@ -51,6 +51,34 @@ features:
     linkText: 下载
 ---
 
+---
+
+### 📊 项目一览
+
+| | |
+|---|---|
+| **7 个** Claude Code Skills | 6 个数据技能 + 1 个安装向导，自动触发 |
+| **5 条** CLI 子命令 | `parse` · `validate` · `filter` · `query` · `version` |
+| **7 个**预编译二进制 | Linux（amd64/arm64/arm）· macOS（amd64/arm64）· Windows（amd64/arm64） |
+| **19 个**生态系统 | npm · PyPI · Maven · NuGet · RubyGems · Go · Cargo · Hex · Pub · Packagist · … |
+| **1 个** Go 内核 | 同一个带类型的 `OsvSchema` 内核驱动全部三层访问 |
+
+### ⚡ 一行安装
+
+```bash
+# 预编译二进制（Linux amd64 示例——请按你的版本/平台替换）
+curl -fsSL https://github.com/scagogogo/osv-schema-skills/releases/download/v0.1.0/osv_v0.1.0_linux_amd64.tar.gz | tar -xz osv && sudo mv osv /usr/local/bin/ && osv version
+```
+
+```bash
+# 或通过 Go（1.18+）
+go install github.com/scagogogo/osv-schema-skills/cmd/osv@latest
+```
+
+更喜欢 **AI Agent 路径**？复制一段提示词进 Claude Code 或 Codex——智能体会自动安装。 ↓
+
+---
+
 ### 🤖 一段提示词，让你的 AI 智能体上岗
 
 最快路径：**复制下方提示词，粘贴进 Claude Code 或 Codex，回车。** 智能体会安装 CLI、发现技能，随即开始处理 OSV 漏洞数据。完整版见 [AI Agent 接入](/zh/guide/ai-agent) 页。
