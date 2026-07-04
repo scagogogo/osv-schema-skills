@@ -31,8 +31,8 @@ The zero-dependency option — no Go toolchain needed. Download the binary for y
 
 ```bash
 # Linux amd64 example (swap the version and platform for yours).
-# Replace <latest-tag> with the newest tag on the Releases page.
-VERSION=<latest-tag>
+# Replace v0.1.0 with the newest tag on the Releases page.
+VERSION=v0.1.0
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv

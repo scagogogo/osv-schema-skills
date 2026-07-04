@@ -51,7 +51,7 @@ The archive name is composed from the version, OS, and arch — build yours by f
 
 ```mermaid
 flowchart LR
-  T["osv_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.&lt;ext&gt;"] --> V["version → &lt;latest-tag&gt;"]
+  T["osv_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.&lt;ext&gt;"] --> V["version → v0.1.0"]
   T --> O["os → linux / darwin / windows"]
   T --> A["arch → amd64 / arm64 / arm"]
   T --> E["ext → tar.gz (unix) · zip (windows)"]
@@ -59,8 +59,8 @@ flowchart LR
 
 ```bash
 # Linux amd64 example — swap version/platform for your case.
-# Replace <latest-tag> with the newest tag from the Releases page.
-VERSION=<latest-tag>
+# Replace v0.1.0 with the newest tag from the Releases page.
+VERSION=v0.1.0
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv

@@ -31,8 +31,8 @@ flowchart TD
 
 ```bash
 # Linux amd64 示例（把版本号与平台换成你自己的）。
-# 将 <latest-tag> 替换为 Releases 页面上最新的 tag。
-VERSION=<latest-tag>
+# 将 v0.1.0 替换为 Releases 页面上最新的 tag。
+VERSION=v0.1.0
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv

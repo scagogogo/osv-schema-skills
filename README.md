@@ -36,8 +36,8 @@ The shortest path to running the CLI. Copy-paste, run, done.
 ```bash
 # 1. Install the CLI — pick ONE:
 #    a) pre-built binary (Linux/macOS/Windows · amd64/arm64/arm)
-#       Replace <latest-tag> with the newest tag from the Releases page.
-VERSION=<latest-tag>
+#       Replace v0.1.0 with the newest tag from the Releases page.
+VERSION=v0.1.0
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv && chmod +x osv && sudo mv osv /usr/local/bin/

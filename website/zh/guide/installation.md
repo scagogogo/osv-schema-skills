@@ -51,7 +51,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  T["osv_&lt;版本&gt;_&lt;系统&gt;_&lt;架构&gt;.&lt;后缀&gt;"] --> V["版本 → &lt;latest-tag&gt;"]
+  T["osv_&lt;版本&gt;_&lt;系统&gt;_&lt;架构&gt;.&lt;后缀&gt;"] --> V["版本 → v0.1.0"]
   T --> O["系统 → linux / darwin / windows"]
   T --> A["架构 → amd64 / arm64 / arm"]
   T --> E["后缀 → tar.gz（unix）· zip（windows）"]
@@ -59,8 +59,8 @@ flowchart LR
 
 ```bash
 # Linux amd64 示例——按你的情况替换版本号/平台。
-# 将 <latest-tag> 替换为 Releases 页面上最新的 tag。
-VERSION=<latest-tag>
+# 将 v0.1.0 替换为 Releases 页面上最新的 tag。
+VERSION=v0.1.0
 curl -fsSL -o osv.tar.gz \
   https://github.com/scagogogo/osv-schema-skills/releases/download/${VERSION}/osv_${VERSION}_linux_amd64.tar.gz
 tar -xzf osv.tar.gz osv
