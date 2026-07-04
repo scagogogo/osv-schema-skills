@@ -24,6 +24,18 @@ Imagine you maintain a service that depends on two hundred open-source packages.
 2. **How bad is it?** Is this "patch this quarter" or "wake people up tonight"?
 3. **What do I do?** Is there a fixed version, and which one?
 
+These three questions are exactly what the OSV schema is built to answer — each maps onto a dedicated part of the record (unfolded in Chapter 3):
+
+```mermaid
+flowchart LR
+  Q["Three questions<br/>every vuln raises"] --> Q1["Am I affected?"]
+  Q --> Q2["How bad is it?"]
+  Q --> Q3["What do I do?"]
+  Q1 --> A["OSV: affected[].package<br/>+ ranges/events"]
+  Q2 --> B["OSV: severity[]<br/>(CVSS vector)"]
+  Q3 --> C["OSV: references (FIX)<br/>+ events.fixed"]
+```
+
 To answer these at scale — across hundreds of packages, automatically — you need the answers in a *structured, machine-readable* form. And this is exactly where the pre-OSV world fell apart:
 
 - **Every database spoke its own dialect.** GitHub Security Advisories (GHSA), the National Vulnerability Database (NVD/CVE), Go's vuln DB, RustSec, PyPA, npm audit — each published the *same underlying facts* in a *different shape*. A tool that understood one could not read another.
