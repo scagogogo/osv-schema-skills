@@ -64,7 +64,7 @@ export default withMermaid(
         root: {
           label: 'English',
           nav: [
-            // Guide：入门与访问层（下拉分组扁平，按主题排序）
+            // Guide：入门与访问层
             { text: 'Guide', items: [
               { text: '📖 Introduction', link: '/guide/introduction' },
               { text: '🤖 AI Agent Integration', link: '/guide/ai-agent' },
@@ -73,7 +73,7 @@ export default withMermaid(
               { text: 'CLI', link: '/guide/cli' },
               { text: 'Go SDK', link: '/guide/sdk' },
             ]},
-            // Skills：7 个技能的总览与逐项
+            // Skills：7 个技能
             { text: 'Skills', items: [
               { text: 'Overview', link: '/guide/skills' },
               { text: 'osv-parse', link: '/guide/skills/parse' },
@@ -83,18 +83,31 @@ export default withMermaid(
               { text: 'osv-severity', link: '/guide/skills/severity' },
               { text: 'osv-affected', link: '/guide/skills/affected' },
             ]},
+            // Use Cases：实战场景
+            { text: 'Use Cases', items: [
+              { text: 'CI/CD Integration', link: '/use-cases/ci-cd' },
+              { text: 'Batch Scanning', link: '/use-cases/batch-scanning' },
+              { text: 'AI Agent Automation', link: '/use-cases/ai-agent' },
+              { text: 'Security Dashboard', link: '/use-cases/dashboard' },
+            ]},
             // Reference：字段、生态、方法
             { text: 'Reference', items: [
               { text: 'OSV Schema', link: '/reference/osv-schema' },
               { text: 'Ecosystems', link: '/reference/ecosystems' },
               { text: 'Methods', link: '/reference/methods' },
             ]},
-            // More：实战、FAQ、版本
+            // Advanced：高级用法
+            { text: 'Advanced', items: [
+              { text: 'Custom Ecosystem/DB Specifics', link: '/advanced/custom-specifics' },
+              { text: 'Version Range Semantics', link: '/advanced/version-ranges' },
+              { text: 'GORM & BSON Serialization', link: '/advanced/serialization' },
+            ]},
+            // More：示例、FAQ、日志、下载
             { text: 'More', items: [
               { text: '📚 Examples & Cookbook', link: '/guide/examples' },
               { text: '❓ FAQ & Troubleshooting', link: '/guide/faq' },
               { text: '📝 Changelog', link: '/guide/changelog' },
-              { text: '⬇️ Releases & Downloads', link: 'https://github.com/scagogogo/osv-schema-skills/releases' },
+              { text: '⬇️ Downloads', link: '/downloads' },
             ]},
             {
               text: 'GitHub',
@@ -143,6 +156,27 @@ export default withMermaid(
                 ],
               },
             ],
+            '/use-cases/': [
+              {
+                text: 'Use Cases',
+                items: [
+                  { text: 'CI/CD Integration', link: '/use-cases/ci-cd' },
+                  { text: 'Batch Scanning', link: '/use-cases/batch-scanning' },
+                  { text: 'AI Agent Automation', link: '/use-cases/ai-agent' },
+                  { text: 'Security Dashboard', link: '/use-cases/dashboard' },
+                ],
+              },
+            ],
+            '/advanced/': [
+              {
+                text: 'Advanced',
+                items: [
+                  { text: 'Custom Specifics', link: '/advanced/custom-specifics' },
+                  { text: 'Version Ranges', link: '/advanced/version-ranges' },
+                  { text: 'Serialization', link: '/advanced/serialization' },
+                ],
+              },
+            ],
             '/reference/': [
               {
                 text: 'Reference',
@@ -186,16 +220,27 @@ export default withMermaid(
               { text: 'osv-severity', link: '/zh/guide/skills/severity' },
               { text: 'osv-affected', link: '/zh/guide/skills/affected' },
             ]},
+            { text: '使用场景', items: [
+              { text: 'CI/CD 集成', link: '/zh/use-cases/ci-cd' },
+              { text: '批量扫描', link: '/zh/use-cases/batch-scanning' },
+              { text: 'AI Agent 自动化', link: '/zh/use-cases/ai-agent' },
+              { text: '安全仪表盘', link: '/zh/use-cases/dashboard' },
+            ]},
             { text: '参考', items: [
               { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
               { text: '生态系统', link: '/zh/reference/ecosystems' },
               { text: '方法清单', link: '/zh/reference/methods' },
             ]},
+            { text: '高级用法', items: [
+              { text: '自定义特定字段', link: '/zh/advanced/custom-specifics' },
+              { text: '版本范围语义', link: '/zh/advanced/version-ranges' },
+              { text: 'GORM/BSON 序列化', link: '/zh/advanced/serialization' },
+            ]},
             { text: '更多', items: [
               { text: '📚 实战示例', link: '/zh/guide/examples' },
               { text: '❓ 常见问题与排错', link: '/zh/guide/faq' },
               { text: '📝 更新日志', link: '/zh/guide/changelog' },
-              { text: '⬇️ 版本与下载', link: 'https://github.com/scagogogo/osv-schema-skills/releases' },
+              { text: '⬇️ 下载', link: '/zh/downloads' },
             ]},
             {
               text: 'GitHub',
@@ -241,6 +286,27 @@ export default withMermaid(
                   { text: '实战示例', link: '/zh/guide/examples' },
                   { text: '常见问题与排错', link: '/zh/guide/faq' },
                   { text: '更新日志', link: '/zh/guide/changelog' },
+                ],
+              },
+            ],
+            '/zh/use-cases/': [
+              {
+                text: '使用场景',
+                items: [
+                  { text: 'CI/CD 集成', link: '/zh/use-cases/ci-cd' },
+                  { text: '批量扫描', link: '/zh/use-cases/batch-scanning' },
+                  { text: 'AI Agent 自动化', link: '/zh/use-cases/ai-agent' },
+                  { text: '安全仪表盘', link: '/zh/use-cases/dashboard' },
+                ],
+              },
+            ],
+            '/zh/advanced/': [
+              {
+                text: '高级用法',
+                items: [
+                  { text: '自定义特定字段', link: '/zh/advanced/custom-specifics' },
+                  { text: '版本范围语义', link: '/zh/advanced/version-ranges' },
+                  { text: 'GORM/BSON 序列化', link: '/zh/advanced/serialization' },
                 ],
               },
             ],
