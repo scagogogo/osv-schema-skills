@@ -26,6 +26,26 @@ osv query --ranges --events vulnerability.json # 组合
 
 至少需要一个标志。
 
+每个标志从记录的不同切片取数，在共用的 ID 下各输出一个块。组合标志就是叠加块：
+
+```mermaid
+flowchart LR
+  REC["OSV 记录"] --> ID["ID<br/>（始终打印）"]
+  REC --> SEV["severity[]"]
+  REC --> AFF["affected[].package"]
+  REC --> RNG["affected[].ranges"]
+  SEV --> F1["--severity<br/>→ CVSS 类型 + 向量 + 分数"]
+  AFF --> F2["--maven<br/>→ groupId / artifactId<br/>（仅 Maven 条目）"]
+  RNG --> F3["--ranges<br/>→ range 类型 + repo"]
+  RNG --> F4["--events<br/>→ introduced/fixed/… 时间线"]
+  F1 --> OUT["text：每标志一个块<br/>json：一个对象，按标志分键"]
+  F2 --> OUT
+  F3 --> OUT
+  F4 --> OUT
+```
+
+`--maven` 与 `--ranges`/`--events` 都遍历 `affected[]`，但 `--maven` 只输出 ecosystem 为 `Maven` 的条目（拆分 `groupId:artifactId`）；另两者对每个生态都适用。
+
 默认文本输出先打印 ID，再按请求的标志各打印一个块。`--severity` 会显示 CVSS 类型、原始向量字符串和一行解析后的 `Numeric score`：
 
 ```bash

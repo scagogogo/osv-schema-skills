@@ -127,6 +127,17 @@ flowchart TD
 Some records list exact affected `versions[]`; others give only `ranges[]`; many give both. Prefer `ranges[]` for open-ended "everything since 1.2.0" cases, and treat `versions[]` as the authoritative enumeration when present. Never assume one implies the other.
 :::
 
+```mermaid
+flowchart TD
+  REC["affected entry"] --> S{"which fields?"}
+  S -->|"versions only"| V["exact list<br/>e.g. [1.2.0, 1.2.1]<br/>closed, no future versions"]
+  S -->|"ranges only"| R["event timeline<br/>e.g. introduced:0 → fixed:2.7.2<br/>open-ended"]
+  S -->|"both"| B["versions = authoritative enumeration<br/>ranges = how they were derived"]
+  V --> ANS["resolve 'is X affected?'<br/>by membership in the list"]
+  R --> ANS2["resolve by walking events<br/>(see flow above)"]
+  B --> ANS3["prefer versions[] when present;<br/>ranges[] explains the span"]
+```
+
 ## Notes
 
 - `RangeTypeEcosystem` (`ECOSYSTEM`) is the most common; `SEMVER` and `GIT` are less frequent

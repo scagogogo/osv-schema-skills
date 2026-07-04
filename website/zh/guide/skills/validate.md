@@ -88,6 +88,18 @@ osv validate -o json advisories/*.json
 ]
 ```
 
+数组里每个条目对应一个文件；其结构按 `valid` 分叉：
+
+```mermaid
+flowchart TD
+  ARR["validate -o json → 数组"] --> ENT["每文件一个条目"]
+  ENT --> V{"valid ?"}
+  V -->|"true"| OK["file · valid:true<br/>id · schema_version"]
+  V -->|"false"| BAD["file · valid:false<br/>errors: [ … ]"]
+  BAD --> N1["缺一个字段 → 1 条 error"]
+  BAD --> N2["id + schema_version 都缺 → 2 条 error<br/>（非短路）"]
+```
+
 ## 批量语义：一个坏文件让整次运行失败
 
 传多个文件时，退出码是每个结果的逻辑与——只要有一个无效，整次调用就以 `1` 退出，但每个文件仍会被检查并逐一报告。这正是你想要的：在一个存放公告的目录上做合并前闸门。

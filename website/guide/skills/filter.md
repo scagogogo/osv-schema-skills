@@ -59,15 +59,25 @@ osv filter -e PyPI -o json test_data/GHSA-vxv8-r8q2-63xw.json
 
 ## The three filter dimensions
 
+The three flags are **not** combined into one predicate. Each operates on a *different slice* of the record and emits its *own block* — `-e PyPI -r FIX` does **not** mean "FIX references inside PyPI packages"; it means "filter `affected` by PyPI **and, separately,** filter `references` by FIX", producing two independent results.
+
 ```mermaid
 flowchart TD
-  DATA["OSV data"] --> E["-e ecosystem<br/>Affected → FilterByEcosystem"]
-  DATA --> R["-r reference type<br/>References → FilterByType"]
-  DATA --> A["-a alias pattern<br/>Aliases → Filter(prefix)"]
-  E --> OUT["filtered result"]
-  R --> OUT
-  A --> OUT
+  REC["OSV record"] --> AFF["affected[]"]
+  REC --> REF["references[]"]
+  REC --> ALI["aliases[]"]
+  AFF -->|"-e PyPI"| FE["FilterByEcosystem<br/>→ filtered affected"]
+  REF -->|"-r FIX"| FR["FilterByType<br/>→ filtered references"]
+  ALI -->|"-a CVE"| FA["Filter(prefix)<br/>→ filtered aliases"]
+  FE --> B1["block: Ecosystem filter"]
+  FR --> B2["block: Reference filter"]
+  FA --> B3["block: Alias filter"]
+  B1 --> OUT["each flag = its own block<br/>(pass several → stack blocks)"]
+  B2 --> OUT
+  B3 --> OUT
 ```
+
+A flag you don't pass simply contributes no block — there is no "match all" default. That is also why `Has ecosystem: true/false` appears only under the ecosystem block: it's a property of the `affected` slice, asked only when `-e` is given.
 
 ## SDK equivalent
 

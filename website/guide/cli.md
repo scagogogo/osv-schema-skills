@@ -138,6 +138,19 @@ The `dev` placeholder is replaced with the release tag by goreleaser's ldflags. 
 |------|-------------|
 | `-o, --output` | `text` (default) or `json` — applies to `parse`/`validate`/`filter`/`query`; `version` ignores it |
 
+```mermaid
+flowchart LR
+  O["-o, --output text|json"] --> P["parse<br/>✓ reads it"]
+  O --> V["validate<br/>✓ reads it"]
+  O --> F["filter<br/>✓ reads it"]
+  O --> Q["query<br/>✓ reads it"]
+  O -.ignored.-> VER["version<br/>always two text lines"]
+  P & V & F & Q --> RES["text or JSON output"]
+  VER --> TXT["osv-cli version: …<br/>OSV schema version: …"]
+```
+
+The `-o` flag is a persistent (global) flag inherited by every subcommand, but only the four data subcommands actually read `outputFormat`. Passing `-o json` to `version` is silently ignored. An invalid value (e.g. `-o yaml`) silently falls back to text on the subcommands that read it.
+
 ## Exit code conventions
 
 ```mermaid

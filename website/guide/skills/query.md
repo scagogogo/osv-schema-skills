@@ -26,6 +26,26 @@ osv query --ranges --events vulnerability.json # Combine
 
 At least one flag is required.
 
+Each flag pulls from a different slice of the record and emits its own block under the shared ID. Combine flags and you just stack blocks:
+
+```mermaid
+flowchart LR
+  REC["OSV record"] --> ID["ID<br/>(always printed)"]
+  REC --> SEV["severity[]"]
+  REC --> AFF["affected[].package"]
+  REC --> RNG["affected[].ranges"]
+  SEV --> F1["--severity<br/>→ CVSS type + vector + score"]
+  AFF --> F2["--maven<br/>→ groupId / artifactId<br/>(Maven entries only)"]
+  RNG --> F3["--ranges<br/>→ range type + repo"]
+  RNG --> F4["--events<br/>→ introduced/fixed/… timeline"]
+  F1 --> OUT["text: one block per flag<br/>json: one object, keyed by flag"]
+  F2 --> OUT
+  F3 --> OUT
+  F4 --> OUT
+```
+
+`--maven` and `--ranges`/`--events` both walk `affected[]`, but `--maven` only emits entries whose ecosystem is `Maven` (it splits `groupId:artifactId`); the other two apply to every ecosystem.
+
 The default text output prints the ID then one block per requested flag. For `--severity` it shows the CVSS type, the raw vector string, and a parsed `Numeric score` line:
 
 ```bash

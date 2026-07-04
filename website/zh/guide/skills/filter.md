@@ -59,15 +59,25 @@ osv filter -e PyPI -o json test_data/GHSA-vxv8-r8q2-63xw.json
 
 ## 三个过滤维度
 
+三个标志**并非**组合成一个谓词。每个作用于记录的*不同切片*，各输出*自己的块*——`-e PyPI -r FIX` **不**表示"PyPI 包里的 FIX 引用"，而是"按 PyPI 过滤 `affected`，**同时分别**按 FIX 过滤 `references`"，产出两个独立结果。
+
 ```mermaid
 flowchart TD
-  DATA["OSV 数据"] --> E["-e 生态<br/>Affected → FilterByEcosystem"]
-  DATA --> R["-r 引用类型<br/>References → FilterByType"]
-  DATA --> A["-a 别名模式<br/>Aliases → Filter(前缀)"]
-  E --> OUT["过滤结果"]
-  R --> OUT
-  A --> OUT
+  REC["OSV 记录"] --> AFF["affected[]"]
+  REC --> REF["references[]"]
+  REC --> ALI["aliases[]"]
+  AFF -->|"-e PyPI"| FE["FilterByEcosystem<br/>→ 过滤后的 affected"]
+  REF -->|"-r FIX"| FR["FilterByType<br/>→ 过滤后的 references"]
+  ALI -->|"-a CVE"| FA["Filter(前缀)<br/>→ 过滤后的 aliases"]
+  FE --> B1["块：Ecosystem filter"]
+  FR --> B2["块：Reference filter"]
+  FA --> B3["块：Alias filter"]
+  B1 --> OUT["每个标志 = 自己的块<br/>（传多个 → 叠加块）"]
+  B2 --> OUT
+  B3 --> OUT
 ```
+
+没传的标志不会产生块——不存在"匹配全部"的默认。这也解释了 `Has ecosystem: true/false` 只出现在 ecosystem 块下：它是 `affected` 切片的属性，只在给了 `-e` 时才问。
 
 ## SDK 等价
 

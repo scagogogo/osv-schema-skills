@@ -127,6 +127,17 @@ flowchart TD
 有些记录列出精确受影响的 `versions[]`；有些只给 `ranges[]`；很多两者都给。对"自 1.2.0 起的全部"这类开区间场景优先用 `ranges[]`，当 `versions[]` 存在时把它当作权威枚举。切勿假设其中一个能推出另一个。
 :::
 
+```mermaid
+flowchart TD
+  REC["affected 条目"] --> S{"哪些字段？"}
+  S -->|"仅 versions"| V["精确列表<br/>如 [1.2.0, 1.2.1]<br/>封闭，不含未来版本"]
+  S -->|"仅 ranges"| R["事件时间线<br/>如 introduced:0 → fixed:2.7.2<br/>开区间"]
+  S -->|"两者都有"| B["versions = 权威枚举<br/>ranges = 它们的由来"]
+  V --> ANS["判定「X 是否受影响？」<br/>看是否在列表中"]
+  R --> ANS2["走事件时间线判定<br/>（见上图）"]
+  B --> ANS3["有 versions[] 时优先用它；<br/>ranges[] 解释跨度"]
+```
+
 ## 注意事项
 
 - `RangeTypeEcosystem`（`ECOSYSTEM`）最常见；`SEMVER` 和 `GIT` 较少

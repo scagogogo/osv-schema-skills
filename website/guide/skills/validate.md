@@ -88,6 +88,18 @@ osv validate -o json advisories/*.json
 ]
 ```
 
+Each array entry is one file; its shape branches on `valid`:
+
+```mermaid
+flowchart TD
+  ARR["validate -o json → array"] --> ENT["one entry per file"]
+  ENT --> V{"valid ?"}
+  V -->|"true"| OK["file · valid:true<br/>id · schema_version"]
+  V -->|"false"| BAD["file · valid:false<br/>errors: [ … ]"]
+  BAD --> N1["1 error if only one field missing"]
+  BAD --> N2["2 errors if both id + schema_version missing<br/>(non-short-circuit)"]
+```
+
 ## Batch semantics: one bad file fails the run
 
 With multiple files the exit code is the logical AND of every result — a single invalid file makes the whole invocation exit `1`, but every file is still checked and reported. This is exactly the behaviour you want in a pre-merge gate over a directory of advisories.

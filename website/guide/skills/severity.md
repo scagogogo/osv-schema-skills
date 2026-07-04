@@ -40,6 +40,18 @@ ptr := s.GetScoreAsPointer()     // *float64, nil on error
 | 7.0–8.9 | High |
 | 9.0–10.0 | Critical |
 
+```mermaid
+flowchart LR
+  N0["0.0 = no score<br/>(vector or missing)"] --> N1["0.1"]
+  N1 -->|"Low"| N4["4.0"]
+  N4 -->|"Medium"| N7["7.0"]
+  N7 -->|"High"| N9["9.0"]
+  N9 -->|"Critical"| N10["10.0"]
+  N0 -.-> X["not rankable"]
+```
+
+The bands are contiguous — `0.1` is the first rankable score, so a real `0.0` never lands in *Low*; it means "no numeric score" (a vector string that `GetScore()` couldn't parse, or a missing field). That is why the table starts at `0.1` while the SDK getter returns `0.0` for the unrankable case.
+
 ## Decision tree
 
 ```mermaid

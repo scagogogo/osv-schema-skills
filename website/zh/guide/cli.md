@@ -138,6 +138,19 @@ OSV schema version: 1.4.0
 |------|------|
 | `-o, --output` | `text`（默认）或 `json`——适用于 `parse`/`validate`/`filter`/`query`；`version` 忽略它 |
 
+```mermaid
+flowchart LR
+  O["-o, --output text|json"] --> P["parse<br/>✓ 读取"]
+  O --> V["validate<br/>✓ 读取"]
+  O --> F["filter<br/>✓ 读取"]
+  O --> Q["query<br/>✓ 读取"]
+  O -.忽略.-> VER["version<br/>总是两行文本"]
+  P & V & F & Q --> RES["text 或 JSON 输出"]
+  VER --> TXT["osv-cli version: …<br/>OSV schema version: …"]
+```
+
+`-o` 是一个持久（全局）标志，所有子命令都继承，但只有四个数据子命令真正读取 `outputFormat`。给 `version` 传 `-o json` 会被静默忽略。无效值（如 `-o yaml`）在读取它的子命令上静默回退为 text。
+
 ## 退出码约定
 
 ```mermaid
