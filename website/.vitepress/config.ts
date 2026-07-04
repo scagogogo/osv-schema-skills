@@ -63,6 +63,7 @@ export default withMermaid(
       locales: {
         root: {
           label: 'English',
+          lang: 'en-US',
           nav: [
             // Guide：入门与访问层
             { text: 'Guide', items: [
@@ -96,6 +97,12 @@ export default withMermaid(
               { text: 'Ecosystems', link: '/reference/ecosystems' },
               { text: 'Methods', link: '/reference/methods' },
             ]},
+            // Standards：本工具实现的标准
+            { text: 'Standards', items: [
+              { text: 'OSV Schema Spec', link: '/standards/osv-spec' },
+              { text: 'CVSS Scoring', link: '/standards/cvss' },
+              { text: 'Ecosystem Naming', link: '/standards/ecosystems' },
+            ]},
             // Advanced：高级用法
             { text: 'Advanced', items: [
               { text: 'Custom Ecosystem/DB Specifics', link: '/advanced/custom-specifics' },
@@ -113,6 +120,7 @@ export default withMermaid(
               text: 'GitHub',
               link: 'https://github.com/scagogogo/osv-schema-skills',
             },
+            { text: '简体中文', link: '/zh/' },
           ],
 
           sidebar: {
@@ -187,6 +195,16 @@ export default withMermaid(
                 ],
               },
             ],
+            '/standards/': [
+              {
+                text: 'Standards',
+                items: [
+                  { text: 'OSV Schema Spec', link: '/standards/osv-spec' },
+                  { text: 'CVSS Scoring', link: '/standards/cvss' },
+                  { text: 'Ecosystem Naming', link: '/standards/ecosystems' },
+                ],
+              },
+            ],
           },
 
           outline: { label: 'On this page' },
@@ -201,6 +219,7 @@ export default withMermaid(
         // —— 简体中文 ——
         'zh/': {
           label: '简体中文',
+          lang: 'zh-CN',
           link: '/zh/',
           nav: [
             { text: '指南', items: [
@@ -231,6 +250,11 @@ export default withMermaid(
               { text: '生态系统', link: '/zh/reference/ecosystems' },
               { text: '方法清单', link: '/zh/reference/methods' },
             ]},
+            { text: '标准', items: [
+              { text: 'OSV Schema 规范', link: '/zh/standards/osv-spec' },
+              { text: 'CVSS 评分', link: '/zh/standards/cvss' },
+              { text: '生态命名', link: '/zh/standards/ecosystems' },
+            ]},
             { text: '高级用法', items: [
               { text: '自定义特定字段', link: '/zh/advanced/custom-specifics' },
               { text: '版本范围语义', link: '/zh/advanced/version-ranges' },
@@ -246,6 +270,7 @@ export default withMermaid(
               text: 'GitHub',
               link: 'https://github.com/scagogogo/osv-schema-skills',
             },
+            { text: 'English', link: '/guide/introduction' },
           ],
 
           sidebar: {
@@ -317,6 +342,16 @@ export default withMermaid(
                   { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
                   { text: '生态系统', link: '/zh/reference/ecosystems' },
                   { text: '方法清单', link: '/zh/reference/methods' },
+                ],
+              },
+            ],
+            '/zh/standards/': [
+              {
+                text: '标准',
+                items: [
+                  { text: 'OSV Schema 规范', link: '/zh/standards/osv-spec' },
+                  { text: 'CVSS 评分', link: '/zh/standards/cvss' },
+                  { text: '生态命名', link: '/zh/standards/ecosystems' },
                 ],
               },
             ],
