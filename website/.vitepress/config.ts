@@ -63,164 +63,158 @@ export default withMermaid(
       locales: {
         root: {
           label: 'English',
-          lang: 'en-US',
-          themeConfig: {
-            nav: [
-              { text: 'Guide', items: [
-                { text: 'Introduction', link: '/guide/introduction' },
-                { text: '🤖 AI Agent', link: '/guide/ai-agent' },
-                { text: 'Installation', link: '/guide/installation' },
-                { text: 'Quick Start', link: '/guide/quick-start' },
-                { text: 'Skills', link: '/guide/skills' },
-                { text: 'CLI', link: '/guide/cli' },
-                { text: 'Go SDK', link: '/guide/sdk' },
-              ]},
-              { text: 'Reference', items: [
-                { text: 'OSV Schema', link: '/reference/osv-schema' },
-                { text: 'Ecosystems', link: '/reference/ecosystems' },
-                { text: 'Methods', link: '/reference/methods' },
-              ]},
+          nav: [
+            { text: 'Guide', items: [
+              { text: 'Introduction', link: '/guide/introduction' },
+              { text: '🤖 AI Agent', link: '/guide/ai-agent' },
+              { text: 'Installation', link: '/guide/installation' },
+              { text: 'Quick Start', link: '/guide/quick-start' },
+              { text: 'Skills', link: '/guide/skills' },
+              { text: 'CLI', link: '/guide/cli' },
+              { text: 'Go SDK', link: '/guide/sdk' },
+            ]},
+            { text: 'Reference', items: [
+              { text: 'OSV Schema', link: '/reference/osv-schema' },
+              { text: 'Ecosystems', link: '/reference/ecosystems' },
+              { text: 'Methods', link: '/reference/methods' },
+            ]},
+            {
+              text: 'GitHub',
+              link: 'https://github.com/scagogogo/osv-schema-skills',
+            },
+          ],
+
+          sidebar: {
+            '/guide/': [
               {
-                text: 'GitHub',
-                link: 'https://github.com/scagogogo/osv-schema-skills',
+                text: 'Getting Started',
+                items: [
+                  { text: 'Introduction', link: '/guide/introduction' },
+                  { text: '🤖 AI Agent', link: '/guide/ai-agent' },
+                  { text: 'Installation', link: '/guide/installation' },
+                  { text: 'Quick Start', link: '/guide/quick-start' },
+                ],
+              },
+              {
+                text: 'Skills',
+                collapsed: false,
+                items: [
+                  { text: 'Overview', link: '/guide/skills' },
+                  { text: 'osv-parse', link: '/guide/skills/parse' },
+                  { text: 'osv-validate', link: '/guide/skills/validate' },
+                  { text: 'osv-filter', link: '/guide/skills/filter' },
+                  { text: 'osv-query', link: '/guide/skills/query' },
+                  { text: 'osv-severity', link: '/guide/skills/severity' },
+                  { text: 'osv-affected', link: '/guide/skills/affected' },
+                  { text: 'osv-installation', link: '/guide/installation' },
+                ],
+              },
+              {
+                text: 'Access Layers',
+                items: [
+                  { text: 'CLI', link: '/guide/cli' },
+                  { text: 'Go SDK', link: '/guide/sdk' },
+                ],
               },
             ],
-
-            sidebar: {
-              '/guide/': [
-                {
-                  text: 'Getting Started',
-                  items: [
-                    { text: 'Introduction', link: '/guide/introduction' },
-                    { text: '🤖 AI Agent', link: '/guide/ai-agent' },
-                    { text: 'Installation', link: '/guide/installation' },
-                    { text: 'Quick Start', link: '/guide/quick-start' },
-                  ],
-                },
-                {
-                  text: 'Skills',
-                  collapsed: false,
-                  items: [
-                    { text: 'Overview', link: '/guide/skills' },
-                    { text: 'osv-parse', link: '/guide/skills/parse' },
-                    { text: 'osv-validate', link: '/guide/skills/validate' },
-                    { text: 'osv-filter', link: '/guide/skills/filter' },
-                    { text: 'osv-query', link: '/guide/skills/query' },
-                    { text: 'osv-severity', link: '/guide/skills/severity' },
-                    { text: 'osv-affected', link: '/guide/skills/affected' },
-                    { text: 'osv-installation', link: '/guide/installation' },
-                  ],
-                },
-                {
-                  text: 'Access Layers',
-                  items: [
-                    { text: 'CLI', link: '/guide/cli' },
-                    { text: 'Go SDK', link: '/guide/sdk' },
-                  ],
-                },
-              ],
-              '/reference/': [
-                {
-                  text: 'Reference',
-                  items: [
-                    { text: 'OSV Schema', link: '/reference/osv-schema' },
-                    { text: 'Ecosystems', link: '/reference/ecosystems' },
-                    { text: 'Methods', link: '/reference/methods' },
-                  ],
-                },
-              ],
-            },
-
-            outline: { label: 'On this page' },
-            lastUpdated: { text: 'Last updated' },
-            docFooter: { prev: 'Previous', next: 'Next' },
-            returnToTopLabel: 'Back to top',
-            sidebarMenuLabel: 'Menu',
-            darkModeSwitchLabel: 'Appearance',
-            langMenuLabel: 'Change language',
+            '/reference/': [
+              {
+                text: 'Reference',
+                items: [
+                  { text: 'OSV Schema', link: '/reference/osv-schema' },
+                  { text: 'Ecosystems', link: '/reference/ecosystems' },
+                  { text: 'Methods', link: '/reference/methods' },
+                ],
+              },
+            ],
           },
+
+          outline: { label: 'On this page' },
+          lastUpdated: { text: 'Last updated' },
+          docFooter: { prev: 'Previous', next: 'Next' },
+          returnToTopLabel: 'Back to top',
+          sidebarMenuLabel: 'Menu',
+          darkModeSwitchLabel: 'Appearance',
+          langMenuLabel: 'Change language',
         },
 
         // —— 简体中文 ——
         'zh/': {
           label: '简体中文',
-          lang: 'zh-CN',
           link: '/zh/',
-          themeConfig: {
-            nav: [
-              { text: '指南', items: [
-                { text: '项目介绍', link: '/zh/guide/introduction' },
-                { text: '🤖 AI Agent 接入', link: '/zh/guide/ai-agent' },
-                { text: '安装', link: '/zh/guide/installation' },
-                { text: '快速开始', link: '/zh/guide/quick-start' },
-                { text: 'Skills 技能', link: '/zh/guide/skills' },
-                { text: 'CLI 命令行', link: '/zh/guide/cli' },
-                { text: 'Go SDK', link: '/zh/guide/sdk' },
-              ]},
-              { text: '参考', items: [
-                { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
-                { text: '生态系统', link: '/zh/reference/ecosystems' },
-                { text: '方法清单', link: '/zh/reference/methods' },
-              ]},
+          nav: [
+            { text: '指南', items: [
+              { text: '项目介绍', link: '/zh/guide/introduction' },
+              { text: '🤖 AI Agent 接入', link: '/zh/guide/ai-agent' },
+              { text: '安装', link: '/zh/guide/installation' },
+              { text: '快速开始', link: '/zh/guide/quick-start' },
+              { text: 'Skills 技能', link: '/zh/guide/skills' },
+              { text: 'CLI 命令行', link: '/zh/guide/cli' },
+              { text: 'Go SDK', link: '/zh/guide/sdk' },
+            ]},
+            { text: '参考', items: [
+              { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
+              { text: '生态系统', link: '/zh/reference/ecosystems' },
+              { text: '方法清单', link: '/zh/reference/methods' },
+            ]},
+            {
+              text: 'GitHub',
+              link: 'https://github.com/scagogogo/osv-schema-skills',
+            },
+          ],
+
+          sidebar: {
+            '/zh/guide/': [
               {
-                text: 'GitHub',
-                link: 'https://github.com/scagogogo/osv-schema-skills',
+                text: '入门',
+                items: [
+                  { text: '项目介绍', link: '/zh/guide/introduction' },
+                  { text: '🤖 AI Agent 接入', link: '/zh/guide/ai-agent' },
+                  { text: '安装', link: '/zh/guide/installation' },
+                  { text: '快速开始', link: '/zh/guide/quick-start' },
+                ],
+              },
+              {
+                text: 'Skills 技能',
+                collapsed: false,
+                items: [
+                  { text: '总览', link: '/zh/guide/skills' },
+                  { text: 'osv-parse', link: '/zh/guide/skills/parse' },
+                  { text: 'osv-validate', link: '/zh/guide/skills/validate' },
+                  { text: 'osv-filter', link: '/zh/guide/skills/filter' },
+                  { text: 'osv-query', link: '/zh/guide/skills/query' },
+                  { text: 'osv-severity', link: '/zh/guide/skills/severity' },
+                  { text: 'osv-affected', link: '/zh/guide/skills/affected' },
+                  { text: 'osv-installation', link: '/zh/guide/installation' },
+                ],
+              },
+              {
+                text: '访问层',
+                items: [
+                  { text: 'CLI 命令行', link: '/zh/guide/cli' },
+                  { text: 'Go SDK', link: '/zh/guide/sdk' },
+                ],
               },
             ],
-
-            sidebar: {
-              '/zh/guide/': [
-                {
-                  text: '入门',
-                  items: [
-                    { text: '项目介绍', link: '/zh/guide/introduction' },
-                    { text: '🤖 AI Agent 接入', link: '/zh/guide/ai-agent' },
-                    { text: '安装', link: '/zh/guide/installation' },
-                    { text: '快速开始', link: '/zh/guide/quick-start' },
-                  ],
-                },
-                {
-                  text: 'Skills 技能',
-                  collapsed: false,
-                  items: [
-                    { text: '总览', link: '/zh/guide/skills' },
-                    { text: 'osv-parse', link: '/zh/guide/skills/parse' },
-                    { text: 'osv-validate', link: '/zh/guide/skills/validate' },
-                    { text: 'osv-filter', link: '/zh/guide/skills/filter' },
-                    { text: 'osv-query', link: '/zh/guide/skills/query' },
-                    { text: 'osv-severity', link: '/zh/guide/skills/severity' },
-                    { text: 'osv-affected', link: '/zh/guide/skills/affected' },
-                    { text: 'osv-installation', link: '/zh/guide/installation' },
-                  ],
-                },
-                {
-                  text: '访问层',
-                  items: [
-                    { text: 'CLI 命令行', link: '/zh/guide/cli' },
-                    { text: 'Go SDK', link: '/zh/guide/sdk' },
-                  ],
-                },
-              ],
-              '/zh/reference/': [
-                {
-                  text: '参考',
-                  items: [
-                    { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
-                    { text: '生态系统', link: '/zh/reference/ecosystems' },
-                    { text: '方法清单', link: '/zh/reference/methods' },
-                  ],
-                },
-              ],
-            },
-
-            outline: { label: '本页目录' },
-            lastUpdated: { text: '最后更新' },
-            docFooter: { prev: '上一页', next: '下一页' },
-            returnToTopLabel: '回到顶部',
-            sidebarMenuLabel: '菜单',
-            darkModeSwitchLabel: '外观',
-            langMenuLabel: '语言',
+            '/zh/reference/': [
+              {
+                text: '参考',
+                items: [
+                  { text: 'OSV Schema', link: '/zh/reference/osv-schema' },
+                  { text: '生态系统', link: '/zh/reference/ecosystems' },
+                  { text: '方法清单', link: '/zh/reference/methods' },
+                ],
+              },
+            ],
           },
+
+          outline: { label: '本页目录' },
+          lastUpdated: { text: '最后更新' },
+          docFooter: { prev: '上一页', next: '下一页' },
+          returnToTopLabel: '回到顶部',
+          sidebarMenuLabel: '菜单',
+          darkModeSwitchLabel: '外观',
+          langMenuLabel: '语言',
         },
       },
 
