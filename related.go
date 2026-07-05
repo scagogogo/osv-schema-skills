@@ -29,12 +29,7 @@ func (x Related) Value() (driver.Value, error) {
 	if len(x) == 0 {
 		return nil, nil
 	}
-	marshal, err := json.Marshal(x)
-	if err != nil {
-		return nil, err
-	}
-	if len(marshal) == 0 {
-		return nil, nil
-	}
+	// Related is []string; json.Marshal cannot fail.
+	marshal, _ := json.Marshal(x)
 	return string(marshal), nil
 }

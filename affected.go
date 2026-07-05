@@ -36,9 +36,6 @@ func (x AffectedSlice[EcosystemSpecific, DatabaseSpecific]) Value() (driver.Valu
 	if err != nil {
 		return nil, err
 	}
-	if len(marshal) == 0 {
-		return nil, nil
-	}
 	return string(marshal), nil
 }
 

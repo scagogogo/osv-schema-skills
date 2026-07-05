@@ -52,13 +52,9 @@ func (x SeveritySlice) Value() (driver.Value, error) {
 	if len(x) == 0 {
 		return nil, nil
 	}
-	marshal, err := json.Marshal(x)
-	if err != nil {
-		return nil, err
-	}
-	if len(marshal) == 0 {
-		return nil, nil
-	}
+	// SeveritySlice only contains Severity pointers with string-typed exported
+	// fields, so json.Marshal cannot fail.
+	marshal, _ := json.Marshal(x)
 	return string(marshal), nil
 }
 

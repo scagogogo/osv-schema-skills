@@ -61,7 +61,7 @@ func runValidate(cmd *cobra.Command, args []string) error {
 	}
 
 	if hasError {
-		os.Exit(1)
+		osExit(1)
 	}
 	return nil
 }

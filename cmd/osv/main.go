@@ -10,6 +10,8 @@ import (
 
 var (
 	outputFormat string
+	// osExit 可在测试中替换，避免 main() 的 error 路径调用真正的 os.Exit 终止测试进程。
+	osExit = os.Exit
 )
 
 var rootCmd = &cobra.Command{
@@ -23,10 +25,15 @@ func init() {
 }
 
 func main() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := runRoot(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		osExit(1)
 	}
+}
+
+// runRoot 执行根命令并返回错误，便于测试。
+func runRoot() error {
+	return rootCmd.Execute()
 }
 
 // parseOsvFile 是子命令共用的文件解析函数

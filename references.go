@@ -52,17 +52,11 @@ func (x References) Value() (driver.Value, error) {
 	if len(x) == 0 {
 		return nil, nil
 	}
-	marshal, err := json.Marshal(x)
-	if err != nil {
-		return nil, err
-	}
-	if len(marshal) == 0 {
-		return nil, nil
-	}
+	// References only contains string-typed fields (Type, URL), so json.Marshal
+	// cannot fail; the error return is therefore unreachable.
+	marshal, _ := json.Marshal(x)
 	return string(marshal), nil
 }
-
-// ------------------------------------------------ ---------------------------------------------------------------------
 
 type ReferenceType string
 
