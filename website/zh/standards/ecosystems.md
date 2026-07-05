@@ -58,12 +58,32 @@ OSV 用**生态限定的包名**标识受影响组件。本页解释命名约定
 | `EcosystemMaven` | `Maven` | 名字是 `groupId:artifactId` |
 | `EcosystemNuGet` | `NuGet` | .NET 包名 |
 | `EcosystemLinux` | `Linux` | 仅 `name: Kernel` |
-| `EcosystemDebian` | `Debian` | 源包名 |
-| `EcosystemAlpine` | `Alpine` | 源包名 |
+| `EcosystemDebian` | `Debian` | 源包名；可选 `:<RELEASE>` 后缀（如 `Debian:7`） |
+| `EcosystemAlpine` | `Alpine` | 源包名；**必需** `:v<RELEASE>` 后缀（如 `Alpine:v3.16`） |
 | `EcosystemHex` | `Hex` | Erlang/Elixir 包 |
-| `EcosystemAndroid` | `Android` | Android 组件名 |
+| `EcosystemAndroid` | `Android` | Android 组件名（Framework、Media Framework、Kernel……） |
+| `EcosystemGitHubActions` | `GitHub Actions` | 名字是 action 的 `{owner}/{repo}` |
+| `EcosystemPub` | `Pub` | Dart 包名 |
+| `EcosystemConanCenter` | `ConanCenter` | C/C++ Conan 包名 |
+| `EcosystemRocky` | `Rocky` | 源包名；可选 `:<RELEASE>` 后缀 |
+| `EcosystemAlmaLinux` | `AlmaLinux` | 源包名；可选 `:<RELEASE>` 后缀 |
 
 完整清单及详情见 [生态系统参考](/zh/reference/ecosystems)。
+
+---
+
+## 发行版范围限定
+
+某些 Linux 发行版生态在生态字符串本身（不是包名）携带 `:<RELEASE>` 后缀，把记录限定到特定发行版：
+
+| 生态 | 后缀形式 | 示例 | 是否必需？ |
+|------|---------|------|-----------|
+| `Debian` | `:<RELEASE>`（数字） | `Debian:7` | 可选 |
+| `Alpine` | `:v<RELEASE>`（数字，`v` 前缀） | `Alpine:v3.16` | **必需** |
+| `Rocky` | `:<RELEASE>`（数字） | `Rocky:9` | 可选 |
+| `AlmaLinux` | `:<RELEASE>`（数字） | `AlmaLinux:9` | 可选 |
+
+这是 OSV 规范的一部分，不是工具箱的约定——后缀放在 `ecosystem` 字段里，所以 `osv filter -e "Debian:7"` 只匹配 Debian 7 的记录。注意 Alpine 是最严格的：其发行版后缀**必须**有，且要带 `v` 前缀。
 
 ---
 

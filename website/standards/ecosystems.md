@@ -58,12 +58,32 @@ This toolkit defines constants for the ecosystems standardized by OSV:
 | `EcosystemMaven` | `Maven` | Name is `groupId:artifactId` |
 | `EcosystemNuGet` | `NuGet` | .NET package name |
 | `EcosystemLinux` | `Linux` | Only `name: Kernel` |
-| `EcosystemDebian` | `Debian` | Source package name |
-| `EcosystemAlpine` | `Alpine` | Source package name |
+| `EcosystemDebian` | `Debian` | Source package name; optional `:<RELEASE>` suffix (e.g. `Debian:7`) |
+| `EcosystemAlpine` | `Alpine` | Source package name; requires `:v<RELEASE>` suffix (e.g. `Alpine:v3.16`) |
 | `EcosystemHex` | `Hex` | Erlang/Elixir package |
-| `EcosystemAndroid` | `Android` | Android component name |
+| `EcosystemAndroid` | `Android` | Android component name (Framework, Media Framework, Kernel, …) |
+| `EcosystemGitHubActions` | `GitHub Actions` | Name is `{owner}/{repo}` of the action |
+| `EcosystemPub` | `Pub` | Dart package name |
+| `EcosystemConanCenter` | `ConanCenter` | C/C++ Conan package name |
+| `EcosystemRocky` | `Rocky` | Source package name; optional `:<RELEASE>` suffix |
+| `EcosystemAlmaLinux` | `AlmaLinux` | Source package name; optional `:<RELEASE>` suffix |
 
 See the [Ecosystems reference](/reference/ecosystems) for the full list with details.
+
+---
+
+## Distribution release scoping
+
+Some Linux-distribution ecosystems carry a `:<RELEASE>` suffix on the ecosystem string itself (not the package name) to scope a record to a particular distro release:
+
+| Ecosystem | Suffix form | Example | Required? |
+|-----------|-------------|---------|-----------|
+| `Debian` | `:<RELEASE>` (numeric) | `Debian:7` | Optional |
+| `Alpine` | `:v<RELEASE>` (numeric, `v` prefix) | `Alpine:v3.16` | **Required** |
+| `Rocky` | `:<RELEASE>` (numeric) | `Rocky:9` | Optional |
+| `AlmaLinux` | `:<RELEASE>` (numeric) | `AlmaLinux:9` | Optional |
+
+This is part of the OSV spec, not a toolkit convention — the suffix travels inside the `ecosystem` field, so `osv filter -e "Debian:7"` matches only Debian 7 records. Note Alpine is the strict one: its release suffix is **mandatory** and must carry the `v` prefix.
 
 ---
 
