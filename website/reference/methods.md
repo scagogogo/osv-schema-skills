@@ -20,6 +20,7 @@ mindmap
       IsMaven
       GetGroupID
       GetArtifactID
+      GetArtifactID
     SeveritySlice
       GetCVSS3
       GetCVSS2
@@ -59,7 +60,8 @@ mindmap
 | Method | Signature | Description |
 |--------|-----------|-------------|
 | `IsMaven` | `() bool` | `Ecosystem == Maven` |
-| `GetGroupID` | `() string` | Maven `groupId` (left of `:`) |
+| `GetGroupID` | `() string` | Maven `groupId` (left of `:`); empty if not Maven-shaped |
+| `GetArtifactID` | `() string` | Maven `artifactId` (right of `:`); empty if not Maven-shaped |
 | `GetArtifactID` | `() string` | Maven `artifactId` (right of `:`) |
 
 ## SeveritySlice
