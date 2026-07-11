@@ -11,6 +11,11 @@ export default withMermaid(
     description:
       'AI-native OSV schema toolkit — Go SDK + CLI + 7 Claude Code Skills for parsing, validating, filtering, querying vulnerability data and setup.',
     base: '/osv-schema-skills/',
+    // 内置 sitemap：构建时生成 sitemap.xml，列出全部页面（EN 31 + ZH 31），
+    // 帮助搜索引擎发现两个语言版本。hostname 必须含 base 路径。
+    sitemap: {
+      hostname: 'https://scagogogo.github.io/osv-schema-skills/',
+    },
     cleanDist: true,
     lastUpdated: true,
 
