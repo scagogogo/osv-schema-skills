@@ -374,6 +374,27 @@ export default withMermaid(
 
       search: {
         provider: 'local',
+        options: {
+          // per-locale 搜索配置：root 保持 VitePress 默认英文分词；
+          // zh locale 用中文分词——ASCII 字符按非字母数字边界拆，CJK 按单字展开，
+          // 使中文关键词（如"漏洞""校验"）能被 MiniSearch 正确索引与命中。
+          locales: {
+            zh: {
+              miniSearch: {
+                options: {
+                  tokenize: (text: string) =>
+                    text
+                      .split(/[\x00-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F]+/)
+                      .filter((t) => t.length > 0)
+                      .flatMap((t) => {
+                        const cjk = t.match(/[一-鿿]/g)
+                        return cjk ? [...t.split(/[一-鿿]+/).filter(Boolean), ...cjk] : [t]
+                      }),
+                },
+              },
+            },
+          },
+        },
       },
     },
 
