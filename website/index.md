@@ -18,6 +18,9 @@ hero:
     - theme: alt
       text: GitHub
       link: https://github.com/scagogogo/osv-schema-skills
+    - theme: alt
+      text: 🌐 简体中文
+      link: /zh/
 
 features:
   - icon: 🤖
