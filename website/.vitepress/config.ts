@@ -39,7 +39,7 @@ export default withMermaid(
       root: {
         lang: 'en-US',
       },
-      'zh/': {
+      'zh': {
         lang: 'zh-CN',
         link: '/zh/',
       },
