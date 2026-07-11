@@ -1,18 +1,21 @@
-// 自定义主题：在默认主题基础上，"记住用户的语言选择"。
+// 自定义主题：在默认主题基础上，"记住用户的语言选择" + 内容页顶部注入跨语言切换链接。
 //
 // VitePress 默认只按 URL 路径决定语言（/ = English，/zh/ = 简体中文），
 // 刷新或下次访问落到根路径时永远是英文，不会记住上次的选择。
 //
-// 这里做两件事：
-//   1. 每次路由变化时，把当前语言写入 localStorage（键 osv-lang）。
-//   2. 首屏落在英文根路径时，若上次选择是 zh，则由 config.ts 注入的 head 内联脚本
+// 这里做三件事：
+//   1. 用 h 函数包装默认 Layout，在 doc-before 插槽注入 LangSwitch 组件——
+//      内容页顶部显示"🌐 另一语言版本"链接。仅 doc 布局生效（home 布局无此插槽）。
+//   2. 每次路由变化时，把当前语言写入 localStorage（键 osv-lang）。
+//   3. 首屏落在英文根路径时，若上次选择是 zh，则由 config.ts 注入的 head 内联脚本
 //      在 Vue 挂载前就重定向到 /zh/（避免英文闪一下）。这里的 watch 负责"记录选择"，
 //      head 脚本负责"应用选择"，两者配合且不会造成重定向死循环：
 //      用户从中文手动切回英文时是 SPA 跳转（不刷新），watch 立即把偏好改为 en，
 //      因此不会被重定向弹回中文。
 import DefaultTheme from 'vitepress/theme'
-import { watch } from 'vue'
+import { watch, h } from 'vue'
 import { useRouter } from 'vitepress'
+import LangSwitch from './LangSwitch.vue'
 
 const BASE = '/osv-schema-skills/'
 const STORAGE_KEY = 'osv-lang'
@@ -25,6 +28,13 @@ function detectLang(pathname: string): 'zh' | 'en' {
 
 export default {
   extends: DefaultTheme,
+  // 包装默认 Layout，在 doc-before 插槽注入跨语言切换链接。
+  // 仅 doc 布局生效（home 布局无 doc-before 插槽），不影响首页。
+  Layout: () => {
+    return h(DefaultTheme.Layout, null, {
+      'doc-before': () => h(LangSwitch),
+    })
+  },
   setup() {
     // SSR/SSG 阶段没有 window/localStorage，直接跳过。
     if (typeof window === 'undefined') return
