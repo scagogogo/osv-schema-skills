@@ -107,6 +107,7 @@ export default withMermaid(
               { text: 'OSV Schema Spec', link: '/standards/osv-spec' },
               { text: 'CVSS Scoring', link: '/standards/cvss' },
               { text: 'Ecosystem Naming', link: '/standards/ecosystems' },
+              { text: 'Design Decisions (RFC)', link: '/standards/design-decisions' },
             ]},
             // Advanced：高级用法
             { text: 'Advanced', items: [
@@ -207,6 +208,7 @@ export default withMermaid(
                   { text: 'OSV Schema Spec', link: '/standards/osv-spec' },
                   { text: 'CVSS Scoring', link: '/standards/cvss' },
                   { text: 'Ecosystem Naming', link: '/standards/ecosystems' },
+                  { text: 'Design Decisions (RFC)', link: '/standards/design-decisions' },
                 ],
               },
             ],
@@ -259,6 +261,7 @@ export default withMermaid(
               { text: 'OSV Schema 规范', link: '/zh/standards/osv-spec' },
               { text: 'CVSS 评分', link: '/zh/standards/cvss' },
               { text: '生态命名', link: '/zh/standards/ecosystems' },
+              { text: '设计决策 (RFC)', link: '/zh/standards/design-decisions' },
             ]},
             { text: '高级用法', items: [
               { text: '自定义特定字段', link: '/zh/advanced/custom-specifics' },
@@ -357,6 +360,7 @@ export default withMermaid(
                   { text: 'OSV Schema 规范', link: '/zh/standards/osv-spec' },
                   { text: 'CVSS 评分', link: '/zh/standards/cvss' },
                   { text: '生态命名', link: '/zh/standards/ecosystems' },
+                  { text: '设计决策 (RFC)', link: '/zh/standards/design-decisions' },
                 ],
               },
             ],
